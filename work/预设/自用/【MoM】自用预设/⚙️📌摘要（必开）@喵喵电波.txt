@@ -1,0 +1,13 @@
+{{setglobalvar::meow_FM::
+# `<meow_FM>`为主线剧情摘要,与故事发展强相关.
+# 摘要输出要求
+<meow_FM>
+serial:🍎No.序号(001开始)
+time:yyyy.MM.dd.星期X(根据世界观编造，具体到具体某天某时)☆HH:mm-HH:mm(时间流速必须合理{{getvar::时间流速}})
+scene:当前场景，如果是NSFW场景则需要记录性爱进度
+plot:总结本次正文剧情.需保留关键信息,记录名词和新出现信息,去除冗余内容,避免升华和评价.使用流水账形式
+</meow_FM>
+}}
+{{setvar::摘要标签::
+<meow_FM>
+}}

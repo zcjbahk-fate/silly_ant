@@ -1,0 +1,406 @@
+/* === 配色方案 (色气增强版 Pro Max) === */
+:root {
+  --bg-color: transparent;
+  --card-bg-color: rgba(255, 248, 250, 0.96);
+  --border-color: rgba(255, 182, 193, 0.6);
+
+  --text-primary: #590d22;
+  --text-secondary: #a4133c;
+  --accent: #ff0a54;
+
+  /* 欲望色谱 */
+  --c-love-light: #ffccd5;
+  --c-love-deep: #ff4d6d;
+  --c-depravity-light: #e0c3fc;
+  --c-depravity-deep: #7b2cbf;
+  --c-lust-light: #ffb3c1;
+  --c-lust-deep: #c9184a;
+  --c-ntr-light: #d8f3dc;
+  --c-ntr-deep: #2d6a4f;
+
+  /* 衣物状态 */
+  --status-bg: #ffe0e9;
+  --status-text: #c9184a;
+
+  --glass-bg: rgba(255, 255, 255, 0.65);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 14px;
+  color: var(--text-primary);
+}
+
+/* 动画 */
+@keyframes breathe {
+  0% {
+    opacity: 0.85;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.85;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.status-card {
+  width: 100%;
+  height: 100%;
+  background: var(--card-bg-color);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+}
+
+/* === 顶部环境 (时间样式统一) === */
+.env-banner {
+  background: linear-gradient(135deg, #fff0f3 0%, #ffe5ec 100%);
+  padding: 10px 15px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.env-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+/* 时间和经过时间字体颜色完全一致 */
+.env-time-group {
+  font-weight: 700;
+  font-size: 1.1em;
+  color: var(--text-primary);
+}
+
+.env-loc {
+  font-size: 0.9em;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+/* === Tab === */
+.tabs {
+  display: flex;
+  background: rgba(255, 255, 255, 0.5);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.tab-button {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-weight: 500;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+}
+
+.tab-button.active {
+  color: var(--accent);
+  background: rgba(255, 10, 84, 0.03);
+  border-bottom-color: var(--accent);
+  font-weight: bold;
+}
+
+.tab-container {
+  flex: 1;
+  overflow-y: auto;
+  padding: 15px;
+}
+
+.tab-page {
+  display: none;
+}
+
+.tab-page.active {
+  display: block;
+  animation: fadeIn 0.3s;
+}
+
+/* === 通用组件 === */
+.section-header {
+  font-size: 0.95em;
+  color: var(--text-secondary);
+  font-weight: bold;
+  margin: 15px 0 8px 0;
+  padding-left: 8px;
+  border-left: 3px solid var(--accent);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.section-header:first-child {
+  margin-top: 0;
+}
+
+.card-box {
+  background: var(--glass-bg);
+  border: 1px solid rgba(255, 192, 203, 0.5);
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 8px;
+  box-shadow: 0 2px 6px rgba(255, 182, 193, 0.15);
+}
+
+.kv-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 5px;
+}
+
+.kv-row:last-child {
+  margin-bottom: 0;
+}
+
+.k-label {
+  color: var(--text-secondary);
+  font-size: 0.9em;
+  flex-shrink: 0;
+  margin-right: 10px;
+}
+
+.v-val {
+  color: var(--text-primary);
+  font-weight: 500;
+  text-align: right;
+  word-break: break-all;
+}
+
+/* === 滑条 === */
+.slider-box {
+  margin-bottom: 10px;
+}
+
+.slider-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9em;
+  color: var(--text-secondary);
+  margin-bottom: 3px;
+}
+
+.slider-track {
+  height: 8px;
+  background: rgba(0, 0, 0, 0.06);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.slider-fill {
+  height: 100%;
+  border-radius: 4px;
+  animation: breathe 3s infinite ease-in-out;
+  background-size: 200% auto;
+  transition: width 0.5s;
+}
+
+/* === 肉棒状态 === */
+.penis-card {
+  background: linear-gradient(to bottom right, #fff0f3, #fff);
+  border: 1px solid var(--c-lust-deep);
+  border-radius: 10px;
+  padding: 12px;
+  text-align: center;
+  margin-bottom: 15px;
+  box-shadow: 0 4px 10px rgba(255, 77, 109, 0.15);
+}
+
+.penis-bar-bg {
+  height: 12px;
+  background: #ffe5ec;
+  border-radius: 6px;
+  margin: 8px 0;
+  position: relative;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.penis-bar-fill {
+  height: 100%;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #ff8fa3, #800f2f);
+  box-shadow: 0 0 8px rgba(255, 0, 80, 0.3);
+  transition: width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.penis-dot {
+  width: 14px;
+  height: 14px;
+  background: #fff;
+  border: 2px solid #d90429;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* === 情报条目化 === */
+.intel-char-btn {
+  background: #fff;
+  border: 1px solid var(--border-color);
+  padding: 8px 12px;
+  border-radius: 6px;
+  margin-bottom: 5px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  transition: all 0.2s;
+}
+
+.intel-char-btn:hover {
+  border-color: var(--accent);
+  background: #fff5f8;
+}
+
+.intel-list {
+  display: none;
+  padding: 5px 0 10px 5px;
+}
+
+.intel-list.show {
+  display: block;
+}
+
+.intel-tag {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 0.85em;
+  margin: 0 4px 4px 0;
+  border: 1px solid transparent;
+}
+
+.tag-known {
+  background: #e8f5e9;
+  color: #2e7d32;
+  border-color: #c8e6c9;
+}
+
+.tag-unknown {
+  background: #f3e5f5;
+  color: #7b1fa2;
+  border-color: #e1bee7;
+  border-style: dashed;
+}
+
+/* === 战绩图标 === */
+.sex-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 4px;
+  background: rgba(255, 255, 255, 0.5);
+  padding: 8px;
+  border-radius: 8px;
+}
+
+.sex-item {
+  text-align: center;
+}
+
+.sex-icon {
+  font-size: 1.3em;
+  display: block;
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.1));
+}
+
+.sex-num {
+  font-size: 0.8em;
+  font-weight: bold;
+  color: var(--c-lust-deep);
+}
+
+/* === 衣物状态 (上下展示 + 统一粉底) === */
+.cloth-row {
+  padding: 6px 0;
+  border-bottom: 1px dashed rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 4px; /* 上下排列 */
+}
+
+.cloth-name {
+  font-size: 0.95em;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.cloth-status-box {
+  align-self: flex-start; /* 靠左对齐 */
+  font-size: 0.8em;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: var(--status-bg);
+  color: var(--status-text); /* 统一粉底红字 */
+  font-weight: bold;
+  border: 1px solid rgba(201, 24, 74, 0.2);
+}
+
+/* === 列表年龄美化 === */
+.age-badge {
+  font-size: 0.75em;
+  background: rgba(0, 0, 0, 0.05);
+  color: #888;
+  padding: 1px 5px;
+  border-radius: 4px;
+  margin-left: 5px;
+  font-weight: normal;
+  vertical-align: middle;
+}
+
+/* === 角色列表项 === */
+.char-list-item {
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.2s;
+}
+
+.char-list-item:hover {
+  border-color: var(--accent);
+  background: #fff5f8;
+}
+
+/* === 辅助 === */
+.back-btn {
+  color: var(--accent);
+  cursor: pointer;
+  font-weight: bold;
+  margin-bottom: 10px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.toggle-icon {
+  font-size: 0.8em;
+  opacity: 0.6;
+  transition: transform 0.3s;
+}
+
+.toggle-icon.rotated {
+  transform: rotate(180deg);
+}

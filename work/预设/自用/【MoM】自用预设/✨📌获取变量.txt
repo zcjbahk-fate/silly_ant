@@ -1,0 +1,4 @@
+{{getvar::平等化cot}}
+{{getvar::角色迷雾}}
+{{getvar::无人万能}}
+{{getvar::守贞}}

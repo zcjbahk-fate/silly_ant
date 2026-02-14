@@ -1,0 +1,6 @@
+{{setvar::update_variable::
+依照`<变量更新规则>`和`<变量输出规则>`进行变量更新
+}}
+{{setvar::变量更新标签::
+<UpdateVariable>
+}}

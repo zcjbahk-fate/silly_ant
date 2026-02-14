@@ -1,0 +1,6 @@
+>>> 我已收到本回合最新输入：
+<user_input>
+{{lastUserMessage}}
+</user_input>
+
+{{getvar::user_input}}

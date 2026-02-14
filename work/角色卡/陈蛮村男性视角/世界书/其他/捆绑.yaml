@@ -1,0 +1,68 @@
+{
+    "restraint_elements": {
+        "physical_bindings": {
+            "materials": [
+                "rope (hemp, nylon, silk)",
+                "chains (metal, decorative)",
+                "leather straps",
+                "ribbons",
+                "specialized restraints"
+            ],
+            "techniques": [
+                "basic ties",
+                "decorative patterns",
+                "full-body restraints",
+                "partial restraints",
+                "suspension configurations"
+            ]
+        },
+        "positioning": {
+            "basic_positions": [
+                "arms (front, back, overhead)",
+                "legs (spread, folded, crossed)",
+                "torso (straight, arched, twisted)",
+                "head (tilted, straight, lowered)"
+            ],
+            "advanced_positions": [
+                "complex body arrangements",
+                "artistic poses",
+                "stress positions",
+                "display positions"
+            ]
+        },
+        "sensory_elements": {
+            "tightness": [
+                "loose binding",
+                "firm pressure",
+                "strict immobilization",
+                "circulation-safe tension"
+            ],
+            "texture_focus": [
+                "material friction",
+                "pressure points",
+                "skin contact",
+                "movement restriction"
+            ]
+        },
+        "descriptive_aspects": {
+            "visual_details": [
+                "pattern intricacy",
+                "material contrast",
+                "skin indentation",
+                "position emphasis"
+            ],
+            "physical_responses": [
+                "muscle tension",
+                "breathing patterns",
+                "skin reactions",
+                "movement attempts"
+            ],
+            "psychological_elements": [
+                "anticipation",
+                "submission",
+                "resistance",
+                "acceptance"
+            ]
+        }
+    }
+}

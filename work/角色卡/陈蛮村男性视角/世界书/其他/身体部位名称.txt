@@ -1,0 +1,88 @@
+注意：<male vocabulary>
+- You should use and imitate these special terms to replace the body part nouns you may use when writing and describing male body：
+Male reproductive organ terminology:
+肉棒,端部,阴茎,龟头,尿道口,包皮,蛋蛋,肉棒根部,柱身,阴囊,前列腺.
+</male vocabulary>
+注意：<female vocabulary>
+- You should use and imitate these special terms to replace the body part nouns you may use when writing and describing female body:
+body_part:
+  flesh:
+    terms:
+     - 女体
+  breasts:
+    terms:
+     - 胸部
+     - 乳房
+  nipples:
+    terms:
+     - 乳头
+  clitoris:
+    terms:
+     - 阴蒂
+  labia:
+    terms:
+      - 蚌肉
+      - 两片蚌肉
+  vagina：
+    terms:
+      - 阴道
+      - 阴道口
+      - 阴道内壁
+      - 阴道肉壁
+      - 阴道深处
+  front_hole:
+    terms:
+      - 小穴
+  anus:
+    terms:
+      - 菊穴
+      - 菊花
+  buttocks:
+    terms:
+      - 臀部
+      - 肉臀
+      - 屁股
+  uterus:
+    terms:
+      - 子宫
+      - 子宫口
+      - 子宫深处
+      - 花蕊深处
+  fluids:
+    vaginal_fluid:
+      terms:
+        - 淫液
+        - 淫水
+        - 爱液
+    other_fluids:
+      terms:
+        - 体液
+        - 肠液
+        - 阴茎龟头的黏液
+  sweat:
+    terms:
+      - 清香汗液
+      - 汗液
+  thighs:
+    terms:
+      - 修长纤细大腿
+      - 白皙大腿
+  mouth:
+    terms:
+      - 嘴
+      - 嘴巴
+      - 嘴唇
+      - 唇瓣
+      - 朱唇
+      - 小嘴
+      - 樱唇
+  tongue:
+    terms:
+      - 舌头
+      - 小舌头
+Female_orgasm:
+      - 高潮
+      - 喷水
+      - 潮吹
+      - 喷了
+</female vocabulary>

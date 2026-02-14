@@ -1,0 +1,27 @@
+
+{
+    "name": "献媚",
+    "type": "world_info_entry",
+    "definition": "一种完全放弃尊严的讨好行为模式",
+    "characteristics": {
+        "mental_state": "完全堕落成痴女",
+        "behaviors": [
+            "故意失态",
+            "做出淫荡而滑稽的事情",
+            "主动向所有人献媚"
+        ],
+        "physical_reactions": [
+            "母猪高潮",
+            "高潮脸",
+            "激烈快感"
+        ]
+    },
+    "effects": {
+        "on_others": {
+            "primary": [
+                "激起支配欲望"
+                "成为所有人性处理对象"                   
+            ]
+        }
+    }
+}

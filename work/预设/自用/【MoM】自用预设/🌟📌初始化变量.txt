@@ -1,0 +1,94 @@
+{{trim}}
+{{setvar::任务确认cot:: }}
+{{setvar::NSFW专注cot:: }}
+{{setvar::禁果风格:: }}
+{{setvar::补丁1:: }}
+{{setvar::顶部状态栏:: }}
+{{setvar::顶部状态栏标签:: }}
+{{setvar::底部状态栏:: }}
+{{setvar::底部状态栏标签:: }}
+{{setvar::update_variable:: }}
+{{setvar::变量更新标签:: }}
+{{setvar::snow:: }}
+{{setvar::小剧场标签:: }}
+{{setglobalvar::meow_FM:: }}
+{{setvar::branches:: }}
+{{setvar::选项标签:: }}
+{{setvar::content:: }}{{trim}}
+{{setvar::任务确认cot:: }}
+{{setvar::NSFW专注cot:: }}
+{{setvar::禁果风格:: }}
+{{setvar::补丁1:: }}
+{{setvar::顶部状态栏:: }}
+{{setvar::顶部状态栏标签:: }}
+{{setvar::底部状态栏:: }}
+{{setvar::底部状态栏标签:: }}
+{{setvar::update_variable:: }}
+{{setvar::变量更新标签:: }}
+{{setvar::snow:: }}
+{{setvar::小剧场标签:: }}
+{{setglobalvar::meow_FM:: }}
+{{setvar::branches:: }}
+{{setvar::选项标签:: }}
+{{setvar::content:: }}{{trim}}
+{{setvar::任务确认cot:: }}
+{{setvar::NSFW专注cot:: }}
+{{setvar::禁果风格:: }}
+{{setvar::补丁1:: }}
+{{setvar::顶部状态栏:: }}
+{{setvar::顶部状态栏标签:: }}
+{{setvar::底部状态栏:: }}
+{{setvar::底部状态栏标签:: }}
+{{setvar::update_variable:: }}
+{{setvar::变量更新标签:: }}
+{{setvar::snow:: }}
+{{setvar::小剧场标签:: }}
+{{setglobalvar::meow_FM:: }}
+{{setvar::branches:: }}
+{{setvar::选项标签:: }}
+{{setvar::content:: }}{{trim}}
+{{setvar::任务确认cot:: }}
+{{setvar::NSFW专注cot:: }}
+{{setvar::禁果风格:: }}
+{{setvar::补丁1:: }}
+{{setvar::顶部状态栏:: }}
+{{setvar::顶部状态栏标签:: }}
+{{setvar::底部状态栏:: }}
+{{setvar::底部状态栏标签:: }}
+{{setvar::update_variable:: }}
+{{setvar::变量更新标签:: }}
+{{setvar::snow:: }}
+{{setvar::小剧场标签:: }}
+{{setglobalvar::meow_FM:: }}
+{{setvar::branches:: }}
+{{setvar::选项标签:: }}
+{{setvar::content:: }}
+{{setvar::正文标签:: }}
+{{setvar::无人万能:: }}
+{{setvar::角色迷雾:: }}
+{{setvar::射精特摄:: }}
+{{setvar::小剧场规范:: }}
+{{setglobalvar::cot:: }}
+{{setvar::摘要标签:: }}
+{{setvar::守贞:: }}
+{{setvar::平等化cot:: }}
+{{setvar::时间流速:: }}
+{{setvar::storypacing:: }}
+{{setvar::outworld:: }}
+{{setvar::平行事件标签:: }}
+{{setglobalvar::NSFW::
+无亲密剧情_GUIDE:
+原则：角色不发情，故事不低俗
+- 正剧导向；不描写亲密戏
+- 所有 NSFW 情节自动跳过或绕开
+- 角色不会主动开启 NSFW 内容
+- 亲吻与表白仅为情感表达，浅尝辄止
+- 情绪推进不导向身体亲密场景
+- 叙事焦点在冒险、关系与情绪，而非亲密行为
+}}
+{{setvar::meta::
+>>> 织梦者隐于幕后，不在正文中出现
+}}
+{{setvar::基调:: }}
+{{setvar::角色变量:: }}
+{{setvar::逻辑思考:: }}

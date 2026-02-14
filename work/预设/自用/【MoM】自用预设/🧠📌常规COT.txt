@@ -1,0 +1,20 @@
+{{setglobalvar::cot::
+[语言检定]
+{{getvar::任务确认cot}}{{getvar::守贞}}{{getvar::NSFW专注cot}}{{getvar::平等化cot}}
+
+[剧情引导]
+{{getvar::无人万能}}{{getvar::角色迷雾}}{{getvar::角色变量}}
+
+[风格适配](严格遵循`<写作指导>`)
+{{getvar::基调}}{{getvar::跳过cot}}
+
+[反思 & 设定校对]
+梦境必须严格基于`<梦境>`中的信息
+
+[正文字数检测]
+
+[输出顺序检查]
+检查是否符合`<structure_sample>`中的顺序
+
+（一段织梦者的自我陈词和反思）
+}}
