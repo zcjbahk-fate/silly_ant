@@ -1,0 +1,274 @@
+```html
+<!DOCTYPE html><html lang="zh-CN"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+<title>序言美化</title>
+
+<!-- 保留第一版字体与资源 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Allura&family=Caveat:wght@400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fontsapi.zeoseven.com/157/main/result.css">
+<link rel="stylesheet" href="https://fontsapi.zeoseven.com/85/main/result.css">
+
+<style>
+:root{
+  /* 字体/字号 */
+  --main-font:'Allura','PING FANG SHAO HUA','TekitouPoem','Caveat',cursive;
+  --main-font-size:1.3em;
+  --secondary-font-size:1.5em;
+  --source-font-size:1.1em;
+  --tilt-angle:.6deg;
+  --container-max-width:550px;
+
+  /* 系列主题 */
+  --paper-fallback-color:#faf8f3;
+  --text-color:rgba(20,30,50,.6);
+  --text-stroke-color:#272f3b;
+  --text-shadow-color:rgba(51,69,96,0);
+  --blend-color:#f4efe6;
+  --blend-opacity:.12;
+  --shadow-color:rgba(0,0,0,.08);
+  --hover-shadow:0 0 8px 2px rgba(60,202,238,.4);
+
+  /* 丝滑参数 */
+  --theme-speed:.9s;
+  --ease:cubic-bezier(.4,0,.2,1);
+  --micro-ease:cubic-bezier(.2,.8,.2,1);
+  --paper-bg-image:url(https://i.postimg.cc/PrRm433D/pg.png);
+}
+.vintage-prologue.dark-mode{
+  /* 夜间仅提升可读性（不改字体） */
+  --paper-fallback-color:#1e232a;
+  --text-color:rgba(245,240,220,.92);
+  --text-stroke-color:rgba(240,230,200,.28);
+  --blend-color:#181d23;
+  --blend-opacity:.26;
+  --shadow-color:rgba(0,0,0,.28);
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+
+body{
+  display:flex;justify-content:center;
+  font-family:var(--main-font);
+  font-size:16px;line-height:1.6;color:var(--text-color);
+  transition: color var(--theme-speed) var(--ease);
+}
+
+.vintage-prologue{
+  max-width:var(--container-max-width); width:100%;
+  margin:20px auto; position:relative; overflow:hidden; cursor:pointer;
+  padding:10px 20px; min-height:100px; border-radius:8px;
+  color:var(--text-color);
+  background-color:var(--paper-fallback-color);
+  background-image:var(--paper-bg-image);
+  background-position:left top; background-repeat:repeat;
+  background-blend-mode:multiply;
+  box-shadow:0 10px 30px var(--shadow-color),0 5px 15px rgba(0,0,0,.05);
+  transition:
+    background-color var(--theme-speed) var(--ease),
+    color var(--theme-speed) var(--ease),
+    box-shadow .35s var(--ease),
+    filter .42s var(--micro-ease);
+  will-change: background-color, color, filter;
+  isolation:isolate;
+}
+.vintage-prologue.dark-mode{ background-blend-mode:soft-light; }
+.vintage-prologue:hover{ box-shadow:var(--hover-shadow) }
+
+/* “纹理层”做渐变，让切换更柔 */
+.vintage-prologue::before,
+.vintage-prologue::after{
+  content:''; position:absolute; inset:0; border-radius:inherit; pointer-events:none; z-index:1;
+  transition: opacity .42s var(--micro-ease), filter .42s var(--micro-ease);
+}
+.vintage-prologue::before{
+  background:
+    radial-gradient(120% 100% at 50% 0%, rgba(0,0,0,.06) 0, rgba(0,0,0,0) 70%),
+    radial-gradient(90% 120% at 100% 20%, rgba(0,0,0,.05) 0, rgba(0,0,0,0) 65%),
+    linear-gradient(180deg, rgba(255,255,255,0) 0%, var(--blend-color) 100%);
+  opacity:var(--blend-opacity);
+}
+.vintage-prologue::after{
+  background-image:
+    repeating-linear-gradient(0deg,   rgba(0,0,0,.02) 0 1px, transparent 1px 2px),
+    repeating-linear-gradient(90deg,  rgba(0,0,0,.018) 0 1px, transparent 1px 2px);
+  opacity:.03;
+}
+
+/* 切换瞬间：轻微对比/饱和/亮度缓入 + 纹理层更显一点 */
+.vintage-prologue.theming{ filter: brightness(1.02) contrast(1.03) saturate(1.02); }
+.vintage-prologue.theming::before{ opacity: calc(var(--blend-opacity) + .08); }
+.vintage-prologue.theming::after{ opacity: .045; }
+
+.vintage-prologue .content{
+  position:relative; z-index:2; width:100%; text-align:left; color:var(--text-color);
+  transition: color var(--theme-speed) var(--ease), filter .42s var(--micro-ease);
+  padding-bottom:56px; /* 底部安全区：给按钮与来源让位 */
+  will-change: color, filter;
+}
+.main-text p{ margin-bottom:.2em; }
+.main-text p,.source-text{
+  font-weight:100; letter-spacing:.03em; overflow-wrap:anywhere;
+  -webkit-text-stroke:.05px var(--text-stroke-color);
+  text-shadow:0 0 .05px var(--text-shadow-color);
+  transition: -webkit-text-stroke var(--theme-speed) var(--ease),
+             text-shadow var(--theme-speed) var(--ease),
+             color var(--theme-speed) var(--ease);
+}
+.main-text .original-line{ font-size:var(--main-font-size); }
+.main-text .translation-line{ font-size:var(--secondary-font-size); }
+.main-text p:nth-child(odd){ transform:rotate(calc(-1 * var(--tilt-angle))); }
+.main-text p:nth-child(even){ transform:rotate(var(--tilt-angle)); }
+
+/* 最后一行固定在右下，与按钮齐平 */
+.source-text{
+  position:absolute; right:20px; bottom:12px; z-index:2;
+  font-size:var(--source-font-size); margin:0;
+}
+
+/* 左下角切换按钮（直接改这里的 emoji 即可替换 🍎） */
+.prologue-emoji{
+  position:absolute; left:12px; bottom:12px; z-index:3;
+  font-size:22px; line-height:1; border:none; background:transparent;
+  color:inherit; cursor:pointer; user-select:none; -webkit-tap-highlight-color:transparent;
+  border-radius:10px; padding:6px;
+  transition: transform .28s var(--micro-ease), filter .28s var(--micro-ease), opacity .28s var(--micro-ease);
+}
+.vintage-prologue:hover .prologue-emoji{ transform: translateZ(0) scale(1.05); }
+.prologue-emoji:active{ transform: translateZ(0) scale(.96); }
+/* 切换时做个轻微“弹跳” */
+.prologue-emoji.pop{ animation: pop .42s var(--micro-ease) 1; }
+@keyframes pop{
+  0%{ transform:scale(1) }
+  40%{ transform:scale(1.14) }
+  100%{ transform:scale(1) }
+}
+/* 日间彩色、夜间灰阶 */
+.vintage-prologue:not(.dark-mode) .prologue-emoji{ filter:none; opacity:1; }
+.vintage-prologue.dark-mode .prologue-emoji{ filter:grayscale(1) contrast(1.05); opacity:.9; }
+
+/* 低运动模式：关闭动效峰值 */
+@media (prefers-reduced-motion:reduce){
+  *{ animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important }
+}
+.hidden-data-container{ display:none }
+</style>
+</head>
+<body>
+  <div class="vintage-prologue" id="prologue-container">
+    <!-- ✨ 替换说明：
+         直接把下面按钮文本里的“🍎”换成任意 emoji（如 🍋 / 🌙 / ☀️），无需修改 JS 或 CSS。 -->
+    <button id="prologue-theme-btn" class="prologue-emoji" aria-label="切换主题" title="切换主题">🍎</button>
+
+    <div class="content">
+      <div class="main-text" id="main-text-container"></div>
+      <p class="source-text" id="prologue-source"></p>
+    </div>
+  </div>
+
+  <div id="prologue-raw-data" class="hidden-data-container">$1</div>
+
+<script>
+document.addEventListener('DOMContentLoaded',function(){
+'use strict';
+const card = document.getElementById('prologue-container');
+const raw  = document.getElementById('prologue-raw-data');
+const main = document.getElementById('main-text-container');
+const src  = document.getElementById('prologue-source');
+const btn  = document.getElementById('prologue-theme-btn');
+
+if([card,raw,main,src,btn].some(el=>!el)){
+  console.error('序言组件初始化失败：缺少必要的HTML元素。'); return;
+}
+
+/* 解析保持原逻辑 */
+function splitLines(s){
+  return s ? s.trim().split('\n')
+    .map(v=>v.trim().replace(/^(["“「])(.*)\1$/,'$2'))
+    .filter(Boolean) : [];
+}
+function parsePrologue(s){
+  if(!s || !s.trim()) return null;
+  const lines = s.trim().split('\n');
+  const last  = lines[lines.length-1]?.trim()||'';
+  let source  = '', body = s.trim();
+  if(/^[—―─-]/.test(last)){
+    source = last.replace(/^[—―─-]\s*/,'');
+    lines.pop(); body = lines.join('\n').trim();
+  }
+  const parts = body.split(/<hr\s*\/?>/i);
+  const a = parts[0], b = parts[1];
+  return b ? { originalLines: splitLines(a), translationLines: splitLines(b), source }
+           : { originalLines: [],       translationLines: splitLines(a), source };
+}
+function render(){
+  const html = raw.innerHTML;
+  const data = parsePrologue(html);
+  main.innerHTML = '';
+  if(html && data && (data.originalLines.length || data.translationLines.length)){
+    if(data.originalLines.length){
+      const p = document.createElement('p');
+      p.className = 'original-line';
+      p.textContent = `"${data.originalLines.join(' ')}"`;
+      main.appendChild(p);
+    }
+    if(data.translationLines.length){
+      const p = document.createElement('p');
+      p.className = 'translation-line';
+      p.textContent = `「${data.translationLines.join(' ')}」`;
+      main.appendChild(p);
+    }
+    src.textContent = data.source ? `— ${data.source}` : '';
+  }else{
+    main.innerHTML = '<p class="translation-line">...</p>';
+    src.textContent = '';
+  }
+}
+
+/* ——— 丝滑主题切换 ——— */
+const TWEEN_MS = 420; // 过渡峰值时间（可按喜好微调）
+
+function applyTheme(mode){
+  const dark = mode === 'dark';
+  card.classList.toggle('dark-mode', dark);
+  localStorage.setItem('prologueTheme', mode);
+}
+
+function toggleTheme(){
+  // 先加“theming”做一个轻微缓冲，让过渡更柔和
+  card.classList.add('theming');
+  btn.classList.add('pop');
+
+  // 在下一帧切换主题，避免同步样式抖动
+  requestAnimationFrame(()=>{
+    const next = card.classList.contains('dark-mode') ? 'light' : 'dark';
+    applyTheme(next);
+
+    // 过渡结束后移除缓冲类
+    setTimeout(()=>{
+      card.classList.remove('theming');
+      btn.classList.remove('pop');
+    }, TWEEN_MS);
+  });
+}
+
+card.addEventListener('click', (e)=>{
+  // 避免点击按钮时冒泡导致二次触发
+  if(e.target === btn) return;
+  toggleTheme();
+});
+btn.addEventListener('click', (e)=>{ e.stopPropagation(); toggleTheme(); });
+
+// 初始化主题
+applyTheme(localStorage.getItem('prologueTheme') ?? 'light');
+
+/* 动态数据监听 */
+new MutationObserver(render).observe(raw,{childList:true,characterData:true,subtree:true});
+render();
+});
+</script>
+</body></html>
+```

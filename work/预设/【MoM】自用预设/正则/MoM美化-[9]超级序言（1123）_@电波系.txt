@@ -1,0 +1,807 @@
+```html
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>心绪回响 @电波系</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=ABeeZee:ital@0;1&family=Monoton&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link href="https://fonts.googleapis.com/css2?family=Ephesis&display=swap" rel="stylesheet">
+<link rel="preload" as="style" crossorigin
+    href="https://fontsapi.zeoseven.com/2/main/result.css"
+    onload="this.rel='stylesheet'"
+    onerror="this.href='https://fontsapi-storage.zeoseven.com/2/main/result.css'" />
+<noscript>
+    <link rel="stylesheet" href="https://fontsapi.zeoseven.com/2/main/result.css" />
+</noscript>
+<style>
+    /* --- 字体引入 --- */
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=ZCOOL+KuaiLe&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&display=swap');
+
+    /* --- 基础与通用布局 --- */
+    body {
+        display: flex; justify-content: center; align-items: center;
+        margin: 0; padding: 10px; box-sizing: border-box;
+    }
+    .reverie-container {
+        width: 100%; max-width: 500px;
+        margin: 12px auto;
+        display: none;
+    }
+    .reverie-container.active { display: block; }
+
+    /* =================================================================== */
+    /* --- 非翻转卡片样式 (模式一、三) --- */
+    /* =================================================================== */
+
+    /* --- 模式一：摘抄 --- */
+    .style-excerpt .card-content-wrapper {
+        background: #f7f3e9;
+        box-shadow: 3px 3px 12px rgba(0, 0, 0, 0.15);
+        padding: 25px 18px;
+        font-family: 'LXGW ZhenKai GB', monospace;
+        color: #3d3d3d;
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .style-excerpt .receipt-brand-title {
+        font-family: 'monoton', cursive;
+        font-size: 3em;
+        text-align: center;
+        margin-bottom: 15px;
+        color: #000;
+    }
+
+    .style-excerpt .receipt-info {
+        font-family: 'PingFang SC bold', sans-serif;
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.8em;
+        color: #555;
+        padding: 0 5px;
+        margin-bottom: 10px;
+    }
+
+    .style-excerpt .receipt-divider {
+        text-align: center;
+        font-size: 0.9em;
+        margin: 15px 0;
+        letter-spacing: 1px;
+        color: #888;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
+    .style-excerpt .receipt-items {
+        padding: 10px 0;
+        border-top: 1px dashed #c8bba8;
+        border-bottom: 1px dashed #c8bba8;
+    }
+
+    .style-excerpt .item-name {
+        font-weight: bold;
+        font-size: 1em;
+        margin-bottom: 15px;
+        text-align: center;
+    }
+
+    .style-excerpt .item-desc {
+        font-size: 1.05em;
+        line-height: 1.7;
+        margin-bottom: 15px;
+        padding: 0 5px;
+    }
+
+    .style-excerpt .item-source {
+        text-align: right;
+        font-size: 0.85em;
+        color: #666;
+        margin-bottom: 20px;
+        padding-right: 5px;
+    }
+
+    .style-excerpt .item-notes {
+        background-color: #fdfaf0;
+        border: 1px solid #e0dace;
+        padding: 12px;
+        font-size: 0.9em;
+        margin-top: 10px;
+    }
+
+    .style-excerpt .notes-title {
+        font-weight: bold;
+        margin-bottom: 8px;
+        color: #5c5c5c;
+    }
+
+    .style-excerpt .notes-content {
+        font-style: italic;
+        color: #777;
+        line-height: 1.5;
+    }
+
+    .style-excerpt .receipt-total {
+        display: flex;
+        font-family: 'PingFang SC bold', sans-serif;
+        justify-content: space-between;
+        font-weight: bold;
+        font-size: 1.1em;
+        padding: 20px 5px 15px 5px;
+    }
+
+    .style-excerpt .receipt-footer {
+        font-family: 'PingFang SC', sans-serif;
+        text-align: center;
+        font-size: 0.85em;
+        color: #666;
+        padding-top: 5px;
+        border-top: 1px dashed #dcd3c5;
+    }
+
+    .style-excerpt .receipt-footer p {
+        margin: 10px 0;
+    }
+
+    .style-excerpt .barcode {
+        font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+        font-size: 2.8em;
+        line-height: 1;
+        color: #222;
+        margin-top: 5px;
+    }
+    /* =================================================================== */
+    /* --- 模式三：私享推荐 --- */
+    /* =================================================================== */
+    .style-recommendation .card-content-wrapper {
+        background: #fafafa;
+        border-radius: 12px;
+        box-shadow: 0 6px 18px rgba(80, 70, 60, 0.15);
+        font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+        display: flex;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    /* --- 登机牌主区域（左侧） --- */
+    .style-recommendation .boarding-pass-main {
+        flex-grow: 1;
+        padding: 15px 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    /* 顶部航司信息 */
+    .style-recommendation .bp-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 10px;
+    }
+    .style-recommendation .bp-airline {
+        font-size: 1.4em;
+        font-weight: bold;
+        color: #1e90ff; /* 航司主题蓝 */
+    }
+
+    .style-recommendation .bp-airline-logo {
+    font-size: 2em;
+    color: #1e90ff;
+    }
+
+    /* 推荐理由区域 */
+    .style-recommendation .bp-reason .bp-label {
+        font-size: 0.8em;
+        color: #888;
+        margin-bottom: 5px;
+    }
+    .style-recommendation .bp-reason-text {
+        font-size: 0.95em;
+        line-height: 1.6;
+        color: #333;
+        text-align: justify;
+    }
+
+    /* 航班详情网格 */
+    .style-recommendation .bp-details-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+    .style-recommendation .bp-detail .bp-label {
+        font-size: 0.75em;
+        color: #888;
+    }
+    .style-recommendation .bp-detail .bp-value {
+        font-size: 1.2em;
+        font-weight: 600;
+        color: #111;
+    }
+
+    .style-recommendation .bp-passenger .bp-value {
+        font-size: 1.5em;
+        font-family: 'Ephesis', 'LXGW ZhenKai GB', cursive;
+    }
+
+
+    /* --- 登机牌存根（右侧） --- */
+    .style-recommendation .boarding-pass-stub {
+        flex-shrink: 0;
+        width: 140px;
+        border-left: 2px dashed #aaa;
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        background-color: rgba(30, 144, 255, 0.05);
+    }
+    .style-recommendation .stub-airline {
+        font-size: 1em;
+        font-weight: bold;
+        color: #1e90ff;
+    }
+    .style-recommendation .stub-details {
+        width: 100%;
+        text-align: ri;
+    }
+    .style-recommendation .stub-details .bp-detail { margin-bottom: 10px; }
+    .style-recommendation .stub-details .bp-label { font-size: 0.7em; }
+    .style-recommendation .stub-details .bp-value { font-size: 1em; font-weight: bold; }
+
+    /* 核心推荐内容 */
+    .style-recommendation .stub-destination-label {
+        width: 100%;
+        text-align: left;
+        font-size: 0.7em;
+        color: #888;
+    }
+
+    .style-recommendation .stub-recommendation {
+        text-align: left;
+        font-size: 1em;
+        font-weight: bold;
+        color: #000;
+        line-height: 1.4;
+    }
+    .style-recommendation .bp-barcode {
+        font-weight: bold;
+        font-family:"Oswald", sans-serif;
+        font-size: 1.5em;
+        line-height: 1;
+        color: #222;
+        margin-top: auto;
+    }
+
+    .style-recommendation .stub-recommendation-source {
+        display: block;
+        font-size: 0.8em;
+        font-weight: normal;
+        color: #888;
+        margin-top: 4px;
+    }
+    body.dark-mode .style-recommendation .stub-recommendation-source {
+        color: #a0aec0;
+    }
+
+    @media (max-width: 480px) {
+        .style-recommendation .card-content-wrapper {
+            flex-direction: column;
+        }
+
+        .style-recommendation .boarding-pass-stub {
+            width: auto;
+            border-left: none;
+            border-top: 2px dashed #aaa;
+            margin-top: 15px;
+            padding-top: 15px;
+        }
+
+        .style-recommendation .stub-destination-label  {
+            text-align: center;
+        }
+    }
+
+    /* --- 模式五：记忆碎片 --- */
+    .style-memory .card-content-wrapper {
+        background-color: #ece9d8;
+        border: 2px solid;
+        border-top-color: #ffffff;
+        border-left-color: #ffffff;
+        border-right-color: #808080;
+        border-bottom-color: #808080;
+        box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+        padding: 3px;
+        font-family: Tahoma, Verdana, sans-serif;
+        font-size: 14px;
+    }
+
+    .style-memory .memory-title-bar {
+        background: linear-gradient(to right, #0053ee, #3a8cff);
+        padding: 4px 6px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: white;
+        font-weight: bold;
+        text-shadow: 1px 1px #003baf;
+        margin-bottom: 3px;
+    }
+    .style-memory .window-buttons { display: flex; gap: 3px; }
+    .style-memory .window-button {
+        width: 20px; height: 20px; background-color: #d4d0c8; border: 1px solid;
+        border-top-color: #ffffff; border-left-color: #ffffff;
+        border-right-color: #404040; border-bottom-color: #404040;
+        box-shadow: 1px 1px #000; color: #000; font-family: "MS Sans Serif", sans-serif;
+        font-weight: bold; font-size: 12px; display: flex; justify-content: center;
+        align-items: center; line-height: 1;
+    }
+    .style-memory .window-button.close {
+        background-color: #e74c3c; color: white;
+        border-top-color: #f5a9a2; border-left-color: #f5a9a2;
+        border-right-color: #a53528; border-bottom-color: #a53528;
+    }
+
+    .style-memory .memory-content-area {
+        background-color: white;
+        border: 1px solid;
+        border-top-color: #808080;
+        border-left-color: #808080;
+        border-right-color: #ffffff;
+        border-bottom-color: #ffffff;
+        padding: 15px;
+        color: #000;
+        max-height: 300px;
+        overflow-y: auto; /* 保持 auto，内容超出 max-height 时自动显示滚动条 */
+    }
+
+    .style-memory .line-2 {
+        line-height: 1.6;
+        margin-bottom: 15px;
+        white-space: pre-wrap;
+    }
+    .style-memory .line-3 {
+        font-style: italic;
+        color: #555;
+        padding-top: 10px;
+        border-top: 1px solid #ccc;
+        white-space: pre-wrap;
+    }
+
+    .style-memory .memory-status-bar {
+        margin-top: 3px;
+        padding: 3px 6px;
+        border: 1px solid;
+        border-top-color: #808080;
+        border-left-color: #808080;
+        border-right-color: #ffffff;
+        border-bottom-color: #ffffff;
+        font-size: 12px;
+        color: #404040;
+    }
+
+    .style-memory .memory-content-area::-webkit-scrollbar { width: 16px; }
+    .style-memory .memory-content-area::-webkit-scrollbar-track { background-color: #dfdfdf; }
+    .style-memory .memory-content-area::-webkit-scrollbar-thumb {
+        background-color: #c0c0c0; border: 1px solid;
+        border-top-color: #e0e0e0; border-left-color: #e0e0e0;
+        border-right-color: #606060; border-bottom-color: #606060;
+    }
+    .style-memory .memory-content-area::-webkit-scrollbar-button {
+        background-color: #c0c0c0; border: 1px solid;
+        border-top-color: #e0e0e0; border-left-color: #e0e0e0;
+        border-right-color: #606060; border-bottom-color: #606060;
+        height: 16px; width: 16px;
+    }
+
+    /* =================================================================== */
+    /* --- 翻转卡片通用布局 --- */
+    /* =================================================================== */
+
+    .style-fortune, .style-postcard {
+        perspective: 1200px;
+    }
+    .card-flipper {
+        position: relative; width: 100%; height: 260px;
+        transition: transform 0.7s cubic-bezier(0.5, 0, 0.5, 1);
+        transform-style: preserve-3d;
+        cursor: pointer;
+    }
+
+    .style-fortune .card-face,
+    .style-postcard .card-face {
+        position: absolute; width: 100%; height: 100%;
+        backface-visibility: hidden; -webkit-backface-visibility: hidden;
+        box-sizing: border-box; overflow: hidden;
+        display: flex; flex-direction: column;
+        align-items: center; justify-content: center;
+    }
+
+    /* =================================================================== */
+    /* --- 模式四：命运启示 --- */
+    /* =================================================================== */
+
+    .style-fortune .card-content-wrapper {
+        background: #faeeee; /* 使用与小票相似的米黄底色 */
+        border: 1px solid #dcc6c5;
+        border-radius: 8px;
+        box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1), inset 0 0 15px rgba(230, 220, 200, 0.3);
+        padding: 45px 20px 20px 20px;
+        font-family: 'Noto Serif SC', serif;
+        position: relative;
+        text-align: center;
+        width: 100%;
+        margin: 0 auto;
+        overflow: hidden;
+    }
+
+    .style-fortune .calendar-top-rings {
+        position: absolute;
+        top: 15px;
+        left: 0;
+        right: 0;
+        display: flex;
+        justify-content: center;
+        gap: 25px;
+    }
+    .style-fortune .calendar-top-rings span {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: #fdf4f0;
+        border: 1px solid #c8bba8;
+        box-shadow: inset 1px 1px 3px rgba(0,0,0,0.15);
+    }
+
+    .style-fortune .calendar-header {
+        margin-bottom: 10px;
+    }
+    .style-fortune .year-line {
+        font-size: 0.8em;
+        color: #b08a78;
+        letter-spacing: 2px;
+    }
+    .style-fortune .month-line {
+        font-size: 1.5em;
+        font-weight: 700;
+        color: #4a403a;
+        margin-top: 5px;
+    }
+
+    .style-fortune .calendar-body {
+        margin: 5px 0 15px 0;
+    }
+    .style-fortune .day-number {
+        font-family: 'Noto Serif SC', serif;
+        font-weight: 900;
+        font-size: 3em;
+        line-height: 1;
+        color: #4a403a;
+        text-shadow: 2px 2px 3px rgba(255, 255, 255, 0.5);
+    }
+
+    .style-fortune .calendar-footer {
+        border-top: 1px solid #e0dace;
+        padding-top: 15px;
+    }
+    .style-fortune .day-of-week-line {
+        font-size: 0.9em;
+        font-weight: bold;
+        color: #8d6059;
+        background-color: #e0cece;
+        padding: 6px 10px;
+        border-radius: 4px;
+        margin-bottom: 15px;
+        display: inline-block;
+    }
+    .style-fortune .quote-line {
+        font-size: 0.95em;
+        color: #6c5f5b;
+        line-height: 1.8;
+        text-align: justify;
+    }
+    .style-fortune .gossip-line {
+        font-size: 0.85em;
+        color: #ffffff;
+        margin-top: 10px;
+        padding: 10px;
+        border-radius: 6px;
+        background-color: #9172728a;
+        line-height: 1.7;
+    }
+
+    @media screen and (max-width: 400px) {
+        .style-fortune .day-number {
+            font-size: 2em;
+        }
+    }
+
+    /* =================================================================== */
+    /* --- 模式二：拍立得 --- */
+    /* =================================================================== */
+
+    .style-postcard.is-flipped .card-flipper { transform: rotateY(180deg); }
+    .style-postcard .card-face {
+        background-color: #ffffff;
+        box-shadow: 0 6px 18px rgba(80, 70, 60, 0.15);
+    }
+    .style-postcard .card-front {
+        padding: 12px 12px 60px 12px;
+        justify-content: flex-start;
+    }
+    .style-postcard .polaroid-photo-area {
+        width: 95%; flex-grow: 1;
+        background-color: #4a4a4a; color: #ccc;
+        font-size: 0.9em; line-height: 1.5; padding: 15px;
+        text-align: center; font-style: italic;
+        display: flex; justify-content: center; align-items: center;
+    }
+    .style-postcard .postmark {
+        position: absolute; top: 10px; right: 8px; width: 55px; height: 55px;
+        border: 2px solid rgba(132, 116, 100, 0.5); border-radius: 50%;
+        display: flex; flex-direction: column; justify-content: center; align-items: center;
+        color: rgba(220, 201, 182, 0.6); transform: rotate(10deg);
+        font-family: monospace; font-size: 0.7em; z-index: 5;
+    }
+    .style-postcard .card-back {
+        transform: rotateY(180deg); padding: 25px; color: #3d3a37;
+    }
+    /* 修复关键点 2：为所有 .line-x 元素添加 .style-postcard 父级限定 */
+    .style-postcard .card-front .line-1 {
+        position: absolute; bottom: 15px; left: 15px; right: 15px;
+        text-align: center; font-family: 'Kalam', cursive;
+        font-size: 1.1em; color: #3d3a37;
+    }
+    .style-postcard .card-back .line-2 {
+        font-family: 'Noto Serif SC', serif; font-size: 1.05em; line-height: 1.8;
+        flex-grow: 1; display: flex; align-items: center; text-align: center;
+    }
+    .style-postcard .card-back .line-3 {
+        font-family: 'Kalam', cursive; font-size: 1em; color: #857f78;
+        padding-top: 15px; width: 100%;
+        border-top: 1px dashed #dcd6cd; text-align: right;
+    }
+</style>
+</head>
+<body>
+
+<div class="reverie-container" id="reverieCard">
+    <!-- 这是一个通用的容器，JS会根据模式填充内容 -->
+</div>
+
+<div id="raw-data" style="display: none;">
+$1
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- 数据获取与预处理 ---
+        const cardContainer = document.getElementById('reverieCard');
+        const rawData = document.getElementById('raw-data');
+        if (!cardContainer || !rawData) return;
+
+        const rawText = rawData.textContent.trim();
+        const activeModeMatch = rawText.match(/模式：(\w+)\n([\s\S]*)$/);
+        if (!activeModeMatch) return;
+
+        const mode = activeModeMatch[1];
+        const content = activeModeMatch[2];
+
+        const cleanSymbols = (str) => {
+            if (!str) return str;
+            return str.replace(/\*\*|__|\*|_|~~/g, '');
+        };
+
+        const lines = content.split('\n').map(l => l.trim()).filter(Boolean).map(cleanSymbols);
+
+        // --- 卡片渲染 ---
+        cardContainer.innerHTML = '';
+        cardContainer.className = 'reverie-container';
+        cardContainer.classList.add(`style-${mode}`, 'active');
+
+        // --- 模式判断与构建 ---
+        const flippingModes = ['postcard']; // 'fortune' 已被移除
+
+        if (flippingModes.includes(mode)) {
+            // --- 翻转卡片逻辑 (仅剩 postcard) ---
+            cardContainer.classList.remove('is-flipped');
+            const flipper = document.createElement('div');
+            flipper.className = 'card-flipper';
+            const front = document.createElement('div');
+            front.className = 'card-front card-face';
+            const back = document.createElement('div');
+            back.className = 'card-back card-face';
+
+            if (mode === 'postcard') {
+                front.innerHTML = `
+                    <div class="postmark">ECHO<br/>POST</div>
+                    <div class="polaroid-photo-area">${lines[0] || '一张照片'}</div>
+                    <div class="line-1">${lines[1] || ''}</div>
+                `;
+                back.innerHTML = `
+                    <div class="line-2">${lines[2] || ''}</div>
+                    <div class="line-3">${lines[3] || ''}</div>
+                `;
+            }
+            flipper.appendChild(front);
+            flipper.appendChild(back);
+            cardContainer.appendChild(flipper);
+            cardContainer.addEventListener('click', () => {
+                cardContainer.classList.toggle('is-flipped');
+            });
+
+        } else {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'card-content-wrapper';
+
+            if (mode === 'recommendation') {
+                const flightId = 'RV-' + Math.floor(1000 + Math.random() * 9000);
+                const gate = String.fromCharCode(65 + Math.floor(Math.random() * 6)) + String(Math.floor(1 + Math.random() * 20)).padStart(2, '0');
+                const seat = Math.floor(1 + Math.random() * 35) + String.fromCharCode(65 + Math.floor(Math.random() * 6));
+                const boardingTime = `${String(Math.floor(8 + Math.random() * 12)).padStart(2, '0')}:${String(Math.floor(Math.random() * 60)).padStart(2, '0')}`;
+
+                const sharerName = lines[0] || 'Anonymous';
+                const recommendationText = lines[1] || 'A Wonderful Experience';
+                const reasonText = lines[2] || 'No reason, just feel it.';
+
+                // --- 核心修改逻辑 ---
+                let recommendationHTML = recommendationText;
+                const separators = [' by ', '——', '—', ' - '];
+                for (const sep of separators) {
+                    if (recommendationText.includes(sep)) {
+                        const parts = recommendationText.split(sep, 2);
+                        const title = parts[0].trim();
+                        const source = parts[1].trim();
+                        recommendationHTML = `${title}<span class="stub-recommendation-source">${sep.trim()} ${source}</span>`;
+                        break;
+                    }
+                }
+                // --- 修改结束 ---
+
+                wrapper.innerHTML = `
+                    <div class="boarding-pass-main">
+                        <div class="bp-header">
+                            <span class="bp-airline">REVERIE AIRWAYS</span>
+                            <i class="fa-solid fa-plane bp-airline-logo"></i>
+                        </div>
+                        <div class="bp-reason">
+                            <div class="bp-label">BOARDING PASS TO</div>
+                            <p class="bp-reason-text">${reasonText}</p>
+                        </div>
+                        <div class="bp-details-grid">
+                            <div class="bp-detail bp-passenger">
+                                <div class="bp-label">PASSENGER</div>
+                                <div class="bp-value">${sharerName}</div>
+                            </div>
+                            <div class="bp-detail">
+                                <div class="bp-label">SEAT</div>
+                                <div class="bp-value">${seat}</div>
+                            </div>
+                            <div class="bp-detail">
+                                <div class="bp-label">GATE</div>
+                                <div class="bp-value">${gate}</div>
+                            </div>
+                            <div class="bp-detail">
+                                <div class="bp-label">BOARDING TIME</div>
+                                <div class="bp-value">${boardingTime}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="boarding-pass-stub">
+                        <div class="stub-airline">今日推荐</div>
+                        <div class="stub-details">
+                            <div class="bp-detail">
+                                <div class="bp-label">PASSENGER</div>
+                                <div class="bp-value">${sharerName}</div>
+                            </div>
+                            <div class="bp-detail">
+                                <div class="bp-label">SEAT</div>
+                                <div class="bp-value">${seat}</div>
+                            </div>
+                        </div>
+                        <div class="stub-destination-label">目的地</div>
+                        <div class="stub-recommendation">${recommendationHTML}</div>
+                        <div class="bp-barcode">${flightId}</div>
+                    </div>
+                `;
+            }
+            else if (mode === 'fortune') {
+                // --- 全新：为 fortune 万年历模式构建DOM ---
+                const cardInfo = (lines[0] || ' - ').split(' - ');
+                const cardNumber = cardInfo[0].trim();
+                const cardName = cardInfo[1] ? cardInfo[1].trim() : '';
+                const cardKeywords = lines[1] || '...';
+                const cardMeaning = lines[2] || '...';
+                const cardComment = lines[3] || '';
+
+                wrapper.innerHTML = `
+                    <div class="calendar-top-rings"><span></span><span></span></div>
+                    <div class="calendar-header">
+                        <div class="year-line">DESTINY'S ALMANAC</div>
+                        <div class="month-line">${cardNumber}</div>
+                    </div>
+                    <div class="calendar-body">
+                        <div class="day-number">${cardName}</div>
+                    </div>
+                    <div class="calendar-footer">
+                        <div class="day-of-week-line">${cardKeywords}</div>
+                        <div class="quote-line">${cardMeaning}</div>
+                        <div class="gossip-line">${cardComment}</div>
+                    </div>
+                `;
+            } else
+         if (mode === 'memory') {
+            // --- 全新：为 memory 模式构建复古窗口DOM ---
+            wrapper.innerHTML = `
+                <div class="memory-title-bar">
+                    <span class="title-text">C:\\Memories\\fragment.txt</span>
+                    <div class="window-buttons">
+                        <span class="window-button">_</span>
+                        <span class="window-button">□</span>
+                        <span class="window-button close">×</span>
+                    </div>
+                </div>
+                <div class="memory-content-area">
+                    <div class="line-2">${lines[1] || '...'}</div>
+                    <div class="line-3">${lines[2] || '...'}</div>
+                </div>
+                <div class="memory-status-bar">
+                    <div class="line-1">${lines[0] || '...'}</div>
+                </div>
+            `;
+        } else if (mode === 'excerpt') {
+            // --- 购物小票模式 ---
+            const now = new Date();
+            const date = `${now.getFullYear()}/${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')}`;
+            const time = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+            const orderId = `R-${now.getTime().toString().slice(-8)}`;
+
+            wrapper.innerHTML = `
+                <div class="receipt-brand-title">E C H O</div>
+                <div class="receipt-info">
+                    <span>单号: ${orderId}</span>
+                    <span>${date} ${time}</span>
+                </div>
+                <div class="receipt-items">
+                    <div class="item-name">精神食粮 · 一份</div>
+                    <div class="item-desc">${lines[0] || ''}</div>
+                    <div class="item-source">${lines[1] || ''}</div>
+                    <div class="item-notes">
+                        <div class="notes-title">随笔备注:</div>
+                        <div class="notes-content">${lines[2] || ''}</div>
+                    </div>
+                </div>
+                <div class="receipt-total">
+                    <span>总计 (TOTAL)</span>
+                    <span>PRICELESS</span>
+                </div>
+                <div class="receipt-footer">
+                    <p>感谢惠顾，欢迎再次光临！</p>
+                    <div class="barcode">${orderId}</div>
+                </div>
+            `;
+        } else {
+            // 默认的静态卡片结构
+            wrapper.innerHTML = `
+                <div class="line-1">${lines[0] || ''}</div>
+                <div class="line-2">${lines[1] || ''}</div>
+                <div class="line-3">${lines[2] || ''}</div>
+                <div class="line-4">${lines[3] || ''}</div>
+            `;
+        }
+        cardContainer.appendChild(wrapper);
+    }
+});
+</script>
+
+</body>
+</html>
+```

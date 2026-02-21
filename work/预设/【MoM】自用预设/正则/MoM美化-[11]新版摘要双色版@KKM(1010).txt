@@ -1,0 +1,235 @@
+```html
+<!DOCTYPE html><html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark">
+<title>Meow FM - 卡片样式</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Allura&family=Caveat:wght@400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fontsapi.zeoseven.com/157/main/result.css">
+<style>
+@import url("https://fontsapi.zeoseven.com/7/main/result.css");
+@import url("https://fontsapi.zeoseven.com/477/main/result.css");
+
+/* ===== Vars ===== */
+:root{
+  --outer-font:"TsangerXWZ","Microsoft YaHei",sans-serif;
+  --main-font:"Zhuque Fangsong (technical preview)","Microsoft YaHei",sans-serif;
+  --header-font:'Allura',cursive;
+
+  --container-width:600px; --border-radius:16px;
+  --base-font-size:1.1em; --content-font-size:1.06em; --header-font-size:1.8em;
+
+  /* Light */
+  --paper-fallback-color:#faf8f3; --text-color:rgba(35,45,60,.86);
+  --header-text-color:#677b8f; --divider-color:rgba(120,130,140,.12);
+  --glow-color:rgba(255,205,120,.65);            /* 发光主色（浅色） */
+  --blend-color:#f4efe6; --item-bg:rgba(255,255,255,.48);
+  --item-hover-bg:rgba(255,255,255,.72); --item-border:rgba(160,165,170,.18);
+  --blend-opacity:.11; --noise-opacity:.035; --fiber-opacity:.06;
+  --base-shadow:0 10px 30px rgba(0,0,0,.08),0 5px 15px rgba(0,0,0,.05);
+  --inner-shadow:0 2px 10px rgba(0,0,0,.05);
+
+  --transition-speed:.3s; --collapse-speed:.6s; --theme-change-speed:.8s;
+  --easing:cubic-bezier(.4,0,.2,1);
+  --paper-bg-image:url('https://i.postimg.cc/DZbjkx5J/meow.png');
+
+  /* Text glow tuning */
+  --glow-strength-base:.28;        /* 常态 */
+  --glow-strength-hover:.8;        /* 悬停 */
+  --text-scale-hover:1.012; --letterspace-hover:.03em;
+
+  /* Pulse tuning（更暗更小） */
+  --pulse-alpha:.35;               /* 明度下降 */
+  --pulse-alpha2:.28;
+  --pulse-scale:18;                /* 终点缩小 */
+  --pulse-duration:.7s;            /* 缩短时长 */
+}
+
+/* Dark overrides */
+.card-container.dark-mode{
+  --paper-fallback-color:#1e232a; --text-color:rgba(245,240,220,.93);
+  --header-text-color:rgba(187,199,212,.9); --divider-color:rgba(255,255,255,.09);
+  --glow-color:rgba(120,200,255,.65);       /* 发光主色（深色偏冷） */
+  --blend-color:#181d23; --item-bg:rgba(255,255,255,.06);
+  --item-hover-bg:rgba(255,255,255,.12); --item-border:rgba(255,255,255,.1);
+  --blend-opacity:.24; --noise-opacity:.032; --fiber-opacity:.07;
+  --base-shadow:0 10px 40px rgba(0,0,0,.32),0 5px 20px rgba(0,0,0,.22);
+  --inner-shadow:0 2px 10px rgba(0,0,0,.22);
+}
+
+/* ===== Layout ===== */
+body{display:flex;justify-content:center;margin:0;padding:0;font:normal var(--base-font-size)/1.6 var(--main-font);color:var(--text-color);transition:color var(--theme-change-speed) ease}
+.card-container{
+  width:var(--container-width);max-width:calc(100% - 32px);margin:16px auto;padding:1.25em 1.25em 1.45em;
+  position:relative;overflow:hidden;cursor:pointer;color:var(--text-color);
+  background:var(--paper-fallback-color) var(--paper-bg-image) left top/auto repeat; background-blend-mode:multiply;
+  border-radius:var(--border-radius);box-shadow:0 4px 8px var(--base-shadow);
+  transition:transform var(--transition-speed) var(--easing),box-shadow var(--transition-speed) var(--easing),background-color var(--theme-change-speed) ease,color var(--theme-change-speed) ease;
+  isolation:isolate;box-sizing:border-box
+}
+.card-container.dark-mode{background-blend-mode:soft-light}
+.card-container::before,.card-container::after{content:"";position:absolute;inset:0;z-index:1;border-radius:inherit;pointer-events:none}
+.card-container::before{background:
+  radial-gradient(120% 100% at 50% 0%, rgba(0,0,0,var(--fiber-opacity)) 0, rgba(0,0,0,0) 70%),
+  radial-gradient(90% 120% at 100% 20%, rgba(0,0,0,calc(var(--fiber-opacity)*.7)) 0, rgba(0,0,0,0) 65%),
+  linear-gradient(180deg, rgba(255,255,255,0) 0%, var(--blend-color) 100%);
+  opacity:var(--blend-opacity);transition:background-color var(--theme-change-speed) ease,opacity var(--theme-change-speed) ease}
+.card-container::after{background-image:
+  repeating-linear-gradient(0deg,rgba(0,0,0,.028) 0 1px,transparent 1px 2px),
+  repeating-linear-gradient(90deg,rgba(0,0,0,.022) 0 1px,transparent 1px 2px);
+  opacity:var(--noise-opacity)}
+.card-container:hover{box-shadow:0 4px 8px var(--base-shadow)} /* 固定，不增强 */
+
+.card-header{
+  display:flex;justify-content:space-between;align-items:center;margin:0 -.4em .4em; padding:0 .6em 1.1em;
+  border-bottom:2px dashed var(--divider-color);color:var(--header-text-color);user-select:none;position:relative;z-index:2;
+  transition:color var(--theme-change-speed) ease,border-color var(--theme-change-speed) ease
+}
+
+/* ===== Pulse (dimmer) ===== */
+.serial-switch-wrapper{position:relative;padding:14px 18px 10px;margin:-14px -18px -10px;border-radius:12px;cursor:pointer}
+.serial-switch-wrapper::after{
+  content:"";position:absolute;left:50%;top:50%;width:16px;height:16px;border-radius:999px;pointer-events:none;z-index:3;
+  transform:translate(-50%,-50%) scale(0);opacity:0;filter:blur(.6px);
+  background:radial-gradient(circle, rgba(255,211,77,var(--pulse-alpha)) 0%, rgba(255,211,77,var(--pulse-alpha2)) 35%, rgba(255,211,77,0) 70%)
+}
+.card-container.pulse-dark .serial-switch-wrapper::after{
+  background:radial-gradient(circle, rgba(89,196,255,var(--pulse-alpha)) 0%, rgba(89,196,255,var(--pulse-alpha2)) 35%, rgba(89,196,255,0) 70%)
+}
+@keyframes pulseRing{to{transform:translate(-50%,-50%) scale(var(--pulse-scale));opacity:0;box-shadow:0 0 0 24px rgba(255,255,255,0)}}
+.card-container.pulse-light .serial-switch-wrapper::after,
+.card-container.pulse-dark  .serial-switch-wrapper::after{animation:pulseRing var(--pulse-duration) ease-out forwards}
+
+/* ===== Text glow (轻量) ===== */
+.serial,.time span{position:relative;display:inline-block;padding-right:3px;background-image:linear-gradient(var(--header-text-color),var(--header-text-color));color:transparent;-webkit-background-clip:text;background-clip:text}
+.serial{font-family:var(--header-font);font-size:var(--header-font-size);font-weight:700;letter-spacing:.02em;transition:transform .25s var(--easing),letter-spacing .25s var(--easing)}
+.time{font-size:1.08em;font-style:italic;opacity:.92;line-height:1.25}
+.time span{transition:transform .25s var(--easing),letter-spacing .25s var(--easing)}
+.serial::before,.time span::before{
+  content:attr(data-text);position:absolute;inset:0;pointer-events:none;white-space:pre-wrap;
+  background-image:radial-gradient(circle at 50% 55%, var(--glow-color) 0%, rgba(255,255,255,0) 55%);
+  mix-blend-mode:screen;opacity:var(--glow-strength-base);-webkit-background-clip:text;background-clip:text;color:transparent;transition:opacity .25s var(--easing)
+}
+.serial-switch-wrapper:hover .serial{transform:scale(var(--text-scale-hover));letter-spacing:var(--letterspace-hover)}
+.card-container:hover .time span{transform:scale(var(--text-scale-hover));letter-spacing:var(--letterspace-hover)}
+.serial-switch-wrapper:hover .serial::before,.card-container:hover .time span::before{opacity:var(--glow-strength-hover)}
+
+/* ===== Content blocks ===== */
+.card-collapsible,.seeds-collapsible{display:grid;grid-template-rows:0fr;transition:grid-template-rows var(--collapse-speed) var(--easing)}
+.card-collapsible.open,.seeds-container.open .seeds-collapsible{grid-template-rows:1fr}
+.collapsible-inner{overflow:hidden}
+
+.scene,.plot{
+  margin-bottom:18px;padding:14px 16px;border-radius:14px;border:1px solid var(--item-border);
+  background:var(--item-bg);backdrop-filter:blur(5px);box-shadow:var(--inner-shadow);
+  transition:background-color var(--transition-speed) var(--easing),border-color var(--transition-speed) var(--easing)
+}
+.scene:hover,.plot:hover{background:var(--item-hover-bg)}
+.scene .content-wrapper,.plot .content-wrapper{transition:transform .25s ease}
+.scene:hover .content-wrapper,.plot:hover .content-wrapper{transform:translateY(2px)}
+
+/* 标题（与表层同字体 outer-font）+ 轻微发光 */
+.scene-label,.plot-label,.seeds-summary{
+  font-family:var(--outer-font);display:inline-block;margin:0 0 10px;color:var(--header-text-color);
+  font-size:1.22em;letter-spacing:.02em;position:relative;padding-bottom:4px;text-decoration:none;
+  transition:transform .25s var(--easing),letter-spacing .25s var(--easing)
+}
+.scene-label::after,.plot-label::after,.seeds-summary::after{content:"";position:absolute;left:0;bottom:0;height:2px;width:100%;background:linear-gradient(90deg,transparent,var(--glow-color),transparent);opacity:.7}
+.scene-label::before,.plot-label::before,.seeds-summary::before{
+  content:attr(data-text);position:absolute;inset:0;pointer-events:none;
+  background-image:radial-gradient(circle at 50% 55%, var(--glow-color) 0%, rgba(255,255,255,0) 60%);
+  mix-blend-mode:screen;opacity:.22;-webkit-background-clip:text;background-clip:text;color:transparent;transition:opacity .25s var(--easing)
+}
+.scene-label:hover,.plot-label:hover,.seeds-summary:hover{transform:scale(1.01);letter-spacing:.025em}
+.scene-label:hover::before,.plot-label:hover::before,.seeds-summary:hover::before{opacity:.7}
+
+/* Secret */
+.seeds-container{margin-top:18px;border:1px dashed var(--divider-color);padding:16px;border-radius:14px;transition:border-color var(--theme-change-speed) ease}
+.seeds-container:hover{border-color:var(--header-text-color)}
+.seeds-summary{color:var(--text-color);opacity:.96;cursor:pointer;user-select:none;transition:color var(--transition-speed) var(--easing),opacity var(--transition-speed) var(--easing)}
+.seeds-summary:hover{color:var(--header-text-color);opacity:1}
+.seeds-summary::marker{content:none}
+.seeds-summary:before{content:'▸ ';position:relative;left:-2px}
+.seeds-container.open .seeds-summary:before{color:#5aacac;transform:rotate(90deg)}
+.seeds-content{padding:0 0 10px 12px;border-left:2px solid rgba(90,172,172,.5);margin-left:2.3px;font-size:var(--content-font-size);line-height:1.6}
+
+/* Reduce motion */
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;transform:none !important;letter-spacing:normal !important}
+  .serial::before,.time span::before,.scene-label::before,.plot-label::before,.seeds-summary::before{opacity:.45 !important}
+}
+</style>
+</head>
+<body>
+  <div class="card-container" id="meow-fm-card">
+    <header class="card-header">
+      <div class="time">— $2 —</div>
+      <div class="serial-switch-wrapper"><div class="serial" data-text="$1">$1</div></div>
+    </header>
+
+    <div class="card-collapsible" id="collapsible-content">
+      <div class="collapsible-inner">
+        <div class="scene">
+          <div class="content-wrapper">
+            <span class="scene-label" data-text="Scene">Scene</span>
+            <div class="scene-content">$3</div>
+          </div>
+        </div>
+        <div class="plot">
+          <div class="content-wrapper">
+            <span class="plot-label" data-text="Plot">Plot</span>
+            <div class="plot-content">$4</div>
+          </div>
+        </div>
+        <div class="seeds-container" id="secret-container">
+          <div class="seeds-summary" id="secret-toggle" data-text="Secret">Secret</div>
+          <div class="seeds-collapsible"><div class="collapsible-inner"><div class="seeds-content">$5</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+document.addEventListener("DOMContentLoaded",()=>{
+  const card = document.getElementById("meow-fm-card");
+  const switcher = card.querySelector(".serial-switch-wrapper");
+  const collaps  = document.getElementById("collapsible-content");
+  const secretCt = document.getElementById("secret-container");
+  const secretTg = document.getElementById("secret-toggle");
+  const scene    = card.querySelector(".scene");
+  const plot     = card.querySelector(".plot");
+  const timeEl   = card.querySelector(".time");
+
+  // 时间行换行符 → <br>（保留 — … —）
+  if(timeEl){
+    const raw = timeEl.textContent.trim().replace(/^—\s*|\s*—$/g,"");
+    const brk = /[☆❤♡\|｜]/g;
+    const html = raw.replace(brk,"<br>");
+    const txt  = raw.replace(brk,"\n");
+    timeEl.innerHTML = `<span data-text="— ${txt} —">— ${html} —</span>`;
+  }
+
+  // 主题切换 + 脉冲（更暗）
+  const applyTheme = (m)=>{
+    const dark = (m==="dark");
+    card.classList.toggle("dark-mode",dark);
+    localStorage.setItem("meowFmTheme",m);
+    card.classList.remove("pulse-light","pulse-dark"); void card.offsetWidth;
+    card.classList.add(dark?"pulse-dark":"pulse-light");
+    setTimeout(()=>card.classList.remove("pulse-light","pulse-dark"), 800);
+  };
+  switcher.addEventListener("click",(e)=>{
+    e.stopPropagation();
+    applyTheme(card.classList.contains("dark-mode")?"light":"dark");
+  });
+  applyTheme(localStorage.getItem("meowFmTheme")||"light");
+
+  // 折叠：点击空白区域才折叠
+  card.addEventListener("click",(e)=>{
+    const hit = [secretCt,switcher,scene,plot].some(el=>el && el.contains(e.target));
+    if(!hit) collaps.classList.toggle("open");
+  });
+  secretTg?.addEventListener("click",(e)=>{ e.stopPropagation(); secretCt.classList.toggle("open"); });
+});
+</script>
+</body></html>
+```

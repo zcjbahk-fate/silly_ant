@@ -1,0 +1,296 @@
+```html
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>仿 Apple 备忘录样式 (逻辑修复版)</title>
+<style>
+    /* 全局样式 */
+    body {
+        display: flex; justify-content: center; align-items: flex-start;
+        margin: 0; padding: 10px; box-sizing: border-box;
+        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+    }
+    /* 窗口样式 */
+    .window {
+        width: 650px; max-width: 95%; background-color: #ffffff;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.05);
+        border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; color: #1d1d1f;
+    }
+    .title-bar {
+        display: flex; align-items: center; padding: 12px 18px; background-color: #fbfbfb;
+        border-bottom: 1px solid #e5e5e5; flex-shrink: 0;
+    }
+    .buttons { display: flex; gap: 8px; }
+    .dot { width: 12px; height: 12px; border-radius: 50%; }
+    .dot-red { background-color: #ff5f57; border: 1px solid #e0443e; }
+    .dot-yellow { background-color: #febc2e; border: 1px solid #dfa123; }
+    .dot-green { background-color: #28c840; border: 1px solid #1aab29; }
+    .toolbar-title { margin-left: auto; margin-right: auto; color: #86868b; font-size: 12px; font-weight: 500; padding-right: 50px; }
+
+    /* 内容区域 */
+    .content {
+        padding: 10px 50px 10px; font-size: 15px; line-height: 1.7;
+        font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    }
+
+    /* --- 动画 --- */
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(15px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .line-wrapper {
+        opacity: 0;
+    }
+    .line-wrapper.animate-in {
+        animation: fadeInUp 0.5s ease-out forwards;
+    }
+
+    .content strong { font-weight: 600; color: #000; }
+    .content s { text-decoration: line-through; color: #86868b; }
+    .content em { font-style: italic; color: #4a4949; }
+    .content .highlight { font-weight: 500; }
+
+    .content code {
+        background-color: #f3f4f6; color: #4b5563; padding: 2px 6px;
+        border-radius: 4px; font-family: "SF Mono", Menlo, Monaco, Consolas, "Courier New", monospace;
+        font-size: 0.9em;
+    }
+
+    .content .quote-center {
+        text-align: center; background-color: #f0f0f0a0; padding: 15px 20px;
+        margin: 10px 0; border-radius: 8px; color: #555; border: 1px solid #eee;
+    }
+
+    .content .quote-block {
+        text-align: left;
+        padding: 8px 15px;
+        border-left: 3px solid #d1d5db; color: #4b5563;
+        padding-left: calc(15px + var(--nest-level, 0) * 20px);
+    }
+
+    .content h1, .content h2, .content h3 {
+        margin: 10px 0 10px 0; padding-bottom: 5px; line-height: 1.5; font-weight: 600;
+        color: #000000; border-bottom: 1px solid #f0f0f0;
+    }
+    .content h1 { font-size: 1.3em; text-align: center;}
+    .content h2 { font-size: 1.2em; }
+    .content h3 { font-size: 1.1em; }
+
+    .content .highlight-block {
+        text-align: left; background-color: #fff0fb; padding: 15px 20px;
+        margin: 10px 0; border-radius: 8px; color: #75435f;
+        border-left: 4px solid #e774b2;
+    }
+
+    .content ul {
+        list-style: none;
+        padding-left: 20px;
+        margin: 10px 0;
+    }
+    .content li {
+        position: relative;
+        padding-left: 10px;
+    }
+    .content li::before {
+        content: '•';
+        color: #3b82f6;
+        font-weight: bold;
+        position: absolute;
+        left: -15px;
+    }
+
+    .content table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        font-size: 0.95em;
+    }
+    .content th, .content td {
+        padding: 10px 12px;
+        text-align: left;
+    }
+    .content th {
+        font-weight: 600;
+        border-bottom: 1px solid #e5e7eb;
+    }
+    .content tbody tr:nth-child(even) {
+        background-color: #f9fafb;
+    }
+
+    .content hr {
+        border: none; border-top: 1px solid #e5e7eb; margin: 25px 0;
+    }
+
+    .content .empty-line { height: 20px; }
+
+    @media (max-width: 420px) {
+        .content { padding: 10px 30px 10px; font-size: 14px; }
+    }
+</style>
+</head>
+<body>
+
+<div class="window">
+    <div class="title-bar">
+        <div class="buttons">
+            <span class="dot dot-red"></span>
+            <span class="dot dot-yellow"></span>
+            <span class="dot dot-green"></span>
+        </div>
+        <span class="toolbar-title" id="current-time"></span>
+    </div>
+
+    <div id="raw-data" style="display:none;">
+<start>
+$1
+</end>
+    </div>
+
+    <div class="content" id="animated-content"></div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // --- Setup ---
+    const animatedContent = document.getElementById('animated-content');
+    const now = new Date();
+    document.getElementById('current-time').textContent = `编辑于 今天 ${now.getHours()}:${String(now.getMinutes()).padStart(2, '0')}`;
+    const highlightColors = ['#FF3B30', '#FF9500', '#007AFF', '#5856D6', '#5AC8FA', '#FF2D55'];
+
+    // --- Inline Parsing Functions ---
+    const applyCode = (t) => t.replace(/`(.*?)`/g, (m, c) => `<code>${c}</code>`);
+    const applyBold = (t) => t.replace(/\*\*(.*?)\*\*/g, (m, c) => `<strong>${c}</strong>`);
+    const applyStrikethrough = (t) => t.replace(/\~\~(.*?)\~\~|<del>(.*?)<\/del>/g, (m, c1, c2) => `<s>${c1 || c2}</s>`);
+    const applyItalic = (t) => t.replace(/\*(.*?)\*/g, (m, c) => `<em>${c}</em>`);
+    const applyHighlight = (t) => t.replace(/(\[.*?\]|\(.*?\)|".*?"|“.*?”)/g, (m) => {
+        const randomColor = highlightColors[Math.floor(Math.random() * highlightColors.length)];
+        return `<span class="highlight" style="color: ${randomColor};">${m}</span>`;
+    });
+
+    function parseInlineMarkdown(text) {
+        return applyHighlight(applyItalic(applyStrikethrough(applyBold(applyCode(text)))));
+    }
+
+    // --- Main Recursive Parser ---
+    function parseContent(lines) {
+        const htmlChunks = [];
+        let i = 0;
+
+        const isTableSeparator = (line) => /^\|(?:\s*:?-+:?\s*\|)+$/.test(line);
+
+        while (i < lines.length) {
+            const trimmedLine = lines[i].trim();
+
+            if (i + 1 < lines.length && isTableSeparator(lines[i + 1].trim())) {
+                // ... (table parsing logic remains the same)
+                 const tableData = { headers: [], alignments: [], rows: [] };
+                tableData.alignments = lines[i + 1].trim().split('|').slice(1, -1).map(s => {
+                    const align = s.trim();
+                    if (align.startsWith(':') && align.endsWith(':')) return 'center';
+                    if (align.endsWith(':')) return 'right';
+                    return 'left';
+                });
+                tableData.headers = lines[i].trim().split('|').slice(1, -1).map(s => s.trim());
+                let rowIndex = i + 2;
+                while (rowIndex < lines.length && lines[rowIndex].trim().startsWith('|')) {
+                    tableData.rows.push(lines[rowIndex].trim().split('|').slice(1, -1).map(s => s.trim()));
+                    rowIndex++;
+                }
+                let tableHTML = '<table><thead><tr>';
+                tableData.headers.forEach((h, idx) => { tableHTML += `<th style="text-align: ${tableData.alignments[idx]};">${parseInlineMarkdown(h)}</th>`; });
+                tableHTML += '</tr></thead><tbody>';
+                tableData.rows.forEach(r => {
+                    tableHTML += '<tr>';
+                    r.forEach((c, idx) => { tableHTML += `<td style="text-align: ${tableData.alignments[idx]};">${parseInlineMarkdown(c)}</td>`; });
+                    tableHTML += '</tr>';
+                });
+                tableHTML += '</tbody></table>';
+                htmlChunks.push(tableHTML);
+                i = rowIndex;
+
+            } else if (trimmedLine.startsWith('>')) {
+                const quoteGroup = [];
+                let currentIndex = i;
+                while (currentIndex < lines.length && lines[currentIndex].trim().startsWith('>')) {
+                    quoteGroup.push(lines[currentIndex].trim());
+                    currentIndex++;
+                }
+
+                // Recursive step: strip one level of '>' and parse the inner content
+                const nestedLines = quoteGroup.map(line => line.substring(line.indexOf('>') + 1));
+                const innerHtml = parseContent(nestedLines).join(''); // Get parsed inner content
+
+                htmlChunks.push(`<div class="quote-center">${innerHtml}</div>`);
+                i = currentIndex;
+
+            } else if (trimmedLine.startsWith('||')) {
+                const blockLines = [];
+                let currentIndex = i;
+                while (currentIndex < lines.length && lines[currentIndex].trim().startsWith('||')) {
+                    blockLines.push(lines[currentIndex].trim().substring(2));
+                    currentIndex++;
+                }
+                htmlChunks.push(`<div class="highlight-block">${blockLines.map(parseInlineMarkdown).join('<br>')}</div>`);
+                i = currentIndex;
+
+            } else if (trimmedLine.startsWith('* ')) {
+                const listItems = [];
+                let currentIndex = i;
+                while (currentIndex < lines.length && lines[currentIndex].trim().startsWith('* ')) {
+                    listItems.push(lines[currentIndex].trim().substring(2));
+                    currentIndex++;
+                }
+                htmlChunks.push(`<ul>${listItems.map(item => `<li>${parseInlineMarkdown(item)}</li>`).join('')}</ul>`);
+                i = currentIndex;
+
+            } else if (/^---+\s*$/.test(trimmedLine)) {
+                htmlChunks.push('<hr>');
+                i++;
+
+            } else {
+                if (trimmedLine === '') {
+                    htmlChunks.push('<div class="empty-line"></div>');
+                } else {
+                    const headingMatch = trimmedLine.match(/^(\#{1,3})\s(.*)/);
+                    if (headingMatch) {
+                        const level = headingMatch[1].length;
+                        const content = headingMatch[2];
+                        const randomColor = highlightColors[Math.floor(Math.random() * highlightColors.length)];
+                        htmlChunks.push(`<h${level} style="color: ${randomColor};">${parseInlineMarkdown(content)}</h${level}>`);
+                    } else {
+                        htmlChunks.push(`<div>${parseInlineMarkdown(trimmedLine)}</div>`);
+                    }
+                }
+                i++;
+            }
+        }
+        return htmlChunks;
+    }
+
+    // --- Initial Call ---
+    let rawContent = '';
+    const rawText = document.getElementById('raw-data').textContent;
+    const startEndMatch = rawText.match(/<start>([\s\S]*?)<end>/);
+    rawContent = (startEndMatch && startEndMatch[1]) ? startEndMatch[1].trim() : rawText;
+
+    const initialLines = rawContent.split('\n');
+    const finalHtmlBlocks = parseContent(initialLines);
+
+    // --- Animate Final Blocks ---
+    finalHtmlBlocks.forEach((htmlBlock, index) => {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'line-wrapper';
+        wrapper.innerHTML = htmlBlock;
+        animatedContent.appendChild(wrapper);
+
+        setTimeout(() => {
+            wrapper.classList.add('animate-in');
+        }, index * 100);
+    });
+});
+</script>
+</body>
+</html>
+```

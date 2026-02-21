@@ -1,0 +1,250 @@
+```html
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>场景状态面板</title>
+    <style>
+        /* --- 字体引入 --- */
+        @import url("https://fontsapi.zeoseven.com/110/main/result.css"); /* 科幻: 点点像素体-方形 */
+        @import url("https://fontsapi.zeoseven.com/88/main/result.css"); /* 现代: MaokenZhuyuanTi */
+        @import url("https://fontsapi.zeoseven.com/2/main/result.css"); /* 古风: LXGW ZhenKai */
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        body { padding: 10px; }
+
+        .dynamic-status-container {
+            width: 100%;
+            max-width: 480px;
+            margin: 12px auto;
+            display: none;
+        }
+        .dynamic-status-container.style-scifi,
+        .dynamic-status-container.style-present,
+        .dynamic-status-container.style-olden {
+            display: block;
+        }
+
+        .status-bar-content {
+            padding: 10px 18px;
+            border-radius: 12px;
+            font-size: 0.9em;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 斜线纹理背景 */
+        .status-bar-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                45deg,
+                rgba(0, 0, 0, 0.02),
+                rgba(0, 0, 0, 0.02) 2px,
+                transparent 2px,
+                transparent 4px
+            );
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .line-1, .line-2, .line-3 {
+            display: block;
+        }
+
+        /*
+        ========================================
+        科幻 (Sci-Fi) 风格 <scifi>
+        ========================================
+        */
+        .style-scifi .status-bar-content {
+            --dark-gray: #1a1a1a; --mid-gray: #2d2d2d; --light-gray: #444; --white: #e6e6e6;
+            font-family: "点点像素体-方形", sans-serif;
+            background-color: var(--dark-gray);
+            border: 1px solid var(--light-gray);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            color: var(--white);
+        }
+        .style-scifi .status-bar-content::after {
+            content: ''; position: absolute; top: -100%; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, transparent 0%, rgba(255, 255, 255, 0.1) 50%, transparent 100%);
+            opacity: 0.1; animation: scifi-scanline 4s linear infinite;
+        }
+        @keyframes scifi-scanline { to { top: 100%; } }
+        .style-scifi .line-1 {
+            font-size: 1em;
+            color: var(--white);
+            text-align: center;
+            letter-spacing: 1px;
+            font-weight: normal;
+            padding-bottom: 8px;
+            border-bottom: 1px solid transparent;
+            border-image: linear-gradient(to right, transparent, var(--light-gray) 50%, transparent) 1;
+        }
+        .scifi-icon {
+            width: 1em; height: 1em; flex-shrink: 0; background-color: var(--white);
+            mask-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0iY3VycmVudENvbG9yIiBkPSJNMTIgMkM4LjEzIDIgNSA1LjEzIDUgOWMwIDUuMjUgNyAxMyA3IDEzczctNy43NSA3LTEzYzAtMy44Ny0zLjEzLTctNy03em0wIDkuNWMtMS4zOCAwLTIuNS0xLjEyLTIuNS0yLjVzMS4xMi0yLjUgMi41LTIuNSAyLjUgMS4xMiAyLjUgMi41LTEuMTIgMi41LTIuNSAyLjV6Ii8+PC9zdmc+');
+            mask-size: contain; mask-repeat: no-repeat; mask-position: center;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .style-scifi .line-2 {
+            font-size: 0.9em; color: var(--white); text-align: center;
+            padding: 8px 0; border-bottom: 1px dashed var(--light-gray);
+            font-weight: normal;
+            display: flex; justify-content: center; align-items: center; gap: 10px;
+        }
+        .style-scifi .line-3 {
+            font-size: 0.85em; font-style: italic; color: #aaa;
+            margin-top: 8px; text-align: center;
+            animation: scifi-text-flicker 5s infinite;
+        }
+        .style-scifi .line-3::before { content: 'SYS_LOG: '; }
+        @keyframes scifi-text-flicker { 0%, 100% { opacity: 1; } 50% { opacity: 0.8; } }
+
+        /*
+        ========================================
+        现代 (Present) 风格
+        ========================================
+        */
+        .style-present .status-bar-content {
+            --dark-gray: #2d2d2d; --mid-gray: #3d3d3d; --light-gray: #555; --white: #e6e6e6;
+            font-family: "MaokenZhuyuanTi", sans-serif;
+            background: linear-gradient(145deg, var(--mid-gray), var(--dark-gray));
+            border: 1px solid var(--light-gray);
+            box-shadow: 2px 3px 10px rgba(0, 0, 0, 0.3), inset 0 0 10px rgba(0, 0, 0, 0.2);
+            color: var(--white); text-align: center;
+        }
+        .style-present .line-1 {
+            font-size: 1em; font-weight: normal; color: var(--white);
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3); margin-bottom: 12px;
+        }
+        .style-present .line-2 {
+            display: flex; justify-content: center; align-items: center;
+            flex-wrap: wrap; gap: 10px; margin-bottom: 12px;
+        }
+        .present-tag {
+            padding: 5px 15px; border-radius: 20px; font-size: 0.9em; font-weight: normal;
+            color: var(--white); text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+            border: 1px solid var(--light-gray);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: all 0.2s ease;
+        }
+        .present-tag:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); }
+        .present-tag.location-tag { background: linear-gradient(135deg, #555, #444); }
+        .present-tag.env-tag { background: linear-gradient(135deg, #666, #555); }
+        .style-present .line-3 {
+            font-size: 0.85em; color: #aaa; font-style: italic; padding-top: 10px;
+            border-top: 1px solid transparent;
+            border-image: linear-gradient(90deg, transparent, var(--light-gray), transparent) 1;
+        }
+        .style-present .line-3::before { content: '💭 '; }
+
+        /*
+        ========================================
+        古风 (Olden) 风格
+        ========================================
+        */
+        .style-olden .status-bar-content {
+            --dark-gray: #2d2d2d; --paper-gray: #3d3d3d; --light-gray: #888; --white: #e6e6e6;
+            font-family: "LXGW ZhenKai", serif;
+            font-weight: normal;
+            background-color: var(--paper-gray);
+            border: 1px solid var(--dark-gray);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            color: var(--white);
+            position: relative;
+            padding: 12px 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 95px;
+        }
+        .style-olden .status-bar-content::before {
+            content: '記'; font-family: 'Ma Shan Zheng', cursive; position: absolute; top: 8px; right: 8px;
+            width: 25px; height: 25px; background-color: var(--dark-gray); color: var(--white);
+            font-size: 16px; display: flex; justify-content: center; align-items: center; border-radius: 2px;
+        }
+        .style-olden .line-1 {
+            font-size: 0.9em;
+            color: var(--light-gray);
+            text-align: center; margin-bottom: 6px;
+        }
+        .style-olden .line-2 {
+            font-size: 1.1em; font-weight: normal; color: var(--white);
+            text-align: center; margin-bottom: 6px;
+        }
+        .style-olden .line-3 {
+            font-size: 0.9em; color: var(--light-gray);
+            text-align: center; font-style: italic;
+        }
+        .style-olden .line-3::before { content: '— '; }
+        .style-olden .line-3::after { content: ' —'; }
+
+        /* 底部装饰 */
+        .status-bar-content::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--light-gray), transparent);
+            animation: bottom-glow 3s ease-in-out infinite;
+        }
+
+        @keyframes bottom-glow {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="dynamic-status-container" id="statusBar">
+        <div class="status-bar-content">
+            <div class="line-1">
+                <span class="text-content">$1</span>
+            </div>
+            <div class="line-2">
+                <span class="scifi-icon"></span>
+                <span class="text-content">$3</span>
+            </div>
+            <div class="line-3">
+                <span class="text-content">$4</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const statusBar = document.getElementById('statusBar');
+            if (statusBar) {
+                const styleTag = '$2';
+                if (styleTag) {
+                    statusBar.classList.add(`style-${styleTag}`);
+
+                    if (styleTag === 'present') {
+                        const line2Container = statusBar.querySelector('.line-2');
+                        const line2Text = line2Container.querySelector('.text-content');
+                        if (line2Text) {
+                            const parts = line2Text.textContent.split('·');
+                            const location = parts[0] ? parts[0].trim() : '';
+                            const environment = parts[1] ? parts[1].trim() : '';
+                            let newHtml = '';
+                            if (location) newHtml += `<span class="present-tag location-tag">${location}</span>`;
+                            if (environment) newHtml += `<span class="present-tag env-tag">${environment}</span>`;
+                            line2Container.innerHTML = newHtml;
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+```

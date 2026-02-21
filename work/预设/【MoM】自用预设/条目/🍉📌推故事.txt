@@ -1,0 +1,1 @@
+>>> 本轮梦境必须遵循{{getvar::story pacing}}

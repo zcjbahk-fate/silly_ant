@@ -1,0 +1,315 @@
+```html
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="color-scheme" content="light dark" />
+  <title>选项美化 (CSS图标切换)</title>
+
+  <style>
+  /* 字体 */
+  @import url("https://fontsapi.zeoseven.com/7/main/result.css");/* Zhuque Fangsong (technical preview) */
+  @import url("https://fontsapi.zeoseven.com/477/main/result.css"); /* TsangerXWZ */
+
+  :root{
+    --outer-font: "TsangerXWZ","Microsoft YaHei",sans-serif;
+    --container-width: 550px;
+    --border-radius: 16px;
+
+    /* 浅色主题 */
+    --paper-fallback-color:#faf8f3;
+    --text-color:rgba(35,45,60,.86);
+    --divider-color:rgba(120,130,140,.12);
+    --glow-color:rgba(255,205,120,.55);
+    --blend-color:#f4efe6;
+    --item-bg:rgba(255,255,255,.48);
+    --item-hover-bg:rgba(255,255,255,.7);
+    --item-border:rgba(160,165,170,.18);
+    --blend-opacity:.11;
+    --noise-opacity:.035;
+    --fiber-opacity:.06;
+    --base-shadow:0 10px 30px rgba(0,0,0,.08),0 5px 15px rgba(0,0,0,.05);
+    --hover-shadow:0 15px 40px rgba(100,180,220,.15),0 5px 20px rgba(100,180,220,.1);
+    --item-shadow:0 2px 8px rgba(0,0,0,.05);
+    --item-hover-shadow:0 6px 20px rgba(0,0,0,.1);
+    --transition-speed:.35s;
+    --collapse-speed:.6s;
+    --theme-change-speed:.8s;
+    --easing:cubic-bezier(.4,0,.2,1);
+    --paper-bg-image:url('https://i.postimg.cc/DZbjkx5J/meow.png');
+  }
+
+  /* 深色主题 */
+  .post-it-container.dark-mode{
+    --paper-fallback-color:#1e232a;
+    --text-color:rgba(245,240,220,.93);
+    --divider-color:rgba(255,255,255,.09);
+    --glow-color:rgba(240,210,140,.55);
+    --blend-color:#181d23;
+    --item-bg:rgba(255,255,255,.06);
+    --item-hover-bg:rgba(255,255,255,.12);
+    --item-border:rgba(255,255,255,.1);
+    --blend-opacity:.24;
+    --noise-opacity:.032;
+    --fiber-opacity:.07;
+    --base-shadow:0 10px 40px rgba(0,0,0,.32),0 5px 20px rgba(0,0,0,.22);
+    --hover-shadow:0 15px 50px rgba(240,210,140,.10),0 5px 25px rgba(240,210,140,.06);
+    --item-shadow:0 2px 10px rgba(0,0,0,.22);
+    --item-hover-shadow:0 6px 25px rgba(100,230,230,.1);
+  }
+
+  body{
+    display: flex;
+    justify-content: center;
+    font-family:"Zhuque Fangsong (technical preview)","Microsoft YaHei",sans-serif;
+    font-size:1.1em;line-height:1.6;color:var(--text-color);
+    transition:color var(--theme-change-speed) ease;
+  }
+
+  .post-it-container{
+    width:var(--container-width);
+    position:relative;margin:16px auto;padding:1em;padding-top:3.5em;
+    color:var(--text-color);
+    background-color:var(--paper-fallback-color);
+    background-image:var(--paper-bg-image);
+    background-position: left top;
+    background-repeat: repeat;
+    background-blend-mode:multiply;
+    border-radius:var(--border-radius);box-shadow:var(--base-shadow);
+    transition:transform var(--transition-speed) var(--easing),
+               box-shadow var(--transition-speed) var(--easing),
+               background-color var(--theme-change-speed) ease,
+               color var(--theme-change-speed) ease;
+    isolation:isolate;overflow:hidden;
+  }
+  .post-it-container.dark-mode{ background-blend-mode:soft-light; }
+
+  .post-it-container::before,
+  .post-it-container::after {
+    content:""; position:absolute; inset:0; z-index:1; border-radius:inherit;
+    pointer-events:none;
+  }
+  .post-it-container::before{
+    background:
+      radial-gradient(120% 100% at 50% 0%, rgba(0,0,0,var(--fiber-opacity)) 0, rgba(0,0,0,0) 70%),
+      radial-gradient(90% 120% at 100% 20%, rgba(0,0,0,calc(var(--fiber-opacity) * .7)) 0, rgba(0,0,0,0) 65%),
+      linear-gradient(180deg, rgba(255,255,255,0) 0%, var(--blend-color) 100%);
+    opacity:var(--blend-opacity);
+    transition:background-color var(--theme-change-speed) ease,opacity var(--theme-change-speed) ease;
+  }
+  .post-it-container::after{
+    background-image:
+      repeating-linear-gradient(0deg,   rgba(0,0,0,.028) 0 1px, transparent 1px 2px),
+      repeating-linear-gradient(90deg,  rgba(0,0,0,.022) 0 1px, transparent 1px 2px);
+    opacity:var(--noise-opacity);
+  }
+
+  .cat-kaomoji{
+    position:absolute; top:20px; left:24px;
+    z-index: 2;
+    font-family:var(--outer-font);
+    font-size:16px; font-weight:600;
+    color:var(--text-color); opacity:.92;
+    text-shadow:0 1px 2px rgba(255,255,255,.22);
+    transition:transform var(--transition-speed) var(--easing),opacity var(--transition-speed) var(--easing);
+    pointer-events: none;
+  }
+  .post-it-container:hover .cat-kaomoji{opacity:1; transform:scale(1.03)}
+
+  .theme-icon{
+    position:absolute; top:8px; right:10px;
+    z-index: 2;
+    font-size:30px; line-height:1;
+    padding:6px; background:transparent; border:none; box-shadow:none; backdrop-filter:none;
+    color:inherit; cursor:pointer; user-select:none; -webkit-tap-highlight-color:transparent;
+    border-radius:8px;
+    transition:transform var(--transition-speed) var(--easing), filter var(--transition-speed) var(--easing);
+  }
+  .theme-icon:hover{ transform:scale(1.06); filter:drop-shadow(0 1px 1px rgba(0,0,0,.2)); }
+  .theme-icon:active{ transform:scale(.96); }
+  .theme-icon:focus-visible{ outline:2px solid rgba(255,215,0,.55); outline-offset:2px; }
+
+  /* --- 新增的 CSS 规则 --- */
+  .theme-icon .icon-moon { display: none; }
+  .theme-icon .icon-sun { display: inline; }
+  .post-it-container.dark-mode .theme-icon .icon-sun { display: none; }
+  .post-it-container.dark-mode .theme-icon .icon-moon { display: inline; }
+  /* --- 新增结束 --- */
+
+  .post-it-collapsible{
+    position: relative;
+    z-index: 2;
+    display:grid; grid-template-rows:0fr;
+    transition:grid-template-rows var(--collapse-speed) var(--easing);
+  }
+
+  .post-it-collapsible.open{grid-template-rows:1fr}
+  .content-wrapper{overflow:hidden; min-height:0; padding-top:1.2em; border-top:1px solid var(--divider-color); position:relative}
+  .content-wrapper::before{
+    content:""; position:absolute; top:0; left:50%; transform:translateX(-50%);
+    width:50px; height:1px; background:linear-gradient(90deg,transparent,var(--glow-color),transparent); opacity:0; transition:opacity var(--transition-speed) ease;
+  }
+  .post-it-collapsible.open .content-wrapper::before{opacity:.6}
+  .post-it-collapsible.open .content-wrapper{overflow:visible; transition:overflow 0s linear var(--collapse-speed)}
+  #options-container{padding:.8em .5em; display:flex; flex-direction:column; gap:.6em}
+
+  .clickable-text{
+    cursor:pointer; padding:.85em 1.2em; border-radius:10px;
+    background:var(--item-bg); border:1px solid var(--item-border);
+    box-shadow:var(--item-shadow); backdrop-filter:blur(5px);
+    opacity:0; transform:translateX(-20px); pointer-events:none;
+    transition:transform var(--transition-speed) var(--easing),
+               box-shadow var(--transition-speed) var(--easing),
+               background-color var(--transition-speed) var(--easing),
+               border-color var(--transition-speed) var(--easing);
+    position:relative; overflow:hidden;
+  }
+  .clickable-text::before{
+    content:""; position:absolute; top:0; left:-100%; width:100%; height:100%;
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,.12),transparent); transition:left .6s ease;
+    pointer-events:none;
+  }
+  .clickable-text:hover::before{left:100%}
+  .clickable-text::after{
+    content:""; position:absolute; left:var(--rx, 50%); top:var(--ry, 50%);
+    width:14px; height:14px; border-radius:50%;
+    background:radial-gradient(circle, rgba(255,202,120,.42) 0%, rgba(255,202,120,.25) 40%, rgba(255,202,120,0) 70%);
+    transform:translate(-50%,-50%) scale(0);
+    opacity:0; pointer-events:none;
+  }
+  .clickable-text.ripple::after{ opacity:1; animation:ripple .7s ease-out forwards; }
+  @keyframes ripple{ to{ transform:translate(-50%,-50%) scale(28); opacity:0; } }
+
+  .clickable-text.is-selected{
+    background:linear-gradient(180deg, rgba(255,255,255,.85), rgba(255,255,255,.6));
+    border-color:#ffcf6a;
+    box-shadow:0 10px 28px rgba(255,174,0,.26), var(--item-hover-shadow);
+    transform:translateX(8px) translateY(-2px) scale(1.015);
+  }
+  .clickable-text.is-selected li::before{ content:'✓'; color:#ffb23e; font-weight:700; }
+
+  .post-it-collapsible.open .clickable-text{opacity:1; transform:translateX(0); pointer-events:auto}
+  .post-it-collapsible.open .clickable-text:nth-child(1){transition-delay:.1s}
+  .post-it-collapsible.open .clickable-text:nth-child(2){transition-delay:.15s}
+  .post-it-collapsible.open .clickable-text:nth-child(3){transition-delay:.2s}
+  .post-it-collapsible.open .clickable-text:nth-child(4){transition-delay:.25s}
+  .post-it-collapsible.open .clickable-text:nth-child(5){transition-delay:.3s}
+
+  .clickable-text:hover{
+    background:var(--item-hover-bg);
+    box-shadow:var(--item-hover-shadow);
+    transform:translateX(8px) translateY(-2px);
+    border-color:var(--glow-color);
+  }
+  .clickable-text:active{ box-shadow:0 0 0 9999px rgba(0,0,0,.02) inset, var(--item-hover-shadow); }
+
+  .clickable-text li{
+    list-style:none; position:relative; padding-left:1.2em;
+    font-size:.95em; line-height:1.4;
+  }
+  .clickable-text li::before{
+    content:'▸'; position:absolute; left:0; color:var(--glow-color);
+    transition:transform var(--transition-speed) ease;
+  }
+  .clickable-text:hover li::before{ transform:translateX(4px); }
+
+  @media (prefers-reduced-motion:reduce){
+    *{animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important}
+  }
+  </style>
+</head>
+<body>
+  <div class="post-it-container" id="post-it-card">
+    <div class="cat-kaomoji">ฅ(^・ω・^)ฅ 点击选择</div>
+    <!-- HTML 修改处 -->
+    <button id="theme-toggle" class="theme-icon" aria-label="切换主题" title="切换主题">
+      <span class="icon-sun">☀️</span>
+      <span class="icon-moon">🌙</span>
+    </button>
+    <div class="post-it-collapsible" id="collapsible-content">
+      <div class="content-wrapper">
+        <div id="options-container"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="raw-options-data" style="display:none">$1</div>
+
+  <script>
+  document.addEventListener("DOMContentLoaded", function(){
+    function init(){
+      const refs = { card: document.getElementById("post-it-card"), themeToggle: document.getElementById("theme-toggle"), collapsibleContent: document.getElementById("collapsible-content"), optionsContainer: document.getElementById("options-container"), rawData: document.getElementById("raw-options-data") };
+      if(refs.card && refs.rawData && refs.optionsContainer){
+        renderOptions(refs.rawData, refs.optionsContainer);
+        setupTheme(refs.card, refs.themeToggle);
+        bindCollapsible(refs);
+      } else { console.error("初始化失败：缺少必要的DOM元素。"); }
+    }
+
+    function renderOptions(rawNode, root){
+      const lines = rawNode.textContent.trim().split(/\r?\n/).filter(s=>s.trim()!=="");
+      lines.forEach((line)=>{
+        const text = line.trim().replace(/^[A-Z]\.\s*/i,"");
+        if(!text) return;
+        const item = document.createElement("div");
+        item.className = "clickable-text";
+        item.setAttribute("data-action", text);
+        item.innerHTML = `<li>${text}</li>`;
+        item.addEventListener("click", function(e){
+          e.stopPropagation();
+          const rect = this.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          this.style.setProperty('--rx', x + 'px');
+          this.style.setProperty('--ry', y + 'px');
+          this.classList.remove('ripple'); void this.offsetWidth; this.classList.add('ripple');
+          this.classList.add('is-selected');
+          setTimeout(()=>{ this.classList.remove('is-selected'); }, 700);
+          const payload = this.getAttribute("data-action");
+          try {
+            const t = window.parent.document.querySelector("#send_textarea");
+            const n = window.parent.triggerSlash;
+            if(t){
+              const v = t.value + payload;
+              if(n){ n(`/setinput ${v}`); }
+              else{ t.value = v; t.dispatchEvent(new Event("input",{bubbles:true})); }
+            } else if(n){ n(`/setinput ${payload}`); }
+          } catch(err){ console.error("设置输入文本时出错:", err); }
+        });
+        root.appendChild(item);
+      });
+    }
+
+    // --- JavaScript 修改处 ---
+    function setupTheme(card, btn){
+      const applyTheme = (mode) => {
+        card.classList.toggle("dark-mode", mode === "dark");
+        localStorage.setItem("postItTheme", mode);
+      };
+
+      btn.addEventListener("click", (e)=>{
+        e.stopPropagation();
+        const nextTheme = card.classList.contains("dark-mode") ? "light" : "dark";
+        applyTheme(nextTheme);
+      });
+
+      const savedTheme = localStorage.getItem("postItTheme") || "light";
+      applyTheme(savedTheme);
+    }
+    // --- 修改结束 ---
+
+    function bindCollapsible(refs){
+      const { card, collapsibleContent, themeToggle, optionsContainer } = refs;
+      card.addEventListener("click", e => {
+        const exceptedElements = [themeToggle, ...optionsContainer.querySelectorAll(".clickable-text")];
+        const isClickOnException = exceptedElements.some(el => el && el.contains(e.target));
+        if(!isClickOnException){ collapsibleContent.classList.toggle("open"); }
+      });
+    }
+    init();
+  });
+  </script>
+</body>
+</html>
+```
