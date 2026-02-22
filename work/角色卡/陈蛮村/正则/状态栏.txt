@@ -153,7 +153,7 @@
       color: #888;
     }
 
-    /* 属性条 */
+    /* 属性条核心样式 */
     .npc-bars {
       padding: 8px;
       display: flex;
@@ -163,7 +163,7 @@
 
     .bar-container {
       width: 100%;
-      background: #000;
+      background: #0a0a0a;
       height: 14px;
       border: 1px solid #2a2a2a;
       position: relative;
@@ -174,9 +174,15 @@
       transition: width 0.3s ease;
     }
 
+    /* 基础三围颜色 */
     .bar-fill.love { background: #8b4513; }
     .bar-fill.corr { background: #4a0e4e; }
     .bar-fill.lust { background: #800020; }
+
+    /* 新增三种专属进度条颜色 */
+    .bar-fill.dick { background: #5c1414; } /* 暗紫色，代表肉棒充血 */
+    .bar-fill.ntr { background: #1b4d1b; }  /* 墨绿色，代表绿帽污染 */
+    .bar-fill.semen { background: #d9d9d9; } /* 乳白色，代表浊液灌注 */
 
     .bar-text {
       position: absolute;
@@ -188,6 +194,13 @@
       color: #fff;
       text-shadow: 1px 1px 1px #000;
       white-space: nowrap;
+      pointer-events: none;
+    }
+
+    /* 精液进度条文字使用黑色描白边以保证在乳白底色上可读 */
+    .bar-text.dark-text {
+      color: #111;
+      text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8), -1px -1px 2px rgba(255, 255, 255, 0.8);
     }
 
     /* 折叠面板 */
@@ -250,8 +263,18 @@
       /* 主角基础信息 */
       $('#player-age').text(safeGet(all_variables, 'stat_data.主角.年龄', 24));
 
-      /* 肉棒状态 */
-      $('#player-dick-len').text(safeGet(all_variables, 'stat_data.主角.性器状态.肉棒.当前长度', 0) + ' cm');
+      /* 肉棒状态展示（修改为进度条形式，满格基准设为 18cm） */
+      const dickLen = safeGet(all_variables, 'stat_data.主角.性器状态.肉棒.当前长度', 0);
+      const dickPct = Math.min((dickLen / 18) * 100, 100).toFixed(1);
+
+      const dickHtml = `
+        <div class="bar-container" style="margin-top: 2px;">
+          <div class="bar-fill dick" style="width: ${dickPct}%;"></div>
+          <div class="bar-text">${dickLen} cm</div>
+        </div>
+      `;
+      $('#player-dick-len-container').html(dickHtml);
+
       $('#player-dick-state').text(safeGet(all_variables, 'stat_data.主角.性器状态.肉棒.状态', '未勃起'));
       $('#player-dick-desc').text(safeGet(all_variables, 'stat_data.主角.性器状态.肉棒.描述', '无'));
 
@@ -261,7 +284,7 @@
       $expTbody.empty();
 
       if (Object.keys(expData).length === 0) {
-        $expTbody.append('<tr><td colspan="6">暂无配种记录</td></tr>');
+        $expTbody.append('<tr><td colspan="6" style="color:#555;">暂无配种记录</td></tr>');
       } else {
         Object.entries(expData).forEach(([name, data]) => {
           const k = safeGet(data, '口交', 0);
@@ -286,7 +309,6 @@
       $container.empty();
 
       Object.entries(npcs).forEach(([name, data]) => {
-        /* 为了在循环中方便，我们拼装完整的基础路径 */
         const basePath = `stat_data.角色.${name}`;
 
         const age = safeGet(all_variables, `${basePath}.年龄`, '未知');
@@ -300,12 +322,27 @@
         const mind = safeGet(all_variables, `${basePath}.内心想法`, '无');
         const view = safeGet(all_variables, `${basePath}.对主角看法`, '无');
 
-        /* 解析精液状态 */
+        /* 解析精液状态：生成进度条（视觉上限基准为 50ml） */
         const semenObj = safeGet(all_variables, `${basePath}.体内精液`, {});
-        const semenList = Object.entries(semenObj).map(([src, info]) => {
-          return `[${src}]: ${safeGet(info, '量', 0)}ml (${safeGet(info, '状态', '')})`;
-        });
-        const semenText = semenList.length > 0 ? semenList.join('<br>') : '干净';
+        let semenHtml = '';
+        if (Object.keys(semenObj).length > 0) {
+          semenHtml = Object.entries(semenObj).map(([src, info]) => {
+            const amount = safeGet(info, '量', 0);
+            const status = safeGet(info, '状态', '');
+            const pct = Math.min((amount / 50) * 100, 100).toFixed(1);
+            return `
+              <div style="margin-bottom: 6px;">
+                <div style="font-size: 0.8em; color: #888; margin-bottom: 2px;">[来源: ${src}] ${status}</div>
+                <div class="bar-container">
+                  <div class="bar-fill semen" style="width: ${pct}%;"></div>
+                  <div class="bar-text dark-text">${amount} ml</div>
+                </div>
+              </div>
+            `;
+          }).join('');
+        } else {
+          semenHtml = '<span style="color:#555;">内腔干净无垢</span>';
+        }
 
         /* 上次做爱 */
         const lsTime = safeGet(all_variables, `${basePath}.上次做爱.时间`, '无');
@@ -313,23 +350,38 @@
         const lsLoc = safeGet(all_variables, `${basePath}.上次做爱.地点`, '无');
         const lsWay = safeGet(all_variables, `${basePath}.上次做爱.方式`, '无');
 
-        /* NTR 与 出轨 */
+        /* NTR 与 出轨记录：生成进度条 */
         const kuzhu = safeGet(all_variables, `${basePath}.NTR关系.苦主姓名`, '无');
-        const chuGui = safeGet(all_variables, `${basePath}.NTR关系.出轨记录`, {});
+        const chuGuiRecord1 = safeGet(all_variables, `${basePath}.NTR关系.出轨记录`, {});
+        const chuGuiRecord2 = safeGet(all_variables, `${basePath}.NTR关系.出轨对象`, {});
+        const chuGui = Object.keys(chuGuiRecord1).length > 0 ? chuGuiRecord1 : chuGuiRecord2;
+
         let chuGuiHtml = '';
         if (Object.keys(chuGui).length > 0) {
-          chuGuiHtml = Object.entries(chuGui).map(([hm, info]) =>
-            `[${hm}] 侵犯度: ${safeGet(info, 'NTR', 0)}/100`
-          ).join('<br>');
+          chuGuiHtml = Object.entries(chuGui).map(([hm, info]) => {
+            let ntrVal = 0;
+            if (typeof info === 'object') ntrVal = safeGet(info, 'NTR', 0);
+            else if (typeof info === 'number') ntrVal = info;
+            const pct = Math.min(ntrVal, 100).toFixed(1);
+            return `
+              <div style="margin-bottom: 6px;">
+                <div style="font-size: 0.8em; color: #888; margin-bottom: 2px;">侵犯者: ${hm}</div>
+                <div class="bar-container">
+                  <div class="bar-fill ntr" style="width: ${pct}%;"></div>
+                  <div class="bar-text">污染度 ${ntrVal}/100</div>
+                </div>
+              </div>
+            `;
+          }).join('');
         } else {
-          chuGuiHtml = '暂无越界记录';
+          chuGuiHtml = '<span style="color:#555;">暂无越界记录</span>';
         }
 
-        /* NPC 性经历 */
+        /* NPC 性经历表格 */
         const expData = safeGet(all_variables, `${basePath}.性经历`, {});
         let expRows = '';
         if (Object.keys(expData).length === 0) {
-          expRows = '<tr><td colspan="6">尚待开发</td></tr>';
+          expRows = '<tr><td colspan="6" style="color:#555;">尚未开发</td></tr>';
         } else {
           Object.entries(expData).forEach(([objName, objData]) => {
             const k = safeGet(objData, '口交', 0);
@@ -377,8 +429,8 @@
             <button class="accordion-btn">使用日志</button>
             <div class="accordion-content">
               <div class="detail-item">
-                <div class="stat-label">内腔储精池:</div>
-                <div class="highlight-red" style="text-align: right; margin-top: 4px;">${semenText}</div>
+                <div class="stat-label" style="margin-bottom: 4px;">内腔储精池:</div>
+                <div style="padding-left: 8px;">${semenHtml}</div>
               </div>
               <div class="detail-item">
                 <div class="stat-label">上次处理:</div>
@@ -387,8 +439,8 @@
                 </div>
               </div>
               <div class="detail-item">
-                <div class="stat-label">苦主 [${kuzhu}] 的绿帽档案:</div>
-                <div style="text-align: right; color:#b0a0a0; font-size: 0.9em; margin-top:4px;">${chuGuiHtml}</div>
+                <div class="stat-label" style="margin-bottom: 4px;">苦主 [${kuzhu}] 的绿帽档案:</div>
+                <div style="padding-left: 8px;">${chuGuiHtml}</div>
               </div>
             </div>
 
@@ -417,7 +469,7 @@
         $('#' + target).addClass('active');
       });
 
-      /* 折叠面板展开/收起（使用事件委托机制处理动态生成的元素） */
+      /* 折叠面板展开/收起 */
       $(document).off('click', '.accordion-btn').on('click', '.accordion-btn', function() {
         $(this).toggleClass('active');
         $(this).next('.accordion-content').slideToggle(200);
@@ -466,7 +518,10 @@
       <div class="player-section">
         <div class="section-title">操刀人规格</div>
         <div class="stat-row"><span class="stat-label">年龄:</span><span class="stat-value" id="player-age">0</span></div>
-        <div class="stat-row"><span class="stat-label">凶器尺寸:</span><span class="stat-value" id="player-dick-len">0 cm</span></div>
+        <div class="stat-row" style="align-items: center;">
+          <span class="stat-label" style="width: 70px;">凶器尺寸:</span>
+          <div id="player-dick-len-container" style="flex: 1;"></div>
+        </div>
         <div class="stat-row"><span class="stat-label">勃起状态:</span><span class="stat-value highlight-red" id="player-dick-state">未知</span></div>
         <div class="stat-row"><span class="stat-label">充血描述:</span><span class="stat-value text-italic" id="player-dick-desc">无</span></div>
       </div>
@@ -485,7 +540,7 @@
             </tr>
           </thead>
           <tbody id="player-exp-tbody">
-            /* JS 动态填充 */
+            <!-- 数据将通过 JS 渲染注入这里 -->
           </tbody>
         </table>
       </div>
@@ -494,7 +549,7 @@
     <!-- 面板 2：祭品（NPC）信息 -->
     <div id="tab-npc" class="tab-content">
       <div id="npc-container">
-        /* JS 动态填充每个 NPC 卡片 */
+        <!-- 角色卡片将通过 JS 渲染注入这里 -->
       </div>
     </div>
 

@@ -9,6 +9,7 @@
 {{setvar::底部状态栏标签:: }}
 {{setvar::update_variable:: }}
 {{setvar::变量更新标签:: }}
+{{setvar::变量标签:: }}
 {{setvar::snow:: }}
 {{setvar::小剧场标签:: }}
 {{setglobalvar::meow_FM:: }}

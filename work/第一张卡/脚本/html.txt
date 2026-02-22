@@ -246,11 +246,11 @@
       // NTR 关系
       const ntr = data.NTR关系 || {};
       const kuzhu = ntr.苦主姓名 || '未知';
-      const records = ntr.出轨记录 || {};
+      const records = ntr.出轨对象 || {};
 
       let ntrHtml = `<div class="kv-row"><span class="k-label">苦主</span><span class="v-val" style="color:var(--text-primary)">${kuzhu}</span></div>`;
       if (Object.keys(records).length === 0) {
-        ntrHtml += '<div style="color:#999;font-size:0.85em;text-align:center;margin-top:5px">暂无出轨记录</div>';
+        ntrHtml += '<div style="color:#999;font-size:0.85em;text-align:center;margin-top:5px">暂无出轨对象</div>';
       } else {
         ntrHtml += '<div style="border-top:1px dashed #eee;margin:5px 0"></div>';
         Object.entries(records).forEach(([hmName, hmData]) => {

@@ -10,4 +10,5 @@ ECot
 {{getvar::摘要标签}}
 {{getvar::选项标签}}
 {{getvar::小剧场标签}}
+{{getvar::变量标签}}
 </structure_sample>

@@ -4,3 +4,6 @@
 {{setvar::变量更新标签::
 <UpdateVariable>
 }}
+{{setvar::变量标签:: 
+<StatusPlaceHolderImpl/>
+}}

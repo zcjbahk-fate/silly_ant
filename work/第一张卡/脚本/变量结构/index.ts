@@ -87,7 +87,7 @@ export const Schema = z.object({
           苦主姓名: z.string().prefault("托"), // 只需要定义一次苦主
 
           // 记录与各个黄毛的关系
-          出轨记录: z
+          出轨对象: z
             .record(
               z.string().describe("黄毛名字"),
               z.object({

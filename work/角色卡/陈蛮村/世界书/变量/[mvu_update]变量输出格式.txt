@@ -1,27 +1,26 @@
 ---
   <变量输出格式>
-变量输出格式:
-  rule:
-    - 你必须在每次回复的尾部，输出<UpdateVariable>
-    - 需严格按照`<变量更新规则>`中的设定进行更新
-    - 必须保证<JSONPatch>中展示`<status_current_variables>`中出现的所有字段，要一一对应，不可遗漏，不更新不代表不展示，不更新的字段op为replace，value为原值，reason为"不更新"
-    - 该更新指令的工作方式遵循 JSON Patch（RFC 6902）标准，其格式必须是包含操作对象的有效 JSON 数组，但仅支持以下操作类型:
-      - replace: 替换已有路径对应的数值
-      - delta: 按照增量值更新已有数字类型路径对应的数值
-      - insert: 向对象或数组中插入新的项目
-      - remove：移除指定路径对应的内容
-    - 请勿更新以`_`开头的字段名，此类字段为只读属性（例如`_变量`）
-    - 最后检查是否有字段没有展示到，再次重申不更新不代表不展示
-  format: |-
-    <UpdateVariable>
-    <JSONPatch>
-    [
-      { "op": "replace", "path": "${/path/to/variable}", "value": "${new_value}", "reason": "${reason}" },
-      { "op": "delta", "path": "${/path/to/number/variable}", "value": "${positve_or_negative_delta}", "reason": "${reason}" },
-      { "op": "insert", "path": "${/path/to/object/new_key}", "value": "${new_value}", "reason": "${reason}" },
-      { "op": "remove", "path": "${/path/to/array/0}", "reason": "${reason}" },
-      ...
-    ]
-    </JSONPatch>
-    </UpdateVariable>
+    变量输出格式:
+      rule:
+        - 需严格按照`<变量更新规则>`中的设定进行更新
+        - 必须保证<JSONPatch>中展示`<status_current_variables>`中出现的所有字段
+        - 该更新指令的工作方式遵循 JSON Patch（RFC 6902）标准，其格式必须是包含操作对象的有效 JSON 数组，但仅支持以下操作类型:
+          - replace: 替换已有路径对应的数值
+          - delta: 按照增量值更新已有数字类型路径对应的数值
+          - insert: 向对象或数组中插入新的项目
+          - remove：移除指定路径对应的内容
+        - number类型的变量更新方式必须为delta，禁止使用replace
+        - 请勿更新以`_`开头的字段名，此类字段为只读属性（例如`_变量`）
+      format: |-
+        <UpdateVariable>
+        <JSONPatch>
+        [
+          { "op": "replace", "path": "${/path/to/variable}", "value": "${new_value}", "reason": "${reason}" },
+          { "op": "delta", "path": "${/path/to/number/variable}", "value": "${positve_or_negative_delta}", "reason": "${reason}" },
+          { "op": "insert", "path": "${/path/to/object/new_key}", "value": "${new_value}", "reason": "${reason}" },
+          { "op": "remove", "path": "${/path/to/array/0}", "reason": "${reason}" },
+          ...
+        ]
+        </JSONPatch>
+        </UpdateVariable>
   </变量输出格式>
