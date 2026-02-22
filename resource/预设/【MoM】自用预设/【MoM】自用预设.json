@@ -522,7 +522,7 @@
     {
       "identifier": "32",
       "name": "✨🔵角色变量",
-      "enabled": false,
+      "enabled": true,
       "injection_position": 0,
       "injection_depth": 4,
       "injection_order": 100,
@@ -1328,7 +1328,7 @@
         },
         {
           "identifier": "32",
-          "enabled": false
+          "enabled": true
         },
         {
           "identifier": "33",
