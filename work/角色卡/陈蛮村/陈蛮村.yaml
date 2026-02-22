@@ -385,7 +385,7 @@
           另外, 你可以配合[实时编写角色卡、世界书或角色卡](https://stagedog.github.io/青空莉/工具经验/实时编写角色卡、世界书或角色卡/)来做到: 在 VSCode 中对角色卡进行一些修改, 上传到 github, 玩家在酒馆中自动收到更新.
         数据:
           角色卡名称: 陈蛮村
-          角色卡链接: https://github.com/zcjbahk-fate/silly_ant/blob/main/resource/%E8%A7%92%E8%89%B2%E5%8D%A1/%E9%99%88%E8%9B%AE%E6%9D%91/%E9%99%88%E8%9B%AE%E6%9D%91.png?raw=true
-          更新日志链接: https://github.com/zcjbahk-fate/silly_ant/blob/main/resource/%E8%A7%92%E8%89%B2%E5%8D%A1/%E9%99%88%E8%9B%AE%E6%9D%91/%E6%9B%B4%E6%96%B0%E6%97%A5%E5%BF%97.md?raw=true
+          角色卡链接: https://raw.githubusercontent.com/zcjbahk-fate/silly_ant/refs/heads/main/resource/角色卡/陈蛮村/陈蛮村.png
+          更新日志链接: https://raw.githubusercontent.com/zcjbahk-fate/silly_ant/refs/heads/main/resource/角色卡/陈蛮村/更新日志.md
 
     变量: {}
