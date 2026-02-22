@@ -919,8 +919,8 @@
 
           另外, 你可以配合[实时编写角色卡、世界书或预设](https://stagedog.github.io/青空莉/工具经验/实时编写角色卡、世界书或预设/)来做到: 在 VSCode 中对预设进行一些修改, 上传到 github, 玩家在酒馆中自动收到更新.
         数据:
-          预设名称: 未填写
-          预设链接: 未填写
-          更新日志链接: 未填写
+          预设名称: 【MoM】自用预设
+          预设链接: https://raw.githubusercontent.com/zcjbahk-fate/silly_ant/refs/heads/main/resource/预设/【MoM】自用预设/【MoM】自用预设.json
+          更新日志链接: https://raw.githubusercontent.com/zcjbahk-fate/silly_ant/refs/heads/main/resource/预设/【MoM】自用预设/更新日志.md
 
     变量: {}
