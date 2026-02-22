@@ -1843,9 +1843,9 @@
             "buttons": []
           },
           "data": {
-            "预设名称": "未填写",
-            "预设链接": "未填写",
-            "更新日志链接": "未填写"
+            "预设名称": "【MoM】自用预设",
+            "预设链接": "https://raw.githubusercontent.com/zcjbahk-fate/silly_ant/refs/heads/main/resource/预设/【MoM】自用预设/【MoM】自用预设.json",
+            "更新日志链接": "https://raw.githubusercontent.com/zcjbahk-fate/silly_ant/refs/heads/main/resource/预设/【MoM】自用预设/更新日志.md"
           }
         }
       ],
