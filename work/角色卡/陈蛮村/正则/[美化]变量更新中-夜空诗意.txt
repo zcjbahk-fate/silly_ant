@@ -1,0 +1,159 @@
+<div style="width: 80%; margin: 20px auto;">
+  <details class="night-sky-thinking" style="
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    border-radius: 18px;
+    box-shadow: 0 4px 24px rgba(59, 130, 246, 0.15), inset 0 1px 0 rgba(148, 163, 184, 0.1);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    position: relative;
+  ">
+    <summary style="
+      padding: 16px 24px;
+      color: #e2e8f0;
+      cursor: pointer;
+      list-style: none;
+      font-weight: 500;
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 2;
+    ">
+      <span style="
+        font-size: 1.3em;
+        filter: drop-shadow(0 0 10px rgba(191, 219, 254, 0.7));
+        animation: moon-pulse 2s ease-in-out infinite;
+      ">🌙</span>
+      <span style="flex: 1;">明月升起，思绪流转...</span>
+      <span style="font-size: 0.9em; opacity: 0.7;">✦ ˚ ✦</span>
+      <span class="stars-flow" style="
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: 
+          radial-gradient(circle at 20% 50%, rgba(191, 219, 254, 0.15) 0%, transparent 50%),
+          radial-gradient(circle at 80% 50%, rgba(147, 197, 253, 0.1) 0%, transparent 50%);
+        animation: stars-drift 4s ease-in-out infinite;
+        pointer-events: none;
+      "></span>
+      <span class="moonlight-glow" style="
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent 0%,
+          rgba(224, 231, 255, 0.05) 20%,
+          rgba(191, 219, 254, 0.1) 40%,
+          rgba(147, 197, 253, 0.15) 50%,
+          rgba(191, 219, 254, 0.1) 60%,
+          rgba(224, 231, 255, 0.05) 80%,
+          transparent 100%
+        );
+        animation: moonlight-sweep 3s linear infinite;
+        transform: translateX(-100%);
+        pointer-events: none;
+      "></span>
+    </summary>
+    <div style="
+      max-height: 320px;
+      overflow-y: auto;
+      padding: 14px 24px;
+      color: #cbd5e1;
+      line-height: 1.7;
+      transition: all 0.3s ease;
+      white-space: pre-wrap;
+      background: rgba(15, 23, 42, 0.3);
+    ">
+    $1
+    </div>
+  </details>
+</div>
+
+<style>
+  .night-sky-thinking::-webkit-scrollbar {
+    width: 6px;
+  }
+  .night-sky-thinking::-webkit-scrollbar-track {
+    background: #0f172a;
+  }
+  .night-sky-thinking::-webkit-scrollbar-thumb {
+    background: rgba(148, 163, 184, 0.3);
+    border-radius: 3px;
+  }
+  .night-sky-thinking::-webkit-scrollbar-thumb:hover {
+    background: rgba(148, 163, 184, 0.5);
+  }
+
+  .night-sky-thinking[open] {
+    box-shadow: 
+      0 8px 40px rgba(59, 130, 246, 0.25),
+      inset 0 1px 0 rgba(148, 163, 184, 0.15) !important;
+    border-color: rgba(148, 163, 184, 0.35) !important;
+  }
+  .night-sky-thinking[open] > div {
+    animation: contentFadeIn 0.4s ease forwards;
+  }
+  .night-sky-thinking[open] summary .moonlight-glow {
+    animation: none !important;
+    opacity: 0;
+  }
+
+  .night-sky-thinking summary:hover {
+    background: rgba(59, 130, 246, 0.06);
+  }
+  .night-sky-thinking[open] summary {
+    border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+    background: rgba(15, 23, 42, 0.4);
+  }
+  .night-sky-thinking summary::marker {
+    display: none;
+  }
+
+  @keyframes moon-pulse {
+    0%, 100% {
+      transform: scale(1);
+      filter: drop-shadow(0 0 10px rgba(191, 219, 254, 0.7));
+    }
+    50% {
+      transform: scale(1.1);
+      filter: drop-shadow(0 0 16px rgba(191, 219, 254, 0.9));
+    }
+  }
+
+  @keyframes moonlight-sweep {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  @keyframes stars-drift {
+    0%, 100% {
+      opacity: 0.3;
+      transform: translateX(0);
+    }
+    50% {
+      opacity: 0.6;
+      transform: translateX(10px);
+    }
+  }
+
+  @keyframes contentFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
