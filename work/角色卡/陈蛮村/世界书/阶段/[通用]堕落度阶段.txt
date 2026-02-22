@@ -1,10 +1,10 @@
 <%
-if (typeof corrVal === 'undefined') var corrVal = getvar('stat_data.堕落系统.堕落度', { defaults: 5 });
-if (typeof isKnown === 'undefined') var isKnown = getvar('stat_data.堕落系统.习俗知晓状态', { defaults: '未知' });
+if (typeof corrVal === 'undefined') var corrVal = getvar('_temp_corr_val', { defaults: 0 });
+if (typeof isKnown === 'undefined') var isKnown = getvar('_temp_isKnown_val', { defaults: '未知' });
 %>
 
 <% if (corrVal <= 10) { %>
-  <% if (isKnown === '已知') { %>
+  <% if (isKnown === '未知') { %>
     当前阶段特征:
       阶段定义:
         名称: 纯洁无瑕
@@ -56,7 +56,7 @@ if (typeof isKnown === 'undefined') var isKnown = getvar('stat_data.堕落系统
   <% } %>
 
 <% } else if (corrVal <= 20) { %>
-  <% if (isKnown === '已知') { %>
+  <% if (isKnown === '未知') { %>
     当前阶段特征:
       阶段定义:
         名称: 略生涟漪
@@ -106,7 +106,7 @@ if (typeof isKnown === 'undefined') var isKnown = getvar('stat_data.堕落系统
   <% } %>
 
 <% } else if (corrVal <= 30) { %>
-  <% if (isKnown === '已知') { %>
+  <% if (isKnown === '未知') { %>
     当前阶段特征:
       阶段定义:
         名称: 暗流涌动
@@ -156,7 +156,7 @@ if (typeof isKnown === 'undefined') var isKnown = getvar('stat_data.堕落系统
   <% } %>
 
 <% } else if (corrVal <= 40) { %>
-  <% if (isKnown === '已知') { %>
+  <% if (isKnown === '未知') { %>
     当前阶段特征:
       阶段定义:
         名称: 心猿意马
@@ -208,7 +208,7 @@ if (typeof isKnown === 'undefined') var isKnown = getvar('stat_data.堕落系统
   <% } %>
 
 <% } else if (corrVal <= 50) { %>
-  <% if (isKnown === '已知') { %>
+  <% if (isKnown === '未知') { %>
     当前阶段特征:
       阶段定义:
         名称: 欲拒还迎
@@ -259,7 +259,7 @@ if (typeof isKnown === 'undefined') var isKnown = getvar('stat_data.堕落系统
   <% } %>
 
 <% } else if (corrVal <= 60) { %>
-  <% if (isKnown === '已知') { %>
+  <% if (isKnown === '未知') { %>
     当前阶段特征:
       阶段定义:
         名称: 渐入迷途
@@ -310,7 +310,7 @@ if (typeof isKnown === 'undefined') var isKnown = getvar('stat_data.堕落系统
   <% } %>
 
 <% } else if (corrVal <= 70) { %>
-  <% if (isKnown === '已知') { %>
+  <% if (isKnown === '未知') { %>
     当前阶段特征:
       阶段定义:
         名称: 沉溺欲海
@@ -361,7 +361,7 @@ if (typeof isKnown === 'undefined') var isKnown = getvar('stat_data.堕落系统
   <% } %>
 
 <% } else if (corrVal <= 80) { %>
-  <% if (isKnown === '已知') { %>
+  <% if (isKnown === '未知') { %>
     当前阶段特征:
       阶段定义:
         名称: 欲壑难填
@@ -411,7 +411,7 @@ if (typeof isKnown === 'undefined') var isKnown = getvar('stat_data.堕落系统
   <% } %>
 
 <% } else if (corrVal <= 90) { %>
-  <% if (isKnown === '已知') { %>
+  <% if (isKnown === '未知') { %>
     当前阶段特征:
       阶段定义:
         名称: 彻底沦陷
@@ -461,7 +461,7 @@ if (typeof isKnown === 'undefined') var isKnown = getvar('stat_data.堕落系统
   <% } %>
 
 <% } else { %>
-  <% if (isKnown === '已知') { %>
+  <% if (isKnown === '未知') { %>
     当前阶段特征:
       阶段定义:
         名称: 万劫不复

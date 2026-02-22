@@ -3,539 +3,501 @@
 <html lang="zh-CN">
 <head>
   <style>
-    @import url(https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap);
-
-    /* === 配色方案 (色气增强版 Pro Max) === */
-    :root {
-      --bg-color: transparent;
-      --card-bg-color: rgba(255, 248, 250, 0.96);
-      --border-color: rgba(255, 182, 193, 0.6);
-
-      --text-primary: #590d22;
-      --text-secondary: #a4133c;
-      --accent: #ff0a54;
-
-      /* 欲望色谱 */
-      --c-love-light: #ffccd5;
-      --c-love-deep: #ff4d6d;
-      --c-depravity-light: #e0c3fc;
-      --c-depravity-deep: #7b2cbf;
-      --c-lust-light: #ffb3c1;
-      --c-lust-deep: #c9184a;
-      --c-ntr-light: #d8f3dc;
-      --c-ntr-deep: #2d6a4f;
-
-      /* 衣物状态 */
-      --status-bg: #ffe0e9;
-      --status-text: #c9184a;
-
-      --glass-bg: rgba(255, 255, 255, 0.65);
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: transparent;
+      font-family: "Microsoft YaHei", serif;
+      color: #d3c4c4;
+      width: 100%;
+      box-sizing: border-box;
+      font-size: 14px;
     }
 
-    body { margin: 0; padding: 0; font-family: "Noto Sans SC", sans-serif; font-size: 14px; color: var(--text-primary); }
-
-    /* 动画 */
-    @keyframes breathe { 0% { opacity: 0.85; } 50% { opacity: 1; } 100% { opacity: 0.85; } }
-
-    .status-card {
-      width: 100%; height: 100%;
-      background: var(--card-bg-color);
-      border-radius: 12px; overflow: hidden;
-      border: 1px solid var(--border-color);
-      display: flex; flex-direction: column;
+    .chenman-container {
+      width: 100%;
+      background: linear-gradient(135deg, #140d0d 0%, #0a0a0a 100%);
+      border: 2px solid #5a1818;
+      border-radius: 4px;
+      padding: 10px;
+      box-sizing: border-box;
+      box-shadow: inset 0 0 20px rgba(90, 24, 24, 0.2);
     }
 
-    /* === 顶部环境 (时间样式修改) === */
-    .env-banner {
-      background: linear-gradient(135deg, #fff0f3 0%, #ffe5ec 100%);
-      padding: 10px 15px;
-      border-bottom: 1px solid var(--border-color);
-    }
-    .env-row { display: flex; justify-content: space-between; align-items: baseline; }
-
-    /* 【修改】时间容器样式 */
-    .time-container {
-      display: flex; justify-content: space-between; align-items: center;
-      width: 100%; margin-bottom: 5px;
-    }
-    .time-left { display: flex; flex-direction: column; justify-content: center; }
-    .time-head { font-size: 0.85em; color: var(--text-secondary); opacity: 0.8; line-height: 1.2; }
-    .time-tail { font-size: 1.1em; font-weight: 700; color: var(--text-primary); line-height: 1.2; }
-    .time-passed { font-size: 1.2em; font-weight: bold; color: var(--accent); }
-
-    .env-loc { font-size: 0.9em; color: var(--text-secondary); margin-top: 2px; }
-
-    /* === Tab === */
-    .tabs { display: flex; background: rgba(255,255,255,0.5); border-bottom: 1px solid rgba(0,0,0,0.05); }
-    .tab-button {
-      flex: 1; padding: 10px; border: none; background: transparent;
-      color: var(--text-secondary); cursor: pointer; font-weight: 500;
-      border-bottom: 2px solid transparent; transition: all 0.2s;
-    }
-    .tab-button.active { color: var(--accent); background: rgba(255,10,84,0.03); border-bottom-color: var(--accent); font-weight: bold; }
-
-    .tab-container { flex: 1; overflow-y: auto; padding: 15px; }
-    .tab-page { display: none; }
-    .tab-page.active { display: block; animation: fadeIn 0.3s; }
-    @keyframes fadeIn { from{opacity:0;transform:translateY(5px)} to{opacity:1;transform:translateY(0)} }
-
-    /* === 通用组件 === */
-    .section-header {
-      font-size: 0.95em; color: var(--text-secondary); font-weight: bold;
-      margin: 15px 0 8px 0; padding-left: 8px; border-left: 3px solid var(--accent);
-      display: flex; justify-content: space-between; align-items: center;
-    }
-    .section-header:first-child { margin-top: 0; }
-
-    .card-box {
-      background: var(--glass-bg);
-      border: 1px solid rgba(255,192,203,0.5);
-      border-radius: 8px; padding: 10px; margin-bottom: 8px;
-      box-shadow: 0 2px 6px rgba(255,182,193,0.15);
+    /* 倒计时 */
+    .system-title {
+      font-size: 1.2em;
+      color: #b22222;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 12px;
+      text-shadow: 1px 1px 2px #000;
+      border-bottom: 1px solid #3a1c1c;
+      padding-bottom: 5px;
     }
 
-    .kv-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 5px; }
-    .kv-row:last-child { margin-bottom: 0; }
-    .k-label { color: var(--text-secondary); font-size: 0.9em; flex-shrink: 0; margin-right: 10px; }
-    .v-val { color: var(--text-primary); font-weight: 500; text-align: right; word-break: break-all; }
-
-    /* === 滑条 === */
-    .slider-box { margin-bottom: 10px; }
-    .slider-info { display: flex; justify-content: space-between; font-size: 0.9em; color: var(--text-secondary); margin-bottom: 3px; }
-    .slider-track { height: 8px; background: rgba(0,0,0,0.06); border-radius: 4px; overflow: hidden; }
-    .slider-fill {
-      height: 100%; border-radius: 4px;
-      animation: breathe 3s infinite ease-in-out;
-      background-size: 200% auto;
-      transition: width 0.5s;
+    /* 顶部导航 Tab */
+    .nav-tabs {
+      display: flex;
+      gap: 5px;
+      margin-bottom: 10px;
     }
 
-    /* === 肉棒状态 === */
-    .penis-card {
-      background: linear-gradient(to bottom right, #fff0f3, #fff);
-      border: 1px solid var(--c-lust-deep);
-      border-radius: 10px; padding: 12px;
-      text-align: center; margin-bottom: 15px;
-      box-shadow: 0 4px 10px rgba(255,77,109,0.15);
-    }
-    .penis-bar-bg {
-      height: 12px; background: #ffe5ec; border-radius: 6px; margin: 8px 0;
-      position: relative; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
-    }
-    .penis-bar-fill {
-      height: 100%; border-radius: 6px;
-      background: linear-gradient(90deg, #ff8fa3, #800f2f);
-      box-shadow: 0 0 8px rgba(255,0,80,0.3);
-      transition: width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-    .penis-dot {
-      width: 14px; height: 14px; background: #fff; border: 2px solid #d90429;
-      border-radius: 50%; position: absolute; top: 50%; transform: translate(-50%,-50%);
-      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    }
-
-    /* === 情报条目化 === */
-    .intel-char-btn {
-      background: #fff; border: 1px solid var(--border-color);
-      padding: 8px 12px; border-radius: 6px; margin-bottom: 5px;
-      cursor: pointer; display: flex; justify-content: space-between;
+    .nav-btn {
+      flex: 1;
+      background: #1a0a0a;
+      border: 1px solid #5a1818;
+      color: #887a7a;
+      padding: 6px 0;
+      text-align: center;
+      cursor: pointer;
+      font-weight: bold;
       transition: all 0.2s;
     }
-    .intel-char-btn:hover { border-color: var(--accent); background: #fff5f8; }
-    .intel-list { display: none; padding: 5px 0 10px 5px; }
 
-    .intel-tag {
-      display: inline-block; padding: 3px 8px; border-radius: 4px;
-      font-size: 0.85em; margin: 0 4px 4px 0; border: 1px solid transparent;
-    }
-    .tag-known { background: #e8f5e9; color: #2e7d32; border-color: #c8e6c9; }
-    .tag-unknown { background: #f3e5f5; color: #7b1fa2; border-color: #e1bee7; border-style: dashed; }
-
-    /* === 战绩图标 === */
-    .sex-grid {
-      display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px;
-      background: rgba(255,255,255,0.5); padding: 8px; border-radius: 8px;
-    }
-    .sex-item { text-align: center; }
-    .sex-icon { font-size: 1.3em; display: block; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1)); }
-    .sex-num { font-size: 0.8em; font-weight: bold; color: var(--c-lust-deep); }
-
-    /* === 衣物状态 (上下展示 + 统一粉底) === */
-    .cloth-row {
-      padding: 6px 0; border-bottom: 1px dashed rgba(0,0,0,0.05);
-      display: flex; flex-direction: column; gap: 4px; /* 上下排列 */
-    }
-    .cloth-name { font-size: 0.95em; color: var(--text-primary); font-weight: 500; }
-    .cloth-status-box {
-      align-self: flex-start; /* 靠左对齐 */
-      font-size: 0.8em; padding: 2px 8px; border-radius: 4px;
-      background: var(--status-bg); color: var(--status-text); /* 统一粉底红字 */
-      font-weight: bold; border: 1px solid rgba(201, 24, 74, 0.2);
+    .nav-btn.active {
+      background: #4a1010;
+      color: #e0d8d8;
+      border-bottom: 2px solid #ff3333;
     }
 
-    /* === 列表年龄美化 === */
-    .age-badge {
-      font-size: 0.75em; background: rgba(0,0,0,0.05); color: #888;
-      padding: 1px 5px; border-radius: 4px; margin-left: 5px; font-weight: normal;
-      vertical-align: middle;
+    /* 页面容器 */
+    .tab-content {
+      display: none;
     }
 
-    /* === 辅助 === */
-    .back-btn { color: var(--accent); cursor: pointer; font-weight: bold; margin-bottom: 10px; display: inline-flex; align-items: center; }
-    .hidden { display: none !important; }
-    .toggle-icon { font-size: 0.8em; opacity: 0.6; transition: transform 0.3s; }
-    .rotated { transform: rotate(180deg); }
+    .tab-content.active {
+      display: block;
+    }
+
+    /* 数据行通用样式 */
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 4px;
+      word-break: break-all;
+    }
+
+    .stat-label {
+      color: #887a7a;
+      flex-shrink: 0;
+      margin-right: 10px;
+    }
+
+    .stat-value {
+      color: #e0d8d8;
+      text-align: right;
+    }
+
+    .highlight-red { color: #d9534f; }
+    .text-italic { font-style: italic; color: #aaa; }
+
+    /* 主角面板区块 */
+    .player-section {
+      background: rgba(40, 10, 10, 0.4);
+      padding: 8px;
+      border-left: 3px solid #b22222;
+      margin-bottom: 10px;
+    }
+
+    .section-title {
+      color: #c08080;
+      font-weight: bold;
+      margin-bottom: 6px;
+      border-bottom: 1px dashed #5a1818;
+      padding-bottom: 2px;
+    }
+
+    /* 记录列表小表格 */
+    .record-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 4px;
+      font-size: 0.9em;
+    }
+
+    .record-table th, .record-table td {
+      border: 1px solid #3a1c1c;
+      padding: 3px;
+      text-align: center;
+      color: #b0a0a0;
+    }
+
+    .record-table th { background: rgba(90, 24, 24, 0.2); }
+
+    /* 角色卡片 */
+    .npc-card {
+      background: rgba(20, 20, 20, 0.8);
+      border: 1px solid #3a1c1c;
+      border-top: 3px solid #800000;
+      margin-bottom: 12px;
+    }
+
+    .npc-header {
+      padding: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #3a1c1c;
+      background: rgba(40, 10, 10, 0.3);
+    }
+
+    .npc-name {
+      font-size: 1.1em;
+      color: #c08080;
+      font-weight: bold;
+    }
+
+    .npc-basic-info {
+      font-size: 0.8em;
+      color: #888;
+    }
+
+    /* 属性条 */
+    .npc-bars {
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .bar-container {
+      width: 100%;
+      background: #000;
+      height: 14px;
+      border: 1px solid #2a2a2a;
+      position: relative;
+    }
+
+    .bar-fill {
+      height: 100%;
+      transition: width 0.3s ease;
+    }
+
+    .bar-fill.love { background: #8b4513; }
+    .bar-fill.corr { background: #4a0e4e; }
+    .bar-fill.lust { background: #800020; }
+
+    .bar-text {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 10px;
+      line-height: 14px;
+      color: #fff;
+      text-shadow: 1px 1px 1px #000;
+      white-space: nowrap;
+    }
+
+    /* 折叠面板 */
+    .accordion-btn {
+      width: 100%;
+      background: #1f0b0b;
+      border: none;
+      border-top: 1px dashed #3a1c1c;
+      color: #a08080;
+      padding: 6px;
+      text-align: left;
+      cursor: pointer;
+      font-size: 0.9em;
+      outline: none;
+    }
+
+    .accordion-btn::before {
+      content: '▶';
+      display: inline-block;
+      margin-right: 5px;
+      font-size: 0.8em;
+      transition: transform 0.2s;
+    }
+
+    .accordion-btn.active::before {
+      transform: rotate(90deg);
+    }
+
+    .accordion-content {
+      display: none;
+      padding: 8px;
+      background: rgba(0, 0, 0, 0.4);
+      border-top: 1px solid #2a1010;
+      font-size: 0.9em;
+    }
+
+    .detail-item {
+      margin-bottom: 6px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid rgba(58, 28, 28, 0.3);
+    }
+    .detail-item:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
   </style>
 
   <script type="module">
-    let globalVars = {};
-
-    // 图标映射
-    const ICONS = { 总数: '∑', 口交: '👄', 足交: '🦶', 插入: '💓', 肛交: '🍩', 手交: '👋' };
-
-    function renderTags(text, type) {
-      if (!text || text === '无' || text === '...') return '<span style="font-size:0.8em;color:#999">无记录</span>';
-      const list = text.split(/\s*\/\s*/).filter(i => i.trim());
-      const cls = type === 'known' ? 'tag-known' : 'tag-unknown';
-      return list.map(i => `<span class="intel-tag ${cls}">${i}</span>`).join('');
+    /* 辅助函数：安全获取嵌套对象的值，严格使用 lodash 的 get 方法 */
+    function safeGet(obj, path, defaultValue = '未知') {
+      return _.get(obj, path, defaultValue);
     }
 
-    function renderSlider(label, val, c1, c2) {
-      const v = parseInt(val) || 0;
-      const pct = Math.min(100, Math.max(0, v));
-      // 移除百分号
-      return `
-        <div class="slider-box">
-          <div class="slider-info"><span>${label}</span><span style="color:${c2};font-weight:bold">${v}</span></div>
-          <div class="slider-track">
-            <div class="slider-fill" style="width:${pct}%; background: linear-gradient(90deg, ${c1}, ${c2}); box-shadow: 0 0 5px ${c1};"></div>
-          </div>
-        </div>`;
-    }
+    /* 渲染主角与系统状态 */
+    function renderPlayerAndSystem(all_variables) {
+      const daysLeft = safeGet(all_variables, 'stat_data.系统.距离除夕还剩天数', 7);
+      $('#sys-countdown').text(daysLeft);
 
-    function renderSexStats(expObj) {
-      if (!expObj) return '<div style="font-size:0.8em;color:#999;text-align:center">暂无记录</div>';
+      /* 主角基础信息 */
+      $('#player-age').text(safeGet(all_variables, 'stat_data.主角.年龄', 24));
 
-      // 【修正】直接使用传入的对象，不再做奇怪的降级判断
-      // 如果后端没有计算总数，我们在前端简单求和一下
-      let data = expObj;
-      if (data.总数 === undefined) {
-        // 浅拷贝以防修改原数据
-        data = { ...expObj };
-        // 计算总数
-        data.总数 = ['口交','足交','插入','肛交','手交'].reduce((sum, k) => sum + (parseInt(data[k]) || 0), 0);
+      /* 肉棒状态 */
+      $('#player-dick-len').text(safeGet(all_variables, 'stat_data.主角.性器状态.肉棒.当前长度', 0) + ' cm');
+      $('#player-dick-state').text(safeGet(all_variables, 'stat_data.主角.性器状态.肉棒.状态', '未勃起'));
+      $('#player-dick-desc').text(safeGet(all_variables, 'stat_data.主角.性器状态.肉棒.描述', '无'));
+
+      /* 主角性经历记录表 */
+      const expData = safeGet(all_variables, 'stat_data.主角.性经历', {});
+      const $expTbody = $('#player-exp-tbody');
+      $expTbody.empty();
+
+      if (Object.keys(expData).length === 0) {
+        $expTbody.append('<tr><td colspan="6">暂无配种记录</td></tr>');
+      } else {
+        Object.entries(expData).forEach(([name, data]) => {
+          const k = safeGet(data, '口交', 0);
+          const z = safeGet(data, '足交', 0);
+          const c = safeGet(data, '插入', 0);
+          const g = safeGet(data, '肛交', 0);
+          const s = safeGet(data, '手交', 0);
+          const total = safeGet(data, '总数', (k+z+c+g+s));
+          $expTbody.append(`
+            <tr>
+              <td>${name}</td><td>${k}</td><td>${z}</td><td>${c}</td><td>${g}</td><td>${total}</td>
+            </tr>
+          `);
+        });
       }
-
-      let h = '<div class="sex-grid">';
-      ['总数', '口交','足交','插入','肛交','手交'].forEach(k => {
-        h += `<div class="sex-item"><span class="sex-icon">${ICONS[k]}</span><span class="sex-num">${data[k]||0}</span></div>`;
-      });
-      h += '</div>';
-      return h;
     }
 
+    /* 渲染NPC列表 */
+    function renderNpcs(all_variables) {
+      const npcs = safeGet(all_variables, 'stat_data.角色', {});
+      const $container = $('#npc-container');
+      $container.empty();
 
-    // 1. 渲染世界
-    function renderWorld() {
-      const sys = _.get(globalVars, 'stat_data.系统', {});
-      const mc = _.get(globalVars, 'stat_data.主角', {});
+      Object.entries(npcs).forEach(([name, data]) => {
+        /* 为了在循环中方便，我们拼装完整的基础路径 */
+        const basePath = `stat_data.角色.${name}`;
 
-      // 【修改】顶部时间显示逻辑
-      const timeHead = sys.时间段?.头 || '未知时间';
-      const timeTail = sys.时间段?.尾 || sys.时间 || '未知时间';
-      const passed = sys.时间段?.经过时间 || 0;
+        const age = safeGet(all_variables, `${basePath}.年龄`, '未知');
+        const known = safeGet(all_variables, `${basePath}.是否知晓村中习俗`, '未知');
 
-      // 构建两行时间和右侧间隔
-      const timeHtml = `
-        <div class="time-left">
-          <span class="time-head">${timeHead}</span>
-          <span class="time-tail">${timeTail}</span>
-        </div>
-        <div class="time-passed">${passed > 0 ? `+${passed}m` : ''}</div>
-      `;
-      $('#env-time-container').html(timeHtml); // 使用新ID
+        const love = safeGet(all_variables, `${basePath}.好感度`, 0);
+        const corr = safeGet(all_variables, `${basePath}.堕落度`, 0);
+        const lust = safeGet(all_variables, `${basePath}.性欲值`, 0);
 
-      $('#env-loc').text(sys.地点 || '未知');
-      $('#env-wea').text(sys.天气 || '');
+        const posture = safeGet(all_variables, `${basePath}.当前姿势`, '未知');
+        const mind = safeGet(all_variables, `${basePath}.内心想法`, '无');
+        const view = safeGet(all_variables, `${basePath}.对主角看法`, '无');
 
-      const p = mc.性器状态?.肉棒 || {};
-      const cur = parseFloat(p.当前长度)||0;
-      const min = parseFloat(p.长度范围?.最小)||5;
-      const max = parseFloat(p.长度范围?.最大)||18;
-      const pct = Math.min(100, Math.max(0, (cur-min)/(max-min)*100));
+        /* 解析精液状态 */
+        const semenObj = safeGet(all_variables, `${basePath}.体内精液`, {});
+        const semenList = Object.entries(semenObj).map(([src, info]) => {
+          return `[${src}]: ${safeGet(info, '量', 0)}ml (${safeGet(info, '状态', '')})`;
+        });
+        const semenText = semenList.length > 0 ? semenList.join('<br>') : '干净';
 
-      $('#mc-penis').html(`
-        <div style="display:flex;justify-content:space-between;font-weight:bold;color:var(--c-lust-deep);margin-bottom:5px">
-          <span>${p.状态 || '常态'}</span>
-          <span>${cur} cm</span>
-        </div>
-        <div class="penis-bar-bg"><div class="penis-bar-fill" style="width:${pct}%"></div><div class="penis-dot" style="left:${pct}%"></div></div>
-        <div style="font-size:0.85em;color:#888;font-style:italic">"${p.描述||'...'}"</div>
-      `);
+        /* 上次做爱 */
+        const lsTime = safeGet(all_variables, `${basePath}.上次做爱.时间`, '无');
+        const lsObj = safeGet(all_variables, `${basePath}.上次做爱.对象`, '无');
+        const lsLoc = safeGet(all_variables, `${basePath}.上次做爱.地点`, '无');
+        const lsWay = safeGet(all_variables, `${basePath}.上次做爱.方式`, '无');
 
-      const items = mc.持有重要物品 || {};
-      $('#mc-items').html(Object.entries(items).map(([k,v]) => `
-        <div class="kv-row">
-          <span class="k-label">${k} x${v.数量}</span>
-          <span class="v-val" style="font-size:0.85em;color:#666">${v.效果||''}</span>
-        </div>
-      `).join('') || '<div style="color:#999;font-size:0.9em">背包空空</div>');
-
-      const skills = mc.技能 || {};
-      $('#mc-skills').html(Object.entries(skills).map(([k,v]) => `
-        <div class="card-box" style="padding:8px">
-          <div style="font-weight:bold;color:var(--text-primary);font-size:0.9em">★ ${k}</div>
-          <div style="font-size:0.85em;color:var(--text-secondary)">${v}</div>
-        </div>
-      `).join('') || '<div style="color:#999;font-size:0.9em">暂无技能</div>');
-
-      const known = mc.对角色已知 || {};
-      const unknown = mc.对角色未知 || {};
-      const allChars = new Set([...Object.keys(known), ...Object.keys(unknown)]);
-
-      let intelHtml = '';
-      allChars.forEach(char => {
-        const kTxt = known[char];
-        const uTxt = unknown[char];
-        intelHtml += `
-          <div class="intel-char-btn" onclick="$(this).next().slideToggle(200); $(this).find('.toggle-icon').toggleClass('rotated')">
-            <span style="font-weight:bold">${char}</span>
-            <span class="toggle-icon">▼</span>
-          </div>
-          <div class="intel-list">
-            ${kTxt ? `<div style="font-size:0.8em;color:#aaa;margin-bottom:2px">已知</div><div>${renderTags(kTxt,'known')}</div>` : ''}
-            ${uTxt ? `<div style="font-size:0.8em;color:#aaa;margin:4px 0 2px 0">未知</div><div>${renderTags(uTxt,'unknown')}</div>` : ''}
-          </div>
-        `;
-      });
-      $('#mc-intel-area').html(intelHtml || '<div style="color:#999;text-align:center">暂无情报</div>');
-
-      let sexH = '';
-      Object.entries(mc.性经历||{}).forEach(([n, d]) => {
-         sexH += `<div style="margin:5px 0 2px 5px;font-size:0.85em;font-weight:bold;color:var(--accent)">♥ ${n}</div>` + renderSexStats(d);
-      });
-      $('#mc-sex-exp').html(sexH || '<div style="color:#999;text-align:center">处男</div>');
-    }
-
-    // 2. 渲染角色列表
-    function renderList() {
-      const chars = _.get(globalVars, 'stat_data.角色', {});
-      const box = $('#char-list-box');
-      if(!chars || Object.keys(chars).length === 0) {
-        box.html('<div style="padding:20px;text-align:center;color:#999">暂无角色</div>');
-        return;
-      }
-
-      let html = '';
-      Object.entries(chars).forEach(([name, data]) => {
-        // 年龄美化：使用 badge 样式
-        const ageHtml = data.年龄 ? `<span class="age-badge">${data.年龄}岁</span>` : '';
-
-        html += `
-          <div class="card-box" style="cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:all 0.2s"
-               onclick="window.showChar('${name}')" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='rgba(255,192,203,0.5)'">
-            <div>
-              <div style="font-weight:bold;font-size:1.05em">${name} ${ageHtml}</div>
-              <div style="font-size:0.8em;color:var(--text-secondary);margin-top:2px">${data.当前姿势||'无记录'}</div>
-            </div>
-            <div style="text-align:right;font-size:0.9em">
-              <div style="color:var(--c-love-deep)">♥ ${data.好感度||0}</div>
-              <div style="color:var(--c-lust-deep)">♨ ${data.性欲值||0}</div>
-            </div>
-          </div>
-        `;
-      });
-      box.html(html);
-    }
-
-    // 3. 渲染详情
-    window.showChar = function(name) {
-      const data = _.get(globalVars, `stat_data.角色.${name}`, {});
-      $('#view-list').addClass('hidden');
-      $('#view-detail').removeClass('hidden');
-      $('#detail-name').text(name);
-      $('#detail-age').text(data.年龄 ? `${data.年龄}岁` : '');
-      $('#detail-pose').text(data.当前姿势 || '无记录');
-
-      let s = '';
-      s += renderSlider('♥ 好感度', data.好感度, '#ffdde1', '#ee9ca7');
-      s += renderSlider('☠ 堕落度', data.堕落度, '#e0c3fc', '#8e44ad');
-      s += renderSlider('♨ 性欲值', data.性欲值, '#ffcfdf', '#ff0a54');
-      $('#detail-stats').html(s);
-
-      // NTR修改：增加出轨对象
-      const ntr = data.NTR关系 || {};
-      $('#detail-ntr').html(`
-        <div class="kv-row"><span class="k-label">NTR对象</span><span class="v-val" style="color:var(--c-ntr-deep)">${ntr.NTR对象||'无'}</span></div>
-        <div class="kv-row"><span class="k-label">出轨对象</span><span class="v-val" style="color:var(--text-primary)">${ntr.出轨对象||'无'}</span></div>
-        ${renderSlider('♻️ NTR值', ntr.数值, '#d4fc79', '#96e6a1')}
-      `);
-
-      // 印象迁移
-      $('#detail-mind').html(`
-        <div style="margin-bottom:6px">
-           <div style="font-size:0.8em;color:#aaa">内心想法</div>
-           <div class="card-box" style="font-size:0.9em;color:#555;font-style:italic">"${data.内心想法||'...'}"</div>
-        </div>
-        <div>
-           <div style="font-size:0.8em;color:#aaa">对主角印象</div>
-           <div class="card-box" style="font-size:0.9em;color:#555;font-style:italic">"${data.对主角看法||'...'}"</div>
-        </div>
-      `);
-
-      // 情报
-      $('#detail-intel').html(`
-        <div style="margin-bottom:6px"><div style="font-size:0.8em;color:#aaa">对主角已知</div><div>${renderTags(data.对主角已知, 'known')}</div></div>
-        <div><div style="font-size:0.8em;color:#aaa">对主角未知</div><div>${renderTags(data.对主角未知, 'unknown')}</div></div>
-      `);
-
-      // 衣物修改
-      let cHtml = '';
-      ['上身','下身','腿部','鞋子','配饰'].forEach(k => {
-        const obj = data[k];
-        if(obj) {
-          const n = obj.名称 || (typeof obj==='string'?obj:'未知');
-          const st = obj.状态 || '未脱';
-          cHtml += `
-            <div class="cloth-row">
-              <div class="cloth-name">${k}: ${n}</div>
-              <div class="cloth-status-box">${st}</div>
-            </div>`;
+        /* NTR 与 出轨 */
+        const kuzhu = safeGet(all_variables, `${basePath}.NTR关系.苦主姓名`, '无');
+        const chuGui = safeGet(all_variables, `${basePath}.NTR关系.出轨记录`, {});
+        let chuGuiHtml = '';
+        if (Object.keys(chuGui).length > 0) {
+          chuGuiHtml = Object.entries(chuGui).map(([hm, info]) =>
+            `[${hm}] 侵犯度: ${safeGet(info, 'NTR', 0)}/100`
+          ).join('<br>');
+        } else {
+          chuGuiHtml = '暂无越界记录';
         }
+
+        /* NPC 性经历 */
+        const expData = safeGet(all_variables, `${basePath}.性经历`, {});
+        let expRows = '';
+        if (Object.keys(expData).length === 0) {
+          expRows = '<tr><td colspan="6">尚待开发</td></tr>';
+        } else {
+          Object.entries(expData).forEach(([objName, objData]) => {
+            const k = safeGet(objData, '口交', 0);
+            const z = safeGet(objData, '足交', 0);
+            const c = safeGet(objData, '插入', 0);
+            const g = safeGet(objData, '肛交', 0);
+            const s = safeGet(objData, '手交', 0);
+            const total = safeGet(objData, '总数', (k+z+c+g+s));
+            expRows += `<tr><td>${objName}</td><td>${k}</td><td>${z}</td><td>${c}</td><td>${g}</td><td>${total}</td></tr>`;
+          });
+        }
+
+        /* 构建单人卡片 HTML */
+        const html = `
+          <div class="npc-card">
+            <div class="npc-header">
+              <span class="npc-name">${name}</span>
+              <span class="npc-basic-info">${age}岁 | 认知: <span class="${known === '已知' ? 'highlight-red' : ''}">${known}</span></span>
+            </div>
+
+            <div class="npc-bars">
+              <div class="bar-container">
+                <div class="bar-fill love" style="width: ${love}%;"></div>
+                <div class="bar-text">好感 ${love}/100</div>
+              </div>
+              <div class="bar-container">
+                <div class="bar-fill corr" style="width: ${corr}%;"></div>
+                <div class="bar-text">堕落 ${corr}/100</div>
+              </div>
+              <div class="bar-container">
+                <div class="bar-fill lust" style="width: ${lust}%;"></div>
+                <div class="bar-text">发情 ${lust}/100</div>
+              </div>
+            </div>
+
+            <!-- 折叠面板 1：当前状态 -->
+            <button class="accordion-btn">实时监控</button>
+            <div class="accordion-content">
+              <div class="detail-item"><div class="stat-label">姿势躯干:</div><div class="stat-value">${posture}</div></div>
+              <div class="detail-item"><div class="stat-label">真实心声:</div><div class="text-italic">"${mind}"</div></div>
+              <div class="detail-item"><div class="stat-label">对你评估:</div><div class="stat-value">${view}</div></div>
+            </div>
+
+            <!-- 折叠面板 2：身体使用记录 -->
+            <button class="accordion-btn">使用日志</button>
+            <div class="accordion-content">
+              <div class="detail-item">
+                <div class="stat-label">内腔储精池:</div>
+                <div class="highlight-red" style="text-align: right; margin-top: 4px;">${semenText}</div>
+              </div>
+              <div class="detail-item">
+                <div class="stat-label">上次处理:</div>
+                <div style="text-align: right; color:#b0a0a0; font-size: 0.9em; margin-top:4px;">
+                  时间: ${lsTime} | 对象: ${lsObj}<br>地点: ${lsLoc} | 方式: ${lsWay}
+                </div>
+              </div>
+              <div class="detail-item">
+                <div class="stat-label">苦主 [${kuzhu}] 的绿帽档案:</div>
+                <div style="text-align: right; color:#b0a0a0; font-size: 0.9em; margin-top:4px;">${chuGuiHtml}</div>
+              </div>
+            </div>
+
+            <!-- 折叠面板 3：详细性经历表格 -->
+            <button class="accordion-btn">受孕统计表</button>
+            <div class="accordion-content" style="padding: 4px;">
+              <table class="record-table">
+                <thead><tr><th>对象</th><th>口</th><th>足</th><th>插</th><th>肛</th><th>总</th></tr></thead>
+                <tbody>${expRows}</tbody>
+              </table>
+            </div>
+          </div>
+        `;
+        $container.append(html);
       });
-      if(data.特殊) cHtml += `<div style="font-size:0.85em;color:var(--accent);margin-top:5px;text-align:right">★ ${data.特殊}</div>`;
-      $('#detail-clothes').html(cHtml || '全裸');
-
-      const semen = data.体内精液 || {};
-      $('#detail-body').html(Object.entries(semen).map(([k,v]) => `
-        <div class="kv-row"><span class="k-label">${k}</span><span class="v-val" style="font-size:0.85em">${v.量}ml (${v.状态})</span></div>
-      `).join('') || '<div style="color:#999;font-size:0.9em">子宫空空</div>');
-
-      const last = data.上次做爱 || {};
-      $('#detail-last').html(last.时间 ? `
-        <div class="kv-row"><span class="k-label">时间</span><span class="v-val">${last.时间}</span></div>
-        <div class="kv-row"><span class="k-label">对象</span><span class="v-val">${last.对象}</span></div>
-        <div style="font-size:0.85em;color:#666;text-align:right;margin-top:2px">${last.地点} · ${last.方式}</div>
-      ` : '<div style="color:#999;font-size:0.9em">暂无记录</div>');
-
-      let expH = '';
-      Object.entries(data.性经历||{}).forEach(([n,d]) => {
-        expH += `<div style="margin:5px 0 2px 0;font-size:0.85em">vs ${n}</div>` + renderSexStats(d);
-      });
-      $('#detail-sex').html(expH || '无');
     }
 
-    window.backToList = function() { $('#view-detail').addClass('hidden'); $('#view-list').removeClass('hidden'); };
+    /* 绑定UI交互事件 */
+    function bindEvents() {
+      /* Tab 切换 */
+      $('.nav-btn').off('click').on('click', function() {
+        $('.nav-btn').removeClass('active');
+        $(this).addClass('active');
+        const target = $(this).data('target');
+        $('.tab-content').removeClass('active');
+        $('#' + target).addClass('active');
+      });
 
+      /* 折叠面板展开/收起（使用事件委托机制处理动态生成的元素） */
+      $(document).off('click', '.accordion-btn').on('click', '.accordion-btn', function() {
+        $(this).toggleClass('active');
+        $(this).next('.accordion-content').slideToggle(200);
+      });
+    }
+
+    /* 主更新逻辑 */
+    function populateCharacterData() {
+      const all_variables = getAllVariables();
+
+      renderPlayerAndSystem(all_variables);
+      renderNpcs(all_variables);
+
+      /* 重新绑定事件以确保动态元素可点击 */
+      bindEvents();
+    }
+
+    /* 初始化 */
     async function init() {
       await waitGlobalInitialized('Mvu');
+      populateCharacterData();
 
-      const refresh = () => {
-        globalVars = getAllVariables();
-        renderWorld();
-        if($('#view-list').is(':visible') && $('#page-chars').is(':visible')) {
-          renderList();
-        } else if ($('#view-detail').is(':visible') && $('#page-chars').is(':visible')) {
-           const n = $('#detail-name').text();
-           if(n) window.showChar(n);
-        }
-      };
-
-      refresh();
-      eventOn(Mvu.events.VARIABLE_UPDATE_ENDED, refresh);
-
-      $('.tab-button').click(function(){
-        $('.tab-button').removeClass('active'); $(this).addClass('active');
-        $('.tab-page').removeClass('active');
-        const target = $($(this).data('target'));
-        target.addClass('active');
-        if($(this).data('target') === '#page-chars') {
-           if($('#view-list').is(':visible')) renderList();
-        }
+      /* 监听变量更新事件，实现自动刷新 */
+      eventOn(Mvu.events.VARIABLE_UPDATE_ENDED, () => {
+        populateCharacterData();
       });
     }
+
+    /* 启动入口 */
     $(errorCatched(init));
   </script>
 </head>
 <body>
-  <div class="status-card">
+  <div class="chenman-container">
 
-    <div class="env-banner">
-      <!-- 【修改】新的时间容器结构 -->
-      <div class="time-container" id="env-time-container">
-        <!-- JS填充内容：左边两行时间，右边间隔 -->
+    <div class="system-title">祭典倒计时: <span id="sys-countdown" style="color: #ff3333;">?</span> 天</div>
+
+    <!-- 顶部导航 -->
+    <div class="nav-tabs">
+      <div class="nav-btn active" data-target="tab-player">主刀手档案</div>
+      <div class="nav-btn" data-target="tab-npc">祭品名录</div>
+    </div>
+
+    <!-- 面板 1：主刀手（主角）信息 -->
+    <div id="tab-player" class="tab-content active">
+      <div class="player-section">
+        <div class="section-title">操刀人规格</div>
+        <div class="stat-row"><span class="stat-label">年龄:</span><span class="stat-value" id="player-age">0</span></div>
+        <div class="stat-row"><span class="stat-label">凶器尺寸:</span><span class="stat-value" id="player-dick-len">0 cm</span></div>
+        <div class="stat-row"><span class="stat-label">勃起状态:</span><span class="stat-value highlight-red" id="player-dick-state">未知</span></div>
+        <div class="stat-row"><span class="stat-label">充血描述:</span><span class="stat-value text-italic" id="player-dick-desc">无</span></div>
       </div>
 
-      <div class="env-row">
-        <span class="env-loc" id="env-loc">--</span>
-        <span class="env-loc" id="env-wea">--</span>
+      <div class="player-section">
+        <div class="section-title">配种业绩表</div>
+        <table class="record-table">
+          <thead>
+            <tr>
+              <th>肉畜</th>
+              <th>口</th>
+              <th>足</th>
+              <th>插</th>
+              <th>肛</th>
+              <th>总</th>
+            </tr>
+          </thead>
+          <tbody id="player-exp-tbody">
+            /* JS 动态填充 */
+          </tbody>
+        </table>
       </div>
     </div>
 
-    <div class="tabs">
-      <button class="tab-button active" data-target="#page-main">自我</button>
-      <button class="tab-button" data-target="#page-chars">众美</button>
-    </div>
-
-    <div class="tab-container">
-
-      <div id="page-main" class="tab-page active">
-        <div class="penis-card" id="mc-penis"></div>
-
-        <div class="section-header">情报掌握</div>
-        <div id="mc-intel-area"></div>
-
-        <div class="section-header">随身物品</div>
-        <div class="card-box" id="mc-items"></div>
-
-        <div class="section-header">技能能力</div>
-        <div id="mc-skills"></div>
-
-        <div class="section-header">战绩统计</div>
-        <div id="mc-sex-exp"></div>
-      </div>
-
-
-      <div id="page-chars" class="tab-page">
-
-        <div id="view-list">
-          <div id="char-list-box"></div>
-        </div>
-
-
-        <div id="view-detail" class="hidden">
-          <div class="back-btn" onclick="backToList()">‹ 返回列表</div>
-
-          <h3 style="margin:0 0 10px 0;display:flex;justify-content:space-between;align-items:center">
-            <span><span id="detail-name">Name</span> <small id="detail-age" style="font-weight:normal;color:#888;font-size:0.6em"></small></span>
-            <span id="detail-pose" style="font-size:0.6em;font-weight:normal;padding:3px 6px;background:rgba(0,0,0,0.05);border-radius:4px"></span>
-          </h3>
-
-          <div id="detail-stats"></div>
-
-          <div class="section-header">NTR 监控</div>
-          <div class="card-box" id="detail-ntr"></div>
-
-          <div class="section-header">内心活动</div>
-          <div id="detail-mind"></div>
-
-          <div class="section-header">情报认知</div>
-          <div class="card-box" id="detail-intel"></div>
-
-          <div class="section-header">衣物状态</div>
-          <div class="card-box" id="detail-clothes"></div>
-
-
-          <div class="section-header">性爱记录</div>
-          <div class="card-box" id="detail-body"></div>
-          <div class="card-box" id="detail-last"></div>
-
-          <div class="section-header">性经历</div>
-          <div id="detail-sex"></div>
-          <div style="height:30px"></div>
-        </div>
+    <!-- 面板 2：祭品（NPC）信息 -->
+    <div id="tab-npc" class="tab-content">
+      <div id="npc-container">
+        /* JS 动态填充每个 NPC 卡片 */
       </div>
     </div>
+
   </div>
 </body>
 </html>
