@@ -1,8 +1,8 @@
 <%
-if (typeof charName === 'undefined') var charName = getvar('_temp_char_name', { defaults: '未知角色' });
+if (typeof npcName === 'undefined') var npcName = getvar('_temp_npc_name', { defaults: '未知角色' });
 if (typeof ntrVal === 'undefined') var ntrVal = getvar('_temp_ntr_val', { defaults: 0 });
 %>
-NTR阶段指南: <%= charName _%>当前NTR关系数值为<%= ntrVal _%>，角色将表现出以下对应阶段的NTR行为特征
+NTR阶段指南: <%= npcName _%>当前NTR关系数值为<%= ntrVal _%>，角色将表现出以下对应阶段的NTR行为特征
   <%_ if (ntrVal <= 10) { _%>
   第一阶段_完全忠诚:
     阶段名: 完全忠诚 (0-10)

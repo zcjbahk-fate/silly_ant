@@ -1,8 +1,8 @@
 <%
-if (typeof charName === 'undefined') var charName = getvar('_temp_char_name', { defaults: '未知角色' });
+if (typeof npcName === 'undefined') var npcName = getvar('_temp_npc_name', { defaults: '未知角色' });
 if (typeof lustVal === 'undefined') var lustVal = getvar('_temp_lust_val', { defaults: 0 });
 %>
-性欲值阶段指南: <%= charName _%>当前性欲值为<%= lustVal _%>，角色将表现出以下对应阶段的性渴望特征
+性欲值阶段指南: <%= npcName _%>当前性欲值为<%= lustVal _%>，角色将表现出以下对应阶段的性渴望特征
   <%_ if (lustVal <= 10) { _%>
   第一阶段_无欲无求:
     阶段名: 无欲无求 (0-10)

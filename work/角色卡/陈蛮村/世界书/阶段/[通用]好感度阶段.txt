@@ -1,9 +1,9 @@
 ---
 <%
-if (typeof charName === 'undefined') var charName = getvar('_temp_char_name', { defaults: '未知角色' });
+if (typeof npcName === 'undefined') var npcName = getvar('_temp_npc_name', { defaults: '未知角色' });
 if (typeof loveVal === 'undefined') var loveVal = getvar('_temp_love_val', { defaults: 0 });
 %>
-好感度阶段指南: <%= charName _%>当前好感度为<%= loveVal _%>，角色将表现出以下对应阶段的行为特征
+好感度阶段指南: <%= npcName _%>当前好感度为<%= loveVal _%>，角色将表现出以下对应阶段的行为特征
   <%_ if (loveVal <= 10) { _%>
   第一阶段_反感排斥:
     阶段名: 反感排斥 (0-10)
