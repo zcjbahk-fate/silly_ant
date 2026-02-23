@@ -1,8 +1,9 @@
 <%
+if (typeof charName === 'undefined') var charName = getvar('_temp_char_name', { defaults: '未知角色' });
 if (typeof corrVal === 'undefined') var corrVal = getvar('_temp_corr_val', { defaults: 0 });
 if (typeof isKnown === 'undefined') var isKnown = getvar('_temp_isKnown_val', { defaults: '未知' });
 %>
-堕落度阶段指南: # 当前堕落度为<%= corrVal _%>，知晓状态为<%= isKnown _%>，角色将表现出以下对应阶段的行为特征
+堕落度阶段指南: <%= charName _%>当前堕落度为<%= corrVal _%>，知晓状态为<%= isKnown _%>，角色将表现出以下对应阶段的行为特征
 <% if (corrVal <= 10) { %>
   <% if (isKnown === '未知') { %>
     当前阶段特征:

@@ -1,9 +1,9 @@
 ---
-# 好感度阶段说明
-# 好感度范围: 0-100，默认值: 5
-# 共分为10个阶段，每阶段10点
-  <%_ if (typeof loveVal === 'undefined') var loveVal = getvar('_temp_love_val', { defaults: 0 }); _%>
-好感度阶段指南: # 当前好感度为<%= loveVal _%>，角色将表现出以下对应阶段的行为特征
+<%
+if (typeof charName === 'undefined') var charName = getvar('_temp_char_name', { defaults: '未知角色' });
+if (typeof loveVal === 'undefined') var loveVal = getvar('_temp_love_val', { defaults: 0 });
+%>
+好感度阶段指南: <%= charName _%>当前好感度为<%= loveVal _%>，角色将表现出以下对应阶段的行为特征
   <%_ if (loveVal <= 10) { _%>
   第一阶段_反感排斥:
     阶段名: 反感排斥 (0-10)

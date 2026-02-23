@@ -1,10 +1,8 @@
----
-# 性欲值阶段说明
-# 性欲值范围: 0-100，默认值: 5
-# 共分为10个阶段，每阶段10点
-# 性欲值反映角色当前对性的渴望程度，是动态变化的短期状态
-  <%_ if (typeof lustVal === 'undefined') var lustVal = getvar('_temp_lust_val', { defaults: 0 }); _%>
-性欲值阶段指南: # 当前性欲值为<%= lustVal _%>，角色将表现出以下对应阶段的性渴望特征
+<%
+if (typeof charName === 'undefined') var charName = getvar('_temp_char_name', { defaults: '未知角色' });
+if (typeof lustVal === 'undefined') var lustVal = getvar('_temp_lust_val', { defaults: 0 });
+%>
+性欲值阶段指南: <%= charName _%>当前性欲值为<%= lustVal _%>，角色将表现出以下对应阶段的性渴望特征
   <%_ if (lustVal <= 10) { _%>
   第一阶段_无欲无求:
     阶段名: 无欲无求 (0-10)

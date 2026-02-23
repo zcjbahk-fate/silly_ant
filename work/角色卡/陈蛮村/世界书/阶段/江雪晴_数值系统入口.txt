@@ -5,6 +5,7 @@ var val_love = getvar('stat_data.角色.江雪晴.好感度', { defaults: 0 });
 var val_ntr  = getvar('stat_data.角色.江雪晴.NTR关系.数值', { defaults: 0 });
 var val_isKnown = getvar('stat_data.角色.江雪晴.是否知晓村中习俗', { defaults: '未知' });
 
+setvar('_temp_char_name', '江雪晴');
 setvar('_temp_corr_val', val_corr);
 setvar('_temp_lust_val', val_lust);
 setvar('_temp_love_val', val_love);
