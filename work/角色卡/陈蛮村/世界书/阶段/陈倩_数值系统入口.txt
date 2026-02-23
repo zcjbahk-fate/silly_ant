@@ -1,0 +1,18 @@
+<%_
+var val_corr = getvar('stat_data.角色.陈倩.堕落度', { defaults: 0 });
+var val_lust = getvar('stat_data.角色.陈倩.性欲值', { defaults: 0 });
+var val_love = getvar('stat_data.角色.陈倩.好感度', { defaults: 0 });
+var val_ntr  = getvar('stat_data.角色.陈倩.NTR关系.数值', { defaults: 0 });
+var val_isKnown = getvar('stat_data.角色.陈倩.是否知晓村中习俗', { defaults: '未知' });
+
+setvar('_temp_corr_val', val_corr);
+setvar('_temp_lust_val', val_lust);
+setvar('_temp_love_val', val_love);
+setvar('_temp_ntr_val', val_ntr);
+setvar('_temp_isKnown_val', val_isKnown);
+_%>
+
+<%- await getwi(null, '[通用]堕落度阶段') %>
+<%- await getwi(null, '[通用]性欲值阶段') %>
+<%- await getwi(null, '[通用]好感度阶段') %>
+<%- await getwi(null, '[通用]NTR阶段') %>
