@@ -1,0 +1,125 @@
+# yaml-language-server: $schema=https://testingcf.jsdelivr.net/gh/StageDog/tavern_sync/dist/schema/character.zh.json
+头像: 头像
+版本: ""
+作者: ""
+备注: ""
+
+第一条消息:
+  - 文件: 第一条消息\0
+
+角色描述: ""
+
+锚点: {}
+
+世界书名称: 与角色卡名称相同
+条目:
+  - 名称: 精神小妹设定
+    启用: true
+    激活策略:
+      类型: 蓝灯
+    插入位置:
+      类型: 角色定义之前
+      顺序: 108
+    激活概率: 100
+    递归:
+      不可被其他条目激活: false
+      不可激活其他条目: false
+    文件: 世界书\精神小妹设定
+
+  - 名称: 地点
+    启用: true
+    激活策略:
+      类型: 蓝灯
+    插入位置:
+      类型: 角色定义之前
+      顺序: 108
+    激活概率: 100
+    递归:
+      不可被其他条目激活: false
+      不可激活其他条目: false
+    文件: 世界书\地点
+
+  - 名称: 社会生态
+    启用: true
+    激活策略:
+      类型: 蓝灯
+    插入位置:
+      类型: 角色定义之前
+      顺序: 108
+    激活概率: 100
+    递归:
+      不可被其他条目激活: false
+      不可激活其他条目: false
+    文件: 世界书\社会生态
+
+扩展字段:
+  正则: []
+
+  酒馆助手:
+    脚本库:
+      - 名称: 自动更新
+        id: b0386104-2318-4afa-ad51-c10b6077d3a9
+        启用: true
+        类型: 脚本
+        内容: import
+          'https://testingcf.jsdelivr.net/gh/StageDog/tavern_resource/dist/酒馆助手/自动更新角色卡/index.js'
+        介绍: |
+          # 自动更新角色卡
+
+          - **作者:** 青空莉想做舞台少女的狗
+          - **版本:** 2025/02/11
+          - **源文件:** [点此跳转](https://github.com/StageDog/tavern_resource/tree/main/src)
+
+          在角色卡面板中加载你要自动更新的角色卡, 将这个脚本添加到酒馆助手 "角色脚本" 中, 编辑脚本, 在`变量列表`中填入角色卡名称、角色卡链接和更新日志链接.
+
+          例如:
+
+          ```yaml
+          {
+            角色卡名称: 自动更新角色卡示例
+            角色卡链接: https://testingcf.jsdelivr.net/gh/StageDog/tavern_resource/src/酒馆助手/自动更新角色卡/示例角色卡.png
+            更新日志链接: https://testingcf.jsdelivr.net/gh/StageDog/tavern_resource/src/酒馆助手/自动更新角色卡/示例更新日志.md
+          }
+          ```
+
+          其中,
+
+          - 角色卡名称要和角色卡在酒馆中的名称一样, 确定好后不能再更改
+          - 角色卡链接和更新日志链接必须是固定的, 而且访问的是最新版本角色卡和更新日志文件.
+
+          比如, 你可以把角色卡和更新日志文件上传到 github, 然后使用 `https://testingcf.jsdelivr.net/gh/用户名/仓库名/文件路径` 作为角色卡链接和更新日志链接 (不清楚怎么做可以搜索一下或者问 AI).
+
+          而更新日志应该按下面这样填写:
+
+          ```md
+          # 更新日志
+
+          ## 这里填的会是角色卡版本号, 最上面一个版本是最新版本
+
+          - 最新版本更新了啥……
+
+          ## 新春版
+
+          - 这个版本更新了啥……
+
+          ## 1.0.0
+
+          - 这个版本更新了啥……
+          ```
+
+          这样一来, 只要你更新链接所访问到的角色卡和更新日志, 玩家就能在酒馆中直接更新角色卡, 不需要去帖子查看更新, 不需要再下载、导入新角色卡了!
+
+          另外, 你可以配合[实时编写角色卡、世界书或角色卡](https://stagedog.github.io/青空莉/工具经验/实时编写角色卡、世界书或角色卡/)来做到: 在 VSCode 中对角色卡进行一些修改, 上传到 github, 玩家在酒馆中自动收到更新.
+        按钮:
+          启用: true
+          按钮列表:
+            - 名称: '更新角色卡: 精神小妹更新内容'
+              可见: true
+            - 名称: 更新日志
+              可见: true
+        数据:
+          角色卡名称: 精神小妹
+          角色卡链接: https://raw.githubusercontent.com/zcjbahk-fate/silly_ant/refs/heads/main/resource/角色卡/精神小妹/精神小妹.png
+          更新日志链接: https://raw.githubusercontent.com/zcjbahk-fate/silly_ant/refs/heads/main/resource/角色卡/精神小妹/更新日志.md
+
+    变量: {}
