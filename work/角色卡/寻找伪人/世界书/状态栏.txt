@@ -1,6 +1,6 @@
-在对话的末尾插入<StatusBlock>到</StatusBlock>的内容
-<StatusBlock>
-<status>
+在对话的末尾插入<bt_status>到</bt_status>的内容
+<bt_status>
+
 <summary>{{user}}信息</summary>
 | 姓名 |{{user}}|
 | --- | --- |
@@ -17,5 +17,4 @@
 | 衣着打扮 | |
 | 表情样貌 | |
 
-</status>
-</StatusBlock>
+</bt_status>
