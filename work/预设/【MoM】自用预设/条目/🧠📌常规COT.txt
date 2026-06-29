@@ -1,6 +1,6 @@
 {{setglobalvar::cot::
 [语言检定]
-{{getvar::任务确认cot}}{{getvar::守贞}}{{getvar::NSFW专注cot}}{{getvar::平等化cot}}
+{{getvar::任务确认cot}}{{getvar::守贞}}{{getvar::NSFW专注cot}}{{getvar::平等化cot}}{{getvar::优先人设}}
 
 [剧情引导]
 {{getvar::无人万能}}{{getvar::角色迷雾}}{{getvar::角色变量}}

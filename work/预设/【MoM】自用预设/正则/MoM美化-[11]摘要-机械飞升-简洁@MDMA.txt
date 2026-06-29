@@ -1,0 +1,271 @@
+```html
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>Gospel Status Bar</title>
+<style>
+    :root {
+        --gospel-primary: #D4AF37;
+        --gospel-secondary: #002244;
+        --gospel-text-main: #2d2d2d;
+        --gospel-text-sub: #555555;
+        --gospel-glow: rgba(212, 175, 55, 0.4);
+        --gospel-line: rgba(212, 175, 55, 0.5);
+        --gospel-accent: #103a94;
+    }
+    html[data-gospel-theme="night"] {
+        --gospel-primary: #8A0303;
+        --gospel-secondary: #0a0a0a;
+        --gospel-text-main: #d6d6d6;
+        --gospel-text-sub: #a9a9a9;
+        --gospel-glow: rgba(255, 0, 0, 0.4);
+        --gospel-line: rgba(138, 3, 3, 0.6);
+        --gospel-accent: #cb2929;
+    }
+    body {
+        background-color: transparent;
+        transition: background-color 0.5s ease;
+        padding: 15px 5px 0 5px;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+    .gospel-card {
+        position: relative;
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto 30px auto;
+        background: transparent;
+        border-left: 2px solid var(--gospel-primary);
+        border-right: 1px solid var(--gospel-line);
+        padding: 0 15px;
+        box-sizing: border-box;
+        transition: all 0.4s ease;
+        color: var(--gospel-text-main);
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+    .gospel-card::before, .gospel-card::after {
+        content: "";
+        position: absolute;
+        width: 10px;
+        height: 2px;
+        background: var(--gospel-primary);
+        box-shadow: 0 0 8px var(--gospel-glow);
+    }
+    .gospel-card::before { top: 0; left: 0; }
+    .gospel-card::after { bottom: 0; left: 0; }
+    .gospel-theme-trigger {
+        position: absolute;
+        top: -10px;
+        right: 0px;
+        width: 12px;
+        height: 12px;
+        border: 1px solid var(--gospel-primary);
+        transform: rotate(45deg);
+        cursor: pointer;
+        z-index: 10;
+        transition: all 0.3s;
+        box-shadow: 0 0 5px var(--gospel-glow);
+    }
+    .gospel-theme-trigger::after {
+        content: "";
+        position: absolute;
+        top: 2px; left: 2px; right: 2px; bottom: 2px;
+        background: var(--gospel-primary);
+        opacity: 0.2;
+        transition: opacity 0.3s;
+    }
+    .gospel-theme-trigger:hover::after { opacity: 1; }
+    .gospel-header { cursor: pointer; padding: 10px 0; position: relative; }
+    .gospel-header-inner { display: flex; flex-direction: column; }
+    .gospel-title {
+        font-family: "Georgia", "Times New Roman", serif;
+        font-size: 1.4rem;
+        font-weight: bold;
+        letter-spacing: 2px;
+        color: var(--gospel-primary);
+        text-transform: uppercase;
+        margin-bottom: -5px;
+        text-shadow: 0 0 10px rgba(255,255,255,0.1);
+    }
+    .gospel-subtitle {
+        align-self: flex-end;
+        font-family: "Courier New", Courier, monospace;
+        font-size: 0.8rem;
+        color: var(--gospel-text-sub);
+        border-bottom: 1px solid var(--gospel-line);
+        padding-bottom: 2px;
+        transform: translateX(-10px);
+        letter-spacing: 1px;
+    }
+    .gospel-body-wrapper {
+        display: grid;
+        grid-template-rows: 0fr;
+        transition: grid-template-rows 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+    }
+    .gospel-card.is-expanded .gospel-body-wrapper { grid-template-rows: 1fr; }
+    .gospel-body-inner { overflow: hidden; min-height: 0; }
+    .gospel-content {
+        padding: 15px 0 20px 0;
+        border-top: 1px dashed var(--gospel-line);
+        margin-top: 15px;
+    }
+    .gospel-location {
+        font-family: "Courier New", Courier, monospace;
+        font-size: 0.85rem;
+        color: var(--gospel-accent);
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+    }
+    .gospel-location::before {
+        content: "COORD // ";
+        font-weight: bold;
+        color: var(--gospel-primary);
+        margin-right: 8px;
+    }
+    .gospel-text {
+        font-size: 0.85rem;
+        line-height: 1.6;
+        text-align: justify;
+        margin-bottom: 20px;
+        border-left: 2px solid var(--gospel-line);
+        padding-left: 12px;
+        padding-right: 15px;
+        white-space: pre-wrap;
+    }
+    .gospel-spoiler { margin-top: 20px; background: transparent; }
+    .gospel-spoiler-btn {
+        display: inline-block;
+        font-family: "Courier New", Courier, monospace;
+        font-size: 0.8rem;
+        color: var(--gospel-primary);
+        border: 1px solid var(--gospel-line);
+        padding: 4px 12px;
+        cursor: pointer;
+        user-select: none;
+        transition: all 0.3s;
+        text-transform: uppercase;
+        background: transparent;
+    }
+    .gospel-spoiler-btn:hover {
+        background: var(--gospel-line);
+        color: var(--gospel-secondary);
+        box-shadow: 0 0 10px var(--gospel-glow);
+    }
+    .gospel-spoiler.is-empty .gospel-spoiler-btn {
+        color: var(--gospel-text-sub);
+        border-color: var(--gospel-text-sub);
+        cursor: not-allowed;
+        text-decoration: line-through;
+        opacity: 0.5;
+        box-shadow: none;
+    }
+    .gospel-spoiler.is-empty .gospel-spoiler-btn:hover { background: transparent; }
+    .gospel-spoiler.is-empty .gospel-spoiler-btn::after { content: " [DATA PURGED]"; }
+    .gospel-spoiler-content-wrapper {
+        display: grid;
+        grid-template-rows: 0fr;
+        transition: grid-template-rows 0.4s ease-out;
+    }
+    .gospel-spoiler.is-revealed .gospel-spoiler-content-wrapper { grid-template-rows: 1fr; }
+    .gospel-spoiler-content-inner { overflow: hidden; min-height: 0; }
+    .gospel-spoiler-text {
+        margin-top: 15px;
+        padding: 15px;
+        background: rgba(0, 0, 0, 0.03);
+        border: 1px solid var(--gospel-line);
+        color: var(--gospel-text-sub);
+        font-size: 0.8rem;
+        line-height: 1.6;
+        position: relative;
+        white-space: pre-wrap;
+        min-height: 0;
+        clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%);
+    }
+    html[data-gospel-theme="night"] .gospel-spoiler-text { background: rgba(255, 255, 255, 0.03); }
+</style>
+</head>
+<body>
+
+<div class="gospel-card">
+    <div class="gospel-theme-trigger" onclick="toggleGospelTheme(event)" title="Toggle System Mode"></div>
+    <div class="gospel-header" onclick="toggleGospelCard(this)">
+        <div class="gospel-header-inner">
+            <div class="gospel-title">$1</div>
+            <div class="gospel-subtitle">$2</div>
+        </div>
+    </div>
+    <div class="gospel-body-wrapper">
+        <div class="gospel-body-inner">
+            <div class="gospel-content">
+                <div class="gospel-location">$3</div>
+                <div class="gospel-text">$4</div>
+                <div class="gospel-spoiler">
+                    <div class="gospel-spoiler-btn" onclick="toggleGospelSpoiler(this)">
+                        [ SYSTEM_REVELATION ]
+                    </div>
+                    <div class="gospel-spoiler-content-wrapper">
+                        <div class="gospel-spoiler-content-inner">
+                            <div class="gospel-spoiler-text gospel-data-5">$5</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+(function() {
+    window.toggleGospelTheme = function(event) {
+        if (event) event.stopPropagation();
+        const root = document.documentElement;
+        const currentTheme = root.getAttribute('data-gospel-theme') || 'day';
+        const newTheme = currentTheme === 'day' ? 'night' : 'day';
+        root.setAttribute('data-gospel-theme', newTheme);
+        localStorage.setItem('gospel-theme', newTheme);
+    };
+
+    window.toggleGospelCard = function(headerEl) {
+        if (!headerEl) return;
+        const card = headerEl.closest('.gospel-card');
+        if (card) card.classList.toggle('is-expanded');
+    };
+
+    window.toggleGospelSpoiler = function(btnEl) {
+        if (!btnEl) return;
+        const spoilerContainer = btnEl.closest('.gospel-spoiler');
+        if (spoilerContainer && !spoilerContainer.classList.contains('is-empty')) {
+            spoilerContainer.classList.toggle('is-revealed');
+        }
+    };
+
+    setTimeout(() => {
+        try {
+            const savedTheme = localStorage.getItem('gospel-theme') || 'day';
+            document.documentElement.setAttribute('data-gospel-theme', savedTheme);
+
+            document.querySelectorAll('.gospel-data-5').forEach(el => {
+                const container = el.closest('.gospel-spoiler');
+                if (!container) return;
+                
+                let text = el.innerText || el.textContent || '';
+                text = text.replace(/[\s\n\r]/g, '');
+                
+                const placeholder = '$' + '5'; 
+                
+                if (!text || text === placeholder) {
+                    container.classList.add('is-empty');
+                } else {
+                    container.classList.remove('is-empty');
+                }
+            });
+        } catch (error) {
+            console.error("Gospel StatusBar Error:", error);
+        }
+    }, 150);
+})();
+</script>
+</body>
+</html>
+```

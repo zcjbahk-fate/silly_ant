@@ -10,13 +10,13 @@
         @import url("https://fontsapi.zeoseven.com/110/main/result.css"); /* 科幻: 点点像素体-方形 */
         @import url("https://fontsapi.zeoseven.com/88/main/result.css"); /* 现代: MaokenZhuyuanTi */
         @import url("https://fontsapi.zeoseven.com/2/main/result.css"); /* 古风: LXGW ZhenKai */
-
+        
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
         body { padding: 10px; }
 
         .dynamic-status-container {
             width: 100%;
-            max-width: 480px;
+            max-width: 480px; 
             margin: 12px auto;
             display: none;
         }
@@ -33,7 +33,7 @@
             position: relative;
             overflow: hidden;
         }
-
+        
         /* 斜线纹理背景 */
         .status-bar-content::before {
             content: '';
@@ -52,12 +52,12 @@
             z-index: -1;
             pointer-events: none;
         }
-
+        
         .line-1, .line-2, .line-3 {
             display: block;
         }
 
-        /*
+        /* 
         ========================================
         科幻 (Sci-Fi) 风格 <scifi>
         ========================================
@@ -107,7 +107,7 @@
         .style-scifi .line-3::before { content: 'SYS_LOG: '; }
         @keyframes scifi-text-flicker { 0%, 100% { opacity: 1; } 50% { opacity: 0.8; } }
 
-        /*
+        /* 
         ========================================
         现代 (Present) 风格
         ========================================
@@ -145,7 +145,7 @@
         }
         .style-present .line-3::before { content: '💭 '; }
 
-        /*
+        /* 
         ========================================
         古风 (Olden) 风格
         ========================================
@@ -172,7 +172,7 @@
         }
         .style-olden .line-1 {
             font-size: 0.9em;
-            color: var(--light-gray);
+            color: var(--light-gray); 
             text-align: center; margin-bottom: 6px;
         }
         .style-olden .line-2 {
@@ -185,7 +185,7 @@
         }
         .style-olden .line-3::before { content: '— '; }
         .style-olden .line-3::after { content: ' —'; }
-
+        
         /* 底部装饰 */
         .status-bar-content::after {
             content: '';
@@ -197,7 +197,7 @@
             background: linear-gradient(90deg, transparent, var(--light-gray), transparent);
             animation: bottom-glow 3s ease-in-out infinite;
         }
-
+        
         @keyframes bottom-glow {
             0%, 100% { opacity: 0.5; }
             50% { opacity: 1; }
@@ -227,7 +227,7 @@
                 const styleTag = '$2';
                 if (styleTag) {
                     statusBar.classList.add(`style-${styleTag}`);
-
+                    
                     if (styleTag === 'present') {
                         const line2Container = statusBar.querySelector('.line-2');
                         const line2Text = line2Container.querySelector('.text-content');

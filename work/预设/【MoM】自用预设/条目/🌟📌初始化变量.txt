@@ -19,6 +19,7 @@
 {{setvar::正文标签:: }}
 {{setvar::无人万能:: }}
 {{setvar::角色迷雾:: }}
+{{setvar::优先人设:: }}
 {{setvar::射精特摄:: }}
 {{setvar::小剧场规范:: }}
 {{setglobalvar::cot:: }}

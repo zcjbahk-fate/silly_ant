@@ -25,14 +25,14 @@
     @import url('https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&display=swap');
 
     /* --- 基础与通用布局 --- */
-    body {
-        display: flex; justify-content: center; align-items: center;
-        margin: 0; padding: 10px; box-sizing: border-box;
+    body { 
+        display: flex; justify-content: center; align-items: center;  
+        margin: 0; padding: 10px; box-sizing: border-box; 
     }
     .reverie-container {
         width: 100%; max-width: 500px;
         margin: 12px auto;
-        display: none;
+        display: none; 
     }
     .reverie-container.active { display: block; }
 
@@ -45,9 +45,9 @@
         background: #f7f3e9;
         box-shadow: 3px 3px 12px rgba(0, 0, 0, 0.15);
         padding: 25px 18px;
-        font-family: 'LXGW ZhenKai GB', monospace;
+        font-family: 'LXGW ZhenKai GB', monospace; 
         color: #3d3d3d;
-        width: 100%;
+        width: 100%; 
         margin: 0 auto;
     }
 
@@ -164,7 +164,7 @@
         border-radius: 12px;
         box-shadow: 0 6px 18px rgba(80, 70, 60, 0.15);
         font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-        display: flex;
+        display: flex; 
         max-width: 800px;
         margin: 0 auto;
     }
@@ -193,8 +193,8 @@
     }
 
     .style-recommendation .bp-airline-logo {
-    font-size: 2em;
-    color: #1e90ff;
+    font-size: 2em; 
+    color: #1e90ff;   
     }
 
     /* 推荐理由区域 */
@@ -282,14 +282,14 @@
     }
 
     .style-recommendation .stub-recommendation-source {
-        display: block;
-        font-size: 0.8em;
-        font-weight: normal;
-        color: #888;
-        margin-top: 4px;
+        display: block; 
+        font-size: 0.8em; 
+        font-weight: normal; 
+        color: #888; 
+        margin-top: 4px; 
     }
     body.dark-mode .style-recommendation .stub-recommendation-source {
-        color: #a0aec0;
+        color: #a0aec0; 
     }
 
     @media (max-width: 480px) {
@@ -298,15 +298,15 @@
         }
 
         .style-recommendation .boarding-pass-stub {
-            width: auto;
-            border-left: none;
+            width: auto; 
+            border-left: none; 
             border-top: 2px dashed #aaa;
-            margin-top: 15px;
+            margin-top: 15px; 
             padding-top: 15px;
         }
 
         .style-recommendation .stub-destination-label  {
-            text-align: center;
+            text-align: center; 
         }
     }
 
@@ -359,14 +359,14 @@
         border-bottom-color: #ffffff;
         padding: 15px;
         color: #000;
-        max-height: 300px;
+        max-height: 300px; 
         overflow-y: auto; /* 保持 auto，内容超出 max-height 时自动显示滚动条 */
     }
 
     .style-memory .line-2 {
         line-height: 1.6;
         margin-bottom: 15px;
-        white-space: pre-wrap;
+        white-space: pre-wrap; 
     }
     .style-memory .line-3 {
         font-style: italic;
@@ -428,7 +428,7 @@
     /* =================================================================== */
     /* --- 模式四：命运启示 --- */
     /* =================================================================== */
-
+    
     .style-fortune .card-content-wrapper {
         background: #faeeee; /* 使用与小票相似的米黄底色 */
         border: 1px solid #dcc6c5;
@@ -438,7 +438,7 @@
         font-family: 'Noto Serif SC', serif;
         position: relative;
         text-align: center;
-        width: 100%;
+        width: 100%; 
         margin: 0 auto;
         overflow: hidden;
     }
@@ -500,13 +500,13 @@
         padding: 6px 10px;
         border-radius: 4px;
         margin-bottom: 15px;
-        display: inline-block;
+        display: inline-block; 
     }
     .style-fortune .quote-line {
         font-size: 0.95em;
         color: #6c5f5b;
         line-height: 1.8;
-        text-align: justify;
+        text-align: justify; 
     }
     .style-fortune .gossip-line {
         font-size: 0.85em;
@@ -647,7 +647,7 @@ $1
                 const gate = String.fromCharCode(65 + Math.floor(Math.random() * 6)) + String(Math.floor(1 + Math.random() * 20)).padStart(2, '0');
                 const seat = Math.floor(1 + Math.random() * 35) + String.fromCharCode(65 + Math.floor(Math.random() * 6));
                 const boardingTime = `${String(Math.floor(8 + Math.random() * 12)).padStart(2, '0')}:${String(Math.floor(Math.random() * 60)).padStart(2, '0')}`;
-
+                
                 const sharerName = lines[0] || 'Anonymous';
                 const recommendationText = lines[1] || 'A Wonderful Experience';
                 const reasonText = lines[2] || 'No reason, just feel it.';
@@ -661,7 +661,7 @@ $1
                         const title = parts[0].trim();
                         const source = parts[1].trim();
                         recommendationHTML = `${title}<span class="stub-recommendation-source">${sep.trim()} ${source}</span>`;
-                        break;
+                        break; 
                     }
                 }
                 // --- 修改结束 ---
@@ -712,7 +712,7 @@ $1
                         <div class="bp-barcode">${flightId}</div>
                     </div>
                 `;
-            }
+            } 
             else if (mode === 'fortune') {
                 // --- 全新：为 fortune 万年历模式构建DOM ---
                 const cardInfo = (lines[0] || ' - ').split(' - ');
@@ -720,7 +720,7 @@ $1
                 const cardName = cardInfo[1] ? cardInfo[1].trim() : '';
                 const cardKeywords = lines[1] || '...';
                 const cardMeaning = lines[2] || '...';
-                const cardComment = lines[3] || '';
+                const cardComment = lines[3] || ''; 
 
                 wrapper.innerHTML = `
                     <div class="calendar-top-rings"><span></span><span></span></div>
