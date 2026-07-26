@@ -1,0 +1,142 @@
+{{//拉丁美洲文学风格的禁忌爱情写作指南
+说明：融合心理现实主义与浪漫主义的情感叙事。侧重探索极端、禁忌关系中复杂的内心世界与宿命感，可融入魔幻现实主义或存在主义元素。}}
+
+# Latin American Literature–Toned Taboo Love Style Guide
+
+## I. Text Genre
+
+### 1. Genre Type
+An emotional narrative fusing psychological realism and romanticism. It focuses on exploring the complex inner worlds and sense of fate within extreme, taboo relationships, potentially incorporating elements of magical realism or existentialism.
+
+### 2. Format Features
+- Dominated by narration and psychological description.
+- Features concise, tense dialogue.
+- Environmental description serves atmospheric creation and psychological externalization.
+- May adopt non-linear structures, weaving relationships and fate through flashbacks and internal monologues.
+
+### 3. Specific Functions
+- **Immersive Experience**: Delivers a potent emotional immersion into the characters' struggles, pain, and fervor.
+- **Aesthetic Power**: Showcases poetic, forceful language to create a tragic aesthetic of intensity, entanglement, and fate.
+- **Thematic Exploration**: Investigates the nature of love, human complexity, the capriciousness of fate, and individual existence within emotional crises.
+- **Emotional Resonance**: Evokes empathy, sympathy, reflection, or criticism towards taboo love and extreme emotions.
+
+### 4. Reader's Sensation
+- **Intense Entanglement**: Emotions are dense and torrid, like a rainforest—full of primal vitality, yet hiding danger and suffocation.
+- **Fateful Tragedy**: Characters seem drawn by an invisible force toward an inevitable, melancholic end, imbued with powerlessness.
+- **Profound Introspection**: Delves into the subconscious, mercilessly dissecting motives, desires, and fears.
+- **Poetic Cruelty**: Language is beautiful and imagistic, yet its core often depicts pain, harm, and harsh reality.
+- **Surging Tension**: Beneath a calm surface churns a turbulent emotional undercurrent and imminent conflict.
+
+---
+
+## II. Aesthetics and Style
+
+### 1. Aesthetic Principles for Atmosphere
+- **Sensory Immersion**: Builds immersive, suggestive atmospheres through meticulous sensory details (light, shadow, scents, sounds, touch, temperature), externalizing character mood.
+- **Symbolism and Metaphor**: Employs multivalent symbols (flora, fauna, weather, objects) to suggest relationships, inner states, and fate, fostering mystery and predestination.
+- **Emotional Externalization**: Projects a character's inner world onto the environment, so landscapes and objects reflect subjective emotions.
+- **Claustrophobia and Alienation**: Emphasizes physical or psychological confinement and interpersonal rifts, highlighting the relationship's taboo nature and the individual's solitude.
+
+### 2. Aesthetic Principles for Content
+- **Psychological Realism**: Demands an unvarnished, deep portrayal of inner activities (conflicts, desires, traumas, subconscious) to achieve psychological authenticity.
+- **Emotional Extremity**: Unflinchingly displays intense, even pathological emotions (e.g., supreme love, hate, jealousy, possession) to explore their origins and destructive power.
+- **Narrative Labyrinth**: Uses non-linear, fragmented structures to mimic memory and psychological complexity, inviting the reader to piece together the truth.
+- **Dialogue as Action**: Dialogue is a contest of power, emotion, and will, rich in subtext where conflict erupts from silence.
+- **The Moment as Eternity**: Captures and vividly depicts peak emotional moments, giving them a timeless, forceful impact.
+
+### 3. Aesthetic Principles for Thematic Core
+- **Existential Contemplation**: Infuses extreme emotional relationships with reflections on life's meaning, freedom, time, and death.
+- **Questioning Fate**: Explores the interplay of destiny and choice, showing the individual's struggle against (or submission to) overwhelming forces.
+- **Paradox of Human Nature**: Reveals humanity's inherent contradictions: love and harm, creation and destruction, light and darkness.
+- **Memory and Forgetting**: Stresses the shaping power of the past on the present, alongside the subjective, unreliable nature of memory itself.
+
+---
+
+## III. Implementation Strategy
+
+### 1. Imitation and Learning Materials
+- **Theoretical Guidebooks**:
+  - *Story* (Robert McKee): For plot construction, character arc, and thematic expression.
+  - *Becoming a Writer* (Dorothea Brande): For subconscious writing and cultivating the authorial mindset.
+  - *The Sense of Style* (Steven Pinker): For enhancing linguistic clarity, grace, and power (adapted for the target style's intensity).
+- **Reference Authors**:
+  - **Roberto Bolaño**: For his cool, intellectual narrative and profound treatment of violence and failure.
+  - **Clarice Lispector**: For her extreme introspection and poetic expression of the inner world and existential moments.
+  - **Gabriel García Márquez**: For his fusion of reality and fantasy, creation of fate, and epic narrative style.
+- **Reference Works**:
+  - *Of Love and Other Demons* (Márquez): For its fusion of taboo love, fatalism, and magical realism.
+  - *Kiss of the Spider Woman* (Manuel Puig): For shaping relationships and inner worlds through dialogue and varied text forms.
+  - *Like Water for Chocolate* (Laura Esquivel): For its tight integration of emotion and sensory experience (especially taste) and its folklore-infused romanticism.
+
+### 2. Textual Content Proportions
+- **Content Components**: Primarily composed of narration and description in roughly equal measure, deeply intertwined. Psychological description is central, balanced with action and dialogue. Lyrical elements are infused into narration and description, not delivered as direct passages. Argumentation is restrained and integrated into character thought or dialogue.
+- **Descriptive Angles**:
+  - Psychological Description (30–35%): Deep and nuanced, revealing conflict, desire, and fear.
+  - Dialogue/Language Description (30–35%): Rich in subtext, revealing character and tension.
+  - Action and Expression Description (20–25%): Expressive gestures conveying emotional states.
+  - Environmental Description (10–15%): Serves atmosphere and psychological externalization.
+- **Structural Framework**:
+  - **Overall Structure**: Non-linear, using flashbacks, stream of consciousness, and dreams to weave past and present, mimicking memory's complexity.
+  - **Sentence Structure**: Alternates long and short sentences. Long, complex sentences for psychological and atmospheric depth; short sentences for action, dialogue, and emphasis. Parallelism to intensify release.
+
+---
+
+### 3. Use of Rhetoric
+- **Metaphor/Simile**: Core device. Uses vivid, sometimes bizarre or cruel vehicles to concretize abstract emotions.
+- **Symbolism**: Employs recurring images to allude to fate, inner states, or themes.
+- **Contrast**: Highlights contradictions and tensions.
+- **Synesthesia**: Blends sensory experiences to enhance uniqueness.
+- **Irony**: Creates a mocking effect, revealing absurdity or cruelty.
+
+---
+
+### 4. Narrative Principles
+- **Perspective**: Favors third-person limited; unreliable first-person for narrative fog; avoids omniscience.
+- **Structure**: Revolves around a core emotional conflict, with psychological drive and often open or tragic endings.
+- **Pacing**: Alternates between slow for introspection and fast for conflict.
+- **Techniques**: Stream of consciousness, free indirect discourse, subtle detail, symbolic scenes.
+
+---
+
+### 5. Word Usage Patterns
+- **Style**: Formal, literary, emotionally charged; precision + expressiveness.
+- **Core Vocabulary**: eros, pain, possession, despair, fate, memory, time, bodily sensations, light, shadow, dreams, taboos.
+- **Examples**:
+  - *Entangled Emotion*: "The air between them congealed, heavy like rain-soaked black earth..."
+  - *Inner Pain*: "A cold flame burned in his chest..."
+  - *Sense of Fate*: "Fate was an invisible spiderweb..."
+
+---
+
+### 6. Sensory Feedback
+- Visual and tactile dominate. Light/shadow for mood; temperature/texture/pain for emotion. Auditory and olfactory for atmosphere or memory triggers.
+
+---
+
+### 7. Use of Abstract Concepts
+- Moderate use; integrate into thought or dialogue; concretize via emotional experience.
+
+---
+
+### 8. Emotional Expression
+- Intense, complex, undisguised emotions; conveyed through nuanced psychology and indirect behaviors.
+
+---
+
+### 9. Detailing
+- Micro-expressions, symbolic objects, environmental and sensory details, memory fragments.
+- Aim: precision and suggestion.
+
+---
+
+### 10. Potential Mistakes to Avoid
+- Confusing style with plot.
+- Over-sentimentality.
+- Obscure symbolism.
+- Excessive interiority.
+- Flat dialogue.
+- Chaotic structure.
+- Monotonous style.
+- Flat characters.
+- Ignoring social/historical context.
+

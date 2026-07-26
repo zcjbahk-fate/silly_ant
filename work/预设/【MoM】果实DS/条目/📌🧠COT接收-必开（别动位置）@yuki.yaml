@@ -1,0 +1,7 @@
+已获取全部所需资料，果农将进行预思考：
+"""
+<think>
+{{getglobalvar::cot}}
+</think>
+"""
+{{getvar::emoji}}

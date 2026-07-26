@@ -1,0 +1,821 @@
+```
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>选项美化</title>
+</head>
+
+<body>
+
+    <div id="raw-options-data" style="display:none;">$1</div>
+
+    <div id="meowFM-Option">
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Allura&display=swap" rel="stylesheet">
+
+        <style>
+            /* ---------------------------------- */
+            /* --- 作用域变量与定位样式 --- */
+            /* ---------------------------------- */
+            #meowFM-Option {
+                --header-font: 'Allura', sans-serif;
+                --base-font-size: 1em;
+                --header-font-size: 2em;
+                --text-color: var(--SmartThemeBodyColor, #e0e0e0);
+                --header-text-color: var(--SmartThemeQuoteColor, #ffcc00);
+                --glow-color: var(--SmartThemeQuoteColor, #ffcc00);
+                --inner-bg-color: rgba(0, 0, 0, 0.1);
+                /* 变形动画的持续时间 */
+                --morph-speed: 0.4s;
+
+                position: fixed;
+                box-sizing: border-box;
+                /* 屏幕左下角定位 */
+                bottom: 10dvh;
+                left: 30px;
+                z-index: 2147483000;
+                font-family: var(--mainFontFamily, sans-serif);
+                font-size: var(--base-font-size);
+                line-height: 1.2;
+                color: var(--text-color);
+                pointer-events: none;
+
+                #meowFM-OptionOverlay {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100dvw;
+                    height: 100dvh;
+                    z-index: -1;
+                    opacity: 0;
+                    pointer-events: none;
+                    transition: opacity 0.3s ease;
+                }
+
+                #meowFM-OptionOverlay.active {
+                    pointer-events: auto;
+                    opacity: 1;
+                }
+            }
+
+            /* --------------------------------------- */
+            /* --- 主容器 --- */
+            /* --------------------------------------- */
+            .meowFM-container {
+                position: relative;
+                pointer-events: auto;
+                cursor: pointer;
+                /* 初始状态：圆形悬浮按钮 */
+                width: 38px;
+                height: 38px;
+                border-radius: 50%;
+                border: 1px solid var(--SmartThemeBorderColor, rgba(255, 255, 255, 0.2));
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+                backdrop-filter: blur(18px);
+                overflow: hidden;
+                transition: all var(--morph-speed) cubic-bezier(0.25, 0.8, 0.25, 1);
+                display: flex;
+                flex-direction: column;
+
+                &:not(.open):hover {
+                    filter: brightness(1.2);
+                }
+            }
+
+            .meowFM-container:not(.open) {
+                touch-action: none;
+            }
+
+            /* 展开状态：正常卡片 */
+            .meowFM-container.open {
+                width: var(--meowFM-open-width, 320px);
+                height: var(--meowFM-open-height, 480px);
+                max-width: calc(100dvw - 32px);
+                max-height: calc(100dvh - 32px);
+                border-radius: 12px;
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+                cursor: default;
+                overflow: visible;
+                touch-action: auto;
+            }
+
+            /* --- 拖拽状态 --- */
+            .meowFM-container.dragging {
+                cursor: grabbing;
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+                transform: scale(1.1);
+                transition: none;
+            }
+
+            /* 拖拽时屏蔽内部所有元素的交互 */
+            .meowFM-container.dragging * {
+                pointer-events: none;
+            }
+
+            /* --------------------------------------- */
+            /* --- FAB 图标 --- */
+            /* --------------------------------------- */
+            .fab-icon {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 24px;
+                opacity: 1;
+                transition: opacity 0.3s ease;
+                user-select: none;
+            }
+
+            .meowFM-container.open .fab-icon {
+                opacity: 0;
+                transform: scale(0.3);
+                pointer-events: none;
+            }
+
+            /* --------------------------------------- */
+            /* --- 📝 卡片内部内容区 --- */
+            /* --------------------------------------- */
+            .card-content {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                padding: 15px 20px;
+                box-sizing: border-box;
+                opacity: 0;
+                visibility: hidden;
+                display: flex;
+                flex-direction: column;
+                transition: opacity 0.3s ease;
+            }
+
+            /* 展开时显示内部内容 */
+            .meowFM-container.open .card-content {
+                opacity: 1;
+                visibility: visible;
+                transition-delay: 0.1s;
+            }
+
+            .corner-text {
+                position: relative;
+                margin: 0 auto;
+                user-select: none;
+                white-space: nowrap;
+                color: var(--header-text-color);
+                transition: all 0.3s ease-out;
+                cursor: pointer;
+            }
+
+            .corner-info {
+                font-family: var(--header-font);
+                font-size: var(--header-font-size);
+                padding-bottom: 10px;
+            }
+
+            .cat-kaomoji {
+                font-family: Sans-Serif;
+                font-size: 15px;
+                padding-top: 10px;
+            }
+
+            .meowFM-container.open .corner-text:hover {
+                filter: drop-shadow(0 0 4px var(--glow-color));
+            }
+
+            .content-wrapper {
+                flex: 1;
+                min-height: 0;
+                overflow-y: auto;
+                overflow-x: hidden;
+                -webkit-overflow-scrolling: touch;
+                touch-action: pan-y;
+                border-top: 1.8px dashed var(--SmartThemeUnderlineColor, var(--inner-bg-color));
+                margin: 5px 0;
+                padding: 10px 15px 10px 5px;
+
+                scrollbar-width: thin;
+                scrollbar-color: var(--SmartThemeBorderColor, rgba(255, 255, 255, 0.3)) transparent;
+
+
+                &::-webkit-scrollbar {
+                    width: 4px;
+                }
+
+                &::-webkit-scrollbar-thumb {
+                    background: var(--SmartThemeBorderColor, rgba(255, 255, 255, 0.3));
+                    border-radius: 4px;
+                }
+
+                &::-webkit-scrollbar-button {
+                    height: 4px;
+                    background-color: transparent;
+                }
+            }
+
+            #options-container {
+                display: flex;
+                flex-direction: column;
+            }
+
+            /* --- 选项列表样式 --- */
+            .clickable-text {
+                position: relative;
+                cursor: pointer;
+                padding: 0.75em;
+                border-radius: 4px;
+                margin-bottom: 0.5em;
+                background-color: var(--inner-bg-color);
+                box-shadow:
+                    0 0 0 transparent,
+                    inset 0 0 1px rgba(0, 0, 0, 0.6);
+                transform: translateX(-20px);
+                left: 0;
+                top: 0;
+                opacity: 0;
+                transition: all 0.3s ease;
+            }
+
+            .meowFM-container.open {
+                .clickable-text {
+                    opacity: 1;
+                    transform: translateX(0);
+                    transition:
+                        all 0.3s ease 0.05s,
+                        opacity 0.4s ease var(--item-delay, 0s),
+                        transform 0.4s ease var(--item-delay, 0s);
+
+                    &:hover {
+                        box-shadow:
+                            -2px 4px 4px rgba(0, 0, 0, 0.2),
+                            inset 0 0 1px rgba(0, 0, 0, 0.6);
+                        left: 15px;
+                        top: -4px;
+                        filter: brightness(1.1);
+                    }
+                }
+            }
+
+            .clickable-text p {
+                padding: 0;
+                margin: 0;
+            }
+        </style>
+
+        <div id="meowFM-OptionOverlay"></div>
+        <div id="meowFM-OptionCard" class="meowFM-container">
+
+            <div class="fab-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="lucide lucide-paw-print-icon lucide-paw-print">
+                    <circle cx="11" cy="4" r="2" />
+                    <circle cx="18" cy="8" r="2" />
+                    <circle cx="20" cy="16" r="2" />
+                    <path
+                        d="M9 10a5 5 0 0 1 5 5v3.5a3.5 3.5 0 0 1-6.84 1.045Q6.52 17.48 4.46 16.84A3.5 3.5 0 0 1 5.5 10Z" />
+                </svg>
+            </div>
+
+            <div class="card-content">
+                <div class="corner-info corner-text">Choose · Sth.</div>
+                <div class="content-wrapper">
+                    <div id="options-container"></div>
+                </div>
+                <div class="cat-kaomoji corner-text">ฅ(^・ω・^)ฅ</div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            function initPostItCard() {
+                const localDataEl = document.getElementById('raw-options-data');
+                const rawText = localDataEl ? localDataEl.textContent.trim() : '';
+
+                const wrapper = document.getElementById('meowFM-Option');
+                const parentDoc = window.parent.document;
+
+                if (parentDoc) {
+                    const oldWrapper = parentDoc.getElementById('meowFM-Option');
+                    if (oldWrapper && oldWrapper !== wrapper) {
+                        if (typeof oldWrapper.__meowFMDispose === 'function') {
+                            oldWrapper.__meowFMDispose();
+                        }
+                        oldWrapper.remove();
+                    }
+                }
+
+                if (wrapper && parentDoc && wrapper.parentNode !== parentDoc.body) {
+                    parentDoc.body.appendChild(wrapper);
+                }
+
+                // 隐藏废弃的 iframe
+                if (window.frameElement) {
+                    window.frameElement.style.display = 'none';
+                }
+
+                const card = wrapper ? wrapper.querySelector('#meowFM-OptionCard') : null;
+                const optionsContainer = wrapper ? wrapper.querySelector('#options-container') : null;
+                const overlay = wrapper ? wrapper.querySelector('#meowFM-OptionOverlay') : null;
+
+                if (!card || !optionsContainer) {
+                    return;
+                }
+
+                setupOptionList(rawText, optionsContainer);
+                setupCollapsible({
+                    card: card,
+                    optionsContainer: optionsContainer,
+                    overlay: overlay,
+                    wrapper: wrapper
+                });
+            }
+
+            function setupAutoCleanup() {
+                try {
+                    const parentWin = window.parent;
+                    if (!parentWin || typeof parentWin.SillyTavern === 'undefined') return;
+
+                    const parentDoc = parentWin.document;
+                    const stContext = parentWin.SillyTavern.getContext();
+                    const eventSource = stContext.eventSource;
+                    const event_types = stContext.event_types;
+
+                    const cleanupEvents = [
+                        event_types.CHAT_CHANGED,
+                        event_types.MESSAGE_SWIPED,
+                        event_types.MESSAGE_DELETED
+                    ];
+
+                    const destroyCard = () => {
+                        try {
+                            if (parentDoc) {
+                                const wrapper = parentDoc.getElementById('meowFM-Option');
+                                if (wrapper) {
+                                    if (typeof wrapper.__meowFMDispose === 'function') {
+                                        wrapper.__meowFMDispose();
+                                    }
+                                    wrapper.remove();
+                                }
+                            }
+
+                            cleanupEvents.forEach(evt => {
+                                if (typeof eventSource.removeListener === 'function') {
+                                    eventSource.removeListener(evt, destroyCard);
+                                } else if (typeof eventSource.off === 'function') {
+                                    eventSource.off(evt, destroyCard);
+                                }
+                            });
+                        } catch (err) { }
+                    };
+
+                    cleanupEvents.forEach(evt => {
+                        if (evt) eventSource.on(evt, destroyCard);
+                    });
+
+                } catch (e) { }
+            }
+
+            function setupOptionList(textData, targetContainer) {
+                if (!textData) return;
+
+                const lines = textData.split(/\r?\n/).filter(function (line) {
+                    return line.trim() !== '';
+                });
+
+                lines.forEach(function (line, index) {
+                    const cleanText = line.trim().replace(/^[A-Z]\.\s*/i, '');
+                    if (!cleanText) return;
+
+                    const optionDiv = document.createElement('div');
+                    optionDiv.className = 'clickable-text';
+                    optionDiv.setAttribute('data-action', cleanText);
+                    const optionText = document.createElement('p');
+                    optionText.textContent = cleanText;
+                    optionDiv.appendChild(optionText);
+                    optionDiv.style.setProperty('--item-delay', (0.3 + index * 0.1) + 's');
+
+                    optionDiv.addEventListener('click', function () {
+                        const textToSend = this.getAttribute('data-action');
+                        try {
+                            const input = window.parent.document.querySelector('#send_textarea');
+                            const trigger = window.parent.triggerSlash;
+                            if (input) {
+                                const newValue = input.value + textToSend;
+                                if (trigger) {
+                                    trigger('/setinput ' + newValue);
+                                } else {
+                                    input.value = newValue;
+                                    input.dispatchEvent(new Event('input', { bubbles: true }));
+                                }
+                            } else if (trigger) {
+                                trigger('/setinput ' + textToSend);
+                            }
+                        } catch (e) {
+                            console.error('Error setting input text:', e);
+                        }
+                    });
+                    targetContainer.appendChild(optionDiv);
+                });
+            }
+
+
+            function setupCollapsible(elements) {
+                const cardEl = elements.card;
+                const optsContainer = elements.optionsContainer;
+                const overlayEl = elements.overlay;
+                const wrapper = elements.wrapper;
+
+                const parentWin = window.parent || window;
+
+                const CLOSED_SIZE = 38;
+                const OPEN_MAX_WIDTH = 320;
+                const OPEN_MAX_HEIGHT = 480;
+                const EDGE_PADDING = 20;
+                const MOBILE_EDGE_PADDING = 16;
+                const MOBILE_TOP_FALLBACK = 48;
+                const SNAP_DISTANCE = 28;
+                const POSITION_TRANSITION = 'left 0.24s ease, top 0.24s ease';
+                const requestFrame = parentWin.requestAnimationFrame
+                    ? parentWin.requestAnimationFrame.bind(parentWin)
+                    : function (callback) { return setTimeout(callback, 16); };
+                const cancelFrame = parentWin.cancelAnimationFrame
+                    ? parentWin.cancelAnimationFrame.bind(parentWin)
+                    : function (id) { clearTimeout(id); };
+                const storage = (() => {
+                    try {
+                        return parentWin.localStorage || localStorage;
+                    } catch (e) {
+                        return localStorage;
+                    }
+                })();
+
+                let isDragging = false;
+                let startX, startY;
+                let initialLeft, initialTop;
+                let activePointerId = null;
+                let viewportRaf = null;
+
+                let preExpandLeft = null;
+                let preExpandTop = null;
+
+                // ==========================================
+                // 1. 安全视口与位置工具
+                // ==========================================
+                function clamp(value, min, max) {
+                    return Math.max(min, Math.min(value, max));
+                }
+
+                function getViewportBox() {
+                    const visualViewport = parentWin.visualViewport;
+                    const width = visualViewport ? visualViewport.width : parentWin.innerWidth;
+                    const height = visualViewport ? visualViewport.height : parentWin.innerHeight;
+                    const left = visualViewport ? visualViewport.offsetLeft : 0;
+                    const top = visualViewport ? visualViewport.offsetTop : 0;
+
+                    return {
+                        left: left,
+                        top: top,
+                        right: left + width,
+                        bottom: top + height,
+                        width: width,
+                        height: height
+                    };
+                }
+
+                function getEdgePadding() {
+                    return getViewportBox().width <= 480 ? MOBILE_EDGE_PADDING : EDGE_PADDING;
+                }
+
+                function getTopChromeBottom(viewport) {
+                    const selectors = [
+                        '#top-settings-holder',
+                        '#top-bar',
+                        '#topBar',
+                        '#navbar',
+                        '#navigation',
+                        '.top-settings-holder',
+                        '.top-bar',
+                        '.navbar',
+                        '.mobileTopBar',
+                        'header'
+                    ];
+
+                    let chromeBottom = viewport.top;
+                    const seen = new Set();
+
+                    selectors.forEach(function (selector) {
+                        parentWin.document.querySelectorAll(selector).forEach(function (el) {
+                            if (!el || seen.has(el) || el === wrapper || wrapper.contains(el)) return;
+                            seen.add(el);
+
+                            const style = parentWin.getComputedStyle(el);
+                            if (style.display === 'none' || style.visibility === 'hidden' || style.opacity === '0') return;
+
+                            const rect = el.getBoundingClientRect();
+                            if (rect.width <= 0 || rect.height <= 0) return;
+                            if (rect.height > Math.min(160, viewport.height * 0.35)) return;
+                            if (rect.bottom <= viewport.top || rect.top > viewport.top + 96) return;
+                            if (rect.width < Math.min(260, viewport.width * 0.45)) return;
+
+                            chromeBottom = Math.max(chromeBottom, rect.bottom);
+                        });
+                    });
+
+                    if (chromeBottom === viewport.top && viewport.width <= 768) {
+                        chromeBottom = viewport.top + MOBILE_TOP_FALLBACK;
+                    }
+
+                    return chromeBottom;
+                }
+
+                function applyOpenSize() {
+                    const viewport = getViewportBox();
+                    const padding = getEdgePadding();
+                    const topChromeBottom = getTopChromeBottom(viewport);
+                    const topInset = Math.max(0, topChromeBottom - viewport.top);
+                    const width = Math.max(CLOSED_SIZE, Math.min(OPEN_MAX_WIDTH, viewport.width - padding * 2));
+                    const height = Math.max(CLOSED_SIZE, Math.min(OPEN_MAX_HEIGHT, viewport.height - topInset - padding * 2));
+
+                    cardEl.style.setProperty('--meowFM-open-width', Math.round(width) + 'px');
+                    cardEl.style.setProperty('--meowFM-open-height', Math.round(height) + 'px');
+
+                    return { width: width, height: height };
+                }
+
+                function clampPosition(left, top, width, height) {
+                    const viewport = getViewportBox();
+                    const padding = getEdgePadding();
+                    const topChromeBottom = getTopChromeBottom(viewport);
+                    const minLeft = viewport.left + padding;
+                    const minTop = Math.max(viewport.top + padding, topChromeBottom + padding);
+                    const maxLeft = viewport.right - width - padding;
+                    const maxTop = viewport.bottom - height - padding;
+                    const safeLeft = maxLeft < minLeft
+                        ? viewport.left + Math.max(0, (viewport.width - width) / 2)
+                        : clamp(left, minLeft, maxLeft);
+                    const safeTop = maxTop < minTop
+                        ? viewport.top + Math.max(0, (viewport.height - height) / 2)
+                        : clamp(top, minTop, maxTop);
+
+                    return { left: safeLeft, top: safeTop };
+                }
+
+                function snapPosition(left, top, width, height) {
+                    const viewport = getViewportBox();
+                    const padding = getEdgePadding();
+                    const topChromeBottom = getTopChromeBottom(viewport);
+                    const minLeft = viewport.left + padding;
+                    const minTop = Math.max(viewport.top + padding, topChromeBottom + padding);
+                    const maxLeft = viewport.right - width - padding;
+                    const maxTop = viewport.bottom - height - padding;
+                    const position = clampPosition(left, top, width, height);
+
+                    if (maxLeft >= minLeft) {
+                        if (Math.abs(position.left - minLeft) <= SNAP_DISTANCE) position.left = minLeft;
+                        if (Math.abs(maxLeft - position.left) <= SNAP_DISTANCE) position.left = maxLeft;
+                    }
+
+                    if (maxTop >= minTop) {
+                        if (Math.abs(position.top - minTop) <= SNAP_DISTANCE) position.top = minTop;
+                        if (Math.abs(maxTop - position.top) <= SNAP_DISTANCE) position.top = maxTop;
+                    }
+
+                    return clampPosition(position.left, position.top, width, height);
+                }
+
+                function setWrapperPosition(left, top, animate = false) {
+                    wrapper.style.bottom = 'auto';
+                    wrapper.style.right = 'auto';
+                    wrapper.style.transition = animate ? POSITION_TRANSITION : '';
+                    wrapper.style.left = Math.round(left) + 'px';
+                    wrapper.style.top = Math.round(top) + 'px';
+
+                    if (animate) {
+                        setTimeout(() => {
+                            if (wrapper) wrapper.style.transition = '';
+                        }, 260);
+                    }
+                }
+
+                function savePosition() {
+                    storage.setItem('meowFM_WidgetLeft', wrapper.style.left);
+                    storage.setItem('meowFM_WidgetTop', wrapper.style.top);
+                }
+
+                function keepWithinViewport(animate = false) {
+                    const isOpen = cardEl.classList.contains('open');
+                    const size = isOpen ? applyOpenSize() : { width: CLOSED_SIZE, height: CLOSED_SIZE };
+                    const rect = wrapper.getBoundingClientRect();
+                    const position = clampPosition(rect.left, rect.top, size.width, size.height);
+
+                    setWrapperPosition(position.left, position.top, animate);
+                    if (!isOpen) savePosition();
+                }
+
+                function restoreSavedPosition() {
+                    const savedLeft = parseFloat(storage.getItem('meowFM_WidgetLeft'));
+                    const savedTop = parseFloat(storage.getItem('meowFM_WidgetTop'));
+
+                    if (!Number.isFinite(savedLeft) || !Number.isFinite(savedTop)) return false;
+
+                    const position = clampPosition(savedLeft, savedTop, CLOSED_SIZE, CLOSED_SIZE);
+                    setWrapperPosition(position.left, position.top, false);
+                    savePosition();
+                    return true;
+                }
+
+                function scheduleViewportClamp() {
+                    if (viewportRaf !== null) return;
+
+                    viewportRaf = requestFrame(() => {
+                        viewportRaf = null;
+                        keepWithinViewport(false);
+                    });
+                }
+
+                const viewportCleanup = [];
+                function addViewportListener(target, eventName) {
+                    if (!target || typeof target.addEventListener !== 'function') return;
+                    target.addEventListener(eventName, scheduleViewportClamp);
+                    viewportCleanup.push(() => target.removeEventListener(eventName, scheduleViewportClamp));
+                }
+
+                addViewportListener(parentWin, 'resize');
+                addViewportListener(parentWin, 'orientationchange');
+                addViewportListener(parentWin.visualViewport, 'resize');
+                addViewportListener(parentWin.visualViewport, 'scroll');
+
+                wrapper.__meowFMDispose = function () {
+                    viewportCleanup.forEach(function (cleanup) { cleanup(); });
+                    if (viewportRaf !== null) {
+                        cancelFrame(viewportRaf);
+                        viewportRaf = null;
+                    }
+                };
+
+                if (!restoreSavedPosition()) {
+                    requestFrame(() => keepWithinViewport(false));
+                }
+
+                // ==========================================
+                // 2. 拖拽逻辑 (含位置保存和边缘吸附)
+                // ==========================================
+                cardEl.addEventListener('pointerdown', function (e) {
+                    if (cardEl.classList.contains('open')) return;
+                    if (e.pointerType === 'mouse' && e.button !== 0) return;
+
+                    isDragging = false;
+                    activePointerId = e.pointerId;
+                    startX = e.clientX;
+                    startY = e.clientY;
+
+                    const rect = wrapper.getBoundingClientRect();
+                    initialLeft = rect.left;
+                    initialTop = rect.top;
+
+                    wrapper.style.bottom = 'auto';
+                    wrapper.style.left = initialLeft + 'px';
+                    wrapper.style.top = initialTop + 'px';
+
+                    if (typeof cardEl.setPointerCapture === 'function') {
+                        cardEl.setPointerCapture(e.pointerId);
+                    }
+
+                    function onPointerMove(moveEvent) {
+                        if (moveEvent.pointerId !== activePointerId) return;
+
+                        const dx = moveEvent.clientX - startX;
+                        const dy = moveEvent.clientY - startY;
+
+                        if (Math.abs(dx) > 5 || Math.abs(dy) > 5) {
+                            isDragging = true;
+                            cardEl.classList.add('dragging');
+                        }
+
+                        if (isDragging) {
+                            let newLeft = initialLeft + dx;
+                            let newTop = initialTop + dy;
+                            const position = clampPosition(newLeft, newTop, CLOSED_SIZE, CLOSED_SIZE);
+
+                            setWrapperPosition(position.left, position.top, false);
+                        }
+                    }
+
+                    function onPointerEnd(upEvent) {
+                        if (activePointerId !== null && upEvent.pointerId !== activePointerId) return;
+
+                        cardEl.removeEventListener('pointermove', onPointerMove);
+                        cardEl.removeEventListener('pointerup', onPointerEnd);
+                        cardEl.removeEventListener('pointercancel', onPointerEnd);
+                        cardEl.classList.remove('dragging');
+
+                        if (typeof cardEl.releasePointerCapture === 'function'
+                            && typeof cardEl.hasPointerCapture === 'function'
+                            && cardEl.hasPointerCapture(upEvent.pointerId)) {
+                            cardEl.releasePointerCapture(upEvent.pointerId);
+                        }
+
+                        if (isDragging) {
+                            const rect = wrapper.getBoundingClientRect();
+                            const position = snapPosition(rect.left, rect.top, CLOSED_SIZE, CLOSED_SIZE);
+                            setWrapperPosition(position.left, position.top, true);
+                            savePosition();
+                        }
+
+                        activePointerId = null;
+                    }
+
+                    cardEl.addEventListener('pointermove', onPointerMove);
+                    cardEl.addEventListener('pointerup', onPointerEnd);
+                    cardEl.addEventListener('pointercancel', onPointerEnd);
+                });
+
+                // ==========================================
+                // 3. 屏幕位置适配 (计算安全展开位置)
+                // ==========================================
+                function adjustPositionForExpand(animate = true) {
+                    const openSize = applyOpenSize();
+                    const rect = wrapper.getBoundingClientRect();
+                    const position = clampPosition(rect.left, rect.top, openSize.width, openSize.height);
+
+                    if (Math.round(position.left) !== Math.round(rect.left)
+                        || Math.round(position.top) !== Math.round(rect.top)) {
+                        setWrapperPosition(position.left, position.top, animate);
+                    }
+                }
+
+                // ==========================================
+                // 4. 点击展开/收起逻辑 (含归位复原)
+                // ==========================================
+                function toggleState(forceClose = false) {
+                    const isCurrentlyOpen = cardEl.classList.contains('open');
+
+                    if (forceClose || isCurrentlyOpen) {
+                        cardEl.classList.remove('open');
+                        if (overlayEl) overlayEl.classList.remove('active');
+
+                        if (preExpandLeft !== null && preExpandTop !== null) {
+                            const position = clampPosition(preExpandLeft, preExpandTop, CLOSED_SIZE, CLOSED_SIZE);
+                            setWrapperPosition(position.left, position.top, true);
+                            savePosition();
+                        }
+                    } else {
+                        const rect = wrapper.getBoundingClientRect();
+                        const closedPosition = clampPosition(rect.left, rect.top, CLOSED_SIZE, CLOSED_SIZE);
+                        preExpandLeft = closedPosition.left;
+                        preExpandTop = closedPosition.top;
+                        setWrapperPosition(preExpandLeft, preExpandTop, false);
+
+                        adjustPositionForExpand();
+                        cardEl.classList.add('open');
+                        if (overlayEl) overlayEl.classList.add('active');
+                    }
+                }
+
+                cardEl.addEventListener('click', function (event) {
+                    if (isDragging) {
+                        isDragging = false;
+                        return;
+                    }
+
+                    const interactiveElements = Array.from(optsContainer.querySelectorAll('.clickable-text'));
+                    const isClickOnInteractiveChild = interactiveElements.some(function (el) {
+                        return el && el.contains(event.target);
+                    });
+
+                    if (isClickOnInteractiveChild) {
+                        return;
+                    }
+                    toggleState();
+                });
+
+                if (overlayEl) {
+                    overlayEl.addEventListener('click', function () {
+                        toggleState(true);
+                    });
+                }
+            }
+
+            initPostItCard();
+            setupAutoCleanup();
+        });
+    </script>
+</body>
+
+</html>
+
+```

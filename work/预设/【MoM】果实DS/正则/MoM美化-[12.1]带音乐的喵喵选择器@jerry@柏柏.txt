@@ -1,0 +1,620 @@
+```html
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>选项美化 + 动态歌曲名播放器 (唱片显示修正)</title>
+
+  <!-- 引入Music API (与B相同) -->
+  <script src="https://drive.baibai.cv/f/ZKEBuW/Music.js"></script>
+  <!-- 引入FontAwesome (可选) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+  body{
+    display: flex;
+    justify-content: center;
+    font-size:1.1em;
+    line-height:1.6;
+    background: transparent;
+    color: white;
+  }
+
+  .post-it-container{
+    width: var(--container-width, 550px);
+    position:relative;
+    margin:16px auto;
+    padding:1em;
+    padding-top: 0.5em;
+    background: transparent;
+    border: 1px solid #ccc;
+    border-radius:16px;
+  }
+
+  /* ===== 播放器样式（整合可播放代码的唱片样式） ===== */
+  .top-player-area {
+    padding: 12px 12px 8px 12px;
+    margin-bottom: 10px;
+    background: rgba(20, 20, 20, 0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 28px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+    transition: all 0.2s ease;
+  }
+  .mp-container { 
+    display: flex; 
+    align-items: center; 
+    gap: 16px; 
+    padding-top: 0; 
+    position: relative; 
+  }
+  /* 唱片区域 - 参照可播放代码 */
+  .mp-vinyl { 
+    width: 70px;
+    height: 70px;
+    border-radius:50%; 
+    background:#111; 
+    box-shadow:0 4px 10px rgba(0,0,0,0.8); 
+    position:relative; 
+    flex-shrink:0; 
+    overflow:hidden;
+  }
+  .mp-vinyl.playing { 
+    animation:spin 4s linear infinite; 
+  }
+  @keyframes spin { 
+    from{transform:rotate(0deg);} 
+    to{transform:rotate(360deg);} 
+  }
+  .mp-vinyl-grooves {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: repeating-radial-gradient(#111 0, #111 2px, #222 3px, #111 4px);
+    opacity: 0.8;
+  }
+  .mp-vinyl-label {
+    position: absolute;
+    inset: 20%;
+    background: #f472b6;
+    border-radius: 50%;
+    border: 2px solid #111;
+    overflow: hidden;
+  }
+  .mp-vinyl-label img { 
+    width:100%; 
+    height:100%; 
+    object-fit:cover; 
+  }
+
+  .mp-interface { 
+    flex: 1; 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; 
+    min-width: 0; 
+    gap: 6px; 
+  }
+  .mp-meta { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 2px; 
+  }
+  .mp-title { 
+    font-size: 0.9rem; 
+    font-weight: 700; 
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+    color: white;
+  }
+  .mp-artist { 
+    font-size: 0.65rem; 
+    opacity: 0.6; 
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+    text-transform: uppercase; 
+    letter-spacing: 0.05em; 
+    color: white;
+  }
+  .mp-progress-stack { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 4px; 
+  }
+  .mp-time-row { 
+    display: flex; 
+    justify-content: space-between; 
+    font-family: monospace; 
+    font-size: 0.6rem; 
+    opacity: 0.5; 
+    color: white;
+  }
+
+  .mp-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+    font-size: 0.8rem;
+    opacity: 0.8;
+    color: white;
+  }
+  .mp-loading i { margin-right: 8px; animation: spin 1s linear infinite; }
+
+  input[type=range].mp-slider {
+    -webkit-appearance: none; 
+    width: 100%; 
+    background: transparent; 
+    outline: none; 
+    cursor: pointer; 
+    margin: 0;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    height: 4px;
+    padding: 0;
+  }
+  input[type=range].mp-slider::-webkit-slider-runnable-track {
+    width: 100%; height: 4px; border-radius: 2px;
+  }
+  input[type=range].mp-slider::-webkit-slider-thumb {
+    -webkit-appearance: none; height: 10px; width: 10px; border-radius: 50%;
+    background: #ffffff;
+    margin-top: -3px;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+    transition: transform 0.1s;
+  }
+  input[type=range].mp-slider:hover::-webkit-slider-thumb { transform: scale(1.3); }
+
+  .mp-controls-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 4px;
+  }
+
+  .mp-vol-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 50%;
+    opacity: 0.8;
+  }
+
+  .glass-btn {
+    appearance: none;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(4px);
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3), -1px -1px 2px rgba(255, 255, 255, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    transition: all 0.2s ease;
+  }
+
+  .play-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1)) !important;
+    padding: 0;
+  }
+  .play-btn svg {
+    width: 14px;
+    height: 14px;
+    display: block;
+    margin: auto;
+    pointer-events: none;
+  }
+  .play-btn svg path,
+  .play-btn svg polygon { fill: #ffffff; stroke: none; }
+
+  .glass-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.4), -1px -1px 2px rgba(255, 255, 255, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.1));
+  }
+  .glass-btn:active {
+    transform: translateY(1px);
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4), inset 2px 2px 5px rgba(0, 0, 0, 0.2);
+  }
+
+  /* ===== 原有选项样式（完全不变） ===== */
+  .theme-icon{ display: none; }
+
+  .post-it-collapsible{
+    position: relative;
+    z-index: 2;
+    display:grid; 
+    grid-template-rows:0fr;
+  }
+
+  .post-it-collapsible.open{
+    grid-template-rows:1fr;
+  }
+
+  .content-wrapper{
+    position: relative;               
+    overflow:hidden; 
+    min-height:0; 
+    padding-top: 3.2em;
+    border-top:1px solid #eee;
+  }
+
+  .post-it-collapsible.open .content-wrapper{
+    overflow:visible;
+  }
+
+  .click-hint {
+    position: absolute;
+    top: 1.2em;                        
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 600;
+    color: white;
+    pointer-events: none;
+    user-select: none;
+    z-index: 3;                        
+  }
+
+  #options-container{
+    padding:.8em .5em; 
+    display:flex; 
+    flex-direction:column; 
+    gap:.6em;
+  }
+
+  .clickable-text{
+    cursor:pointer; 
+    padding:.85em 1.2em; 
+    border-radius:10px;
+    border:1px solid #dee2e6;
+    background: transparent;
+    opacity:0; 
+    transform:translateX(-20px); 
+    pointer-events:none;
+    transition: transform .35s ease;
+    position:relative; 
+    overflow:hidden;
+    color: white;
+  }
+
+  .clickable-text.is-selected{
+    transform:translateX(8px) translateY(-2px) scale(1.015);
+  }
+
+  .post-it-collapsible.open .clickable-text{
+    opacity:1; 
+    transform:translateX(0); 
+    pointer-events:auto;
+  }
+
+  .post-it-collapsible.open .clickable-text:nth-child(1){transition-delay:.1s}
+  .post-it-collapsible.open .clickable-text:nth-child(2){transition-delay:.15s}
+  .post-it-collapsible.open .clickable-text:nth-child(3){transition-delay:.2s}
+  .post-it-collapsible.open .clickable-text:nth-child(4){transition-delay:.25s}
+  .post-it-collapsible.open .clickable-text:nth-child(5){transition-delay:.3s}
+
+  .clickable-text:hover{
+    transform:translateX(8px) translateY(-2px);
+  }
+
+  .clickable-text li{
+    list-style:none; 
+    position:relative; 
+    padding-left:1.2em;
+    font-size:.95em; 
+    line-height:1.4;
+    color: white;
+  }
+
+  .clickable-text li::before{
+    content:'▸'; 
+    position:absolute; 
+    left:0; 
+    color: white;
+  }
+
+  .clickable-text:hover li::before{ 
+    transform:translateX(4px); 
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    *{animation-duration:.01ms !important; transition-duration:.01ms !important}
+  }
+  </style>
+</head>
+<body>
+
+  <div class="post-it-container" id="post-it-card">
+
+    <!-- 新增播放器（唱片显示已修正） -->
+    <div class="top-player-area" id="music-player-top">
+      <div class="mp-container">
+        <!-- 唱片区域 - 与可播放代码一致 -->
+        <div class="mp-vinyl" id="vinyl">
+          <div class="mp-vinyl-grooves"></div>
+          <div class="mp-vinyl-label">
+            <img src="https://via.placeholder.com/70?text=Music" alt="cover" id="coverImage">
+          </div>
+        </div>
+        <div class="mp-interface">
+          <div class="mp-meta">
+            <div class="mp-title" id="songNamePlaceholder">$2</div>
+            <div class="mp-artist" id="artistPlaceholder"></div>
+          </div>
+          <div class="mp-progress-stack">
+            <div class="mp-time-row">
+              <span id="currentTime">0:00</span>
+              <span id="totalTime">0:00</span>
+            </div>
+            <input type="range" class="mp-slider" id="progressSlider" value="0" max="100" step="0.1">
+          </div>
+          <div class="mp-controls-row">
+            <div class="mp-vol-wrap">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon></svg>
+              <input type="range" class="mp-slider" id="volumeSlider" min="0" max="1" step="0.05" value="0.8">
+            </div>
+            <button class="glass-btn play-btn" id="playPauseBtn" aria-label="播放">
+              <svg id="playIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"><polygon points="8,5 19,12 8,19" fill="#ffffff"/></svg>
+              <svg id="pauseIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" style="display:none"><path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" fill="#ffffff"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 原有折叠面板（横线以下，内容完全不变） -->
+    <div class="post-it-collapsible" id="collapsible-content">
+      <div class="content-wrapper">
+        <div class="click-hint">ฅ(^・ω・^)ฅ 点击选择</div>
+        <div id="options-container"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 选项数据（保持原样$1，完全不变） -->
+  <div id="raw-options-data" style="display:none">$1</div>
+
+  <!-- 模拟C中的XML数据块（用于提取歌曲名） -->
+  <div id="music-data" style="display:none">
+    <branches>
+      <当前播放>晴天</当前播放>
+    </branches>
+  </div>
+
+  <script>
+  document.addEventListener("DOMContentLoaded", function(){
+    // ===== 原有选项逻辑（完全不变） =====
+    function init(){
+      const refs = { 
+        card: document.getElementById("post-it-card"), 
+        collapsibleContent: document.getElementById("collapsible-content"), 
+        contentWrapper: document.querySelector(".content-wrapper"),
+        optionsContainer: document.getElementById("options-container"), 
+        rawData: document.getElementById("raw-options-data") 
+      };
+      if(refs.card && refs.rawData && refs.optionsContainer){
+        renderOptions(refs.rawData, refs.optionsContainer);
+        bindCollapsible(refs);
+      }
+    }
+
+    function renderOptions(rawNode, root){
+      const lines = rawNode.textContent.trim().split(/\r?\n/).filter(s=>s.trim()!=="");
+      lines.forEach((line)=>{
+        const text = line.trim().replace(/^[A-Z]\.\s*/i,"");
+        if(!text) return;
+        const item = document.createElement("div");
+        item.className = "clickable-text";
+        item.setAttribute("data-action", text);
+        item.innerHTML = `<li>${text}</li>`;
+        item.addEventListener("click", function(e){
+          e.stopPropagation();
+          const rect = this.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          this.style.setProperty('--rx', x + 'px');
+          this.style.setProperty('--ry', y + 'px');
+          this.classList.add('is-selected');
+          setTimeout(()=>{ this.classList.remove('is-selected'); }, 700);
+          const payload = this.getAttribute("data-action");
+          try {
+            const t = window.parent.document.querySelector("#send_textarea");
+            const n = window.parent.triggerSlash;
+            if(t){
+              const v = t.value + payload;
+              if(n){ n(`/setinput ${v}`); }
+              else{ t.value = v; t.dispatchEvent(new Event("input",{bubbles:true})); }
+            } else if(n){ n(`/setinput ${payload}`); }
+          } catch(err){ console.error("设置输入文本时出错:", err); }
+        });
+        root.appendChild(item);
+      });
+    }
+
+    function bindCollapsible(refs){
+      const { collapsibleContent, contentWrapper, optionsContainer } = refs;
+      contentWrapper.addEventListener("click", e => {
+        const exceptedElements = [...optionsContainer.querySelectorAll(".clickable-text")];
+        const isClickOnException = exceptedElements.some(el => el && el.contains(e.target));
+        if(!isClickOnException){ collapsibleContent.classList.toggle("open"); }
+      });
+    }
+    init();
+
+    // ===== 播放器逻辑（唱片显示已修正，封面更新） =====
+    (function setupMusicPlayer() {
+      // 从隐藏的XML中提取歌曲名
+      function getSongNameFromXML() {
+        const xmlDiv = document.getElementById('music-data');
+        if (!xmlDiv) return '$2';
+        const content = xmlDiv.textContent;
+        const match = content.match(/<当前播放>(.*?)<\/当前播放>/);
+        return match ? match[1].trim() : '$2';
+      }
+
+      const SONG_NAME = getSongNameFromXML(); // 例如 "晴天"
+
+      // 获取DOM元素
+      const vinyl = document.getElementById('vinyl');
+      const playBtn = document.getElementById('playPauseBtn');
+      const playIcon = document.getElementById('playIcon');
+      const pauseIcon = document.getElementById('pauseIcon');
+      const progressSlider = document.getElementById('progressSlider');
+      const volumeSlider = document.getElementById('volumeSlider');
+      const currentTimeSpan = document.getElementById('currentTime');
+      const totalTimeSpan = document.getElementById('totalTime');
+      const songTitleEl = document.getElementById('songNamePlaceholder');
+      const artistEl = document.getElementById('artistPlaceholder');
+      const coverImage = document.getElementById('coverImage');
+
+      // 音频元素
+      const audio = new Audio();
+      audio.volume = 0.8;
+
+      // 状态变量
+      let isPlaying = false;
+      let songData = null;
+      let lastSearchedSong = '';
+
+      // 格式化时间
+      function formatTime(seconds) {
+        if (isNaN(seconds) || seconds < 0) return '0:00';
+        const mins = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds % 60);
+        return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+      }
+
+      // 更新播放状态UI（使用 playing 类）
+      function updatePlayState(playing) {
+        if (playing) {
+          playIcon.style.display = 'none';
+          pauseIcon.style.display = 'block';
+          vinyl.classList.add('playing');
+        } else {
+          playIcon.style.display = 'block';
+          pauseIcon.style.display = 'none';
+          vinyl.classList.remove('playing');
+        }
+      }
+
+      // 切换播放/暂停
+      function togglePlay() {
+        if (!songData || !songData.Url) return;
+        if (audio.paused) {
+          audio.play().then(() => {
+            isPlaying = true;
+            updatePlayState(true);
+          }).catch(e => console.warn('播放失败:', e));
+        } else {
+          audio.pause();
+          isPlaying = false;
+          updatePlayState(false);
+        }
+      }
+
+      // 根据歌曲名搜索
+      async function searchAndLoadSong(songName) {
+        if (!songName || songName === lastSearchedSong || songName.startsWith('$')) return;
+
+        lastSearchedSong = songName;
+        songTitleEl.textContent = songName;
+        artistEl.textContent = '搜索中...';
+
+        try {
+          if (typeof Music !== 'undefined' && Music.SearchMusic) {
+            const result = await Music.SearchMusic(songName);
+            if (result && result.Url) {
+              songData = result;
+              audio.src = result.Url;
+              audio.load();
+              songTitleEl.textContent = result.Name || songName;
+              artistEl.textContent = result.Singer || '未知歌手';
+              // 更新封面
+              if (result.Cover) {
+                coverImage.src = result.Cover;
+              }
+            } else {
+              songData = null;
+              artistEl.textContent = '暂无歌曲';
+            }
+          } else {
+            songData = null;
+            artistEl.textContent = '暂无歌曲';
+          }
+        } catch (error) {
+          console.error('搜索音乐失败:', error);
+          songData = null;
+          artistEl.textContent = '暂无歌曲';
+        }
+      }
+
+      // 初始加载
+      if (SONG_NAME && !SONG_NAME.startsWith('$')) {
+        searchAndLoadSong(SONG_NAME);
+      } else {
+        songTitleEl.textContent = SONG_NAME;
+        artistEl.textContent = '暂无歌曲';
+      }
+
+      // 音频事件监听
+      audio.addEventListener('timeupdate', () => {
+        if (!isNaN(audio.duration)) {
+          progressSlider.value = audio.currentTime;
+          progressSlider.max = audio.duration;
+          currentTimeSpan.textContent = formatTime(audio.currentTime);
+        }
+      });
+
+      audio.addEventListener('loadedmetadata', () => {
+        totalTimeSpan.textContent = formatTime(audio.duration);
+        progressSlider.max = audio.duration;
+      });
+
+      audio.addEventListener('ended', () => {
+        isPlaying = false;
+        updatePlayState(false);
+        audio.currentTime = 0;
+      });
+
+      // 进度条拖动
+      progressSlider.addEventListener('input', (e) => {
+        if (!songData || !songData.Url) return;
+        const seekTime = parseFloat(e.target.value);
+        audio.currentTime = seekTime;
+        currentTimeSpan.textContent = formatTime(seekTime);
+      });
+
+      // 音量调节
+      volumeSlider.addEventListener('input', (e) => {
+        const vol = parseFloat(e.target.value);
+        audio.volume = vol;
+      });
+
+      // 播放按钮点击
+      playBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        togglePlay();
+      });
+
+      // 阻止滑块点击事件冒泡
+      progressSlider.addEventListener('click', e => e.stopPropagation());
+      volumeSlider.addEventListener('click', e => e.stopPropagation());
+    })();
+  });
+  </script>
+</body>
+</html>
+``` 

@@ -1,0 +1,22 @@
+{{setglobalvar::cot::
+[语言检定]{{getvar::对话模式}}{{getvar::IF线cot}}
+
+{{getvar::任务确认cot}}{{getvar::主线剧情cot}}{{getvar::不抢话cot}}{{getvar::NPCOT}}{{getvar::NSFW专注cot}}{{getvar::角色卡cot}}{{getvar::优先人设}}{{getvar::真实RP}}{{getvar::关系对齐}}{{getvar::同人卡cot}}{{getvar::反修罗场}}
+[基调锚定](确认`Core Rules`)
+
+[长线引导]（载入`长线指导`，思考如何达成长线结局）
+{{getvar::逻辑思考}}
+
+[风格适配](严格遵循`写作指导`{{getvar::基调}})
+{{getvar::自然塑造cot}}{{getvar::跳过cot}}
+
+[反思 & 设定校对]（设定必须和资料、历史一致）
+{{getvar::p_cot}}
+
+[正文字数检测]
+
+[输出顺序检查]
+{{getvar::小剧场数量cot}}
+
+（果农的誓约、自我陈词和反思）
+}}

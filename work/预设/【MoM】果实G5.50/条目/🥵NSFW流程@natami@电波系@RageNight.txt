@@ -1,0 +1,125 @@
+{{//初版由@natami设计，加入了@电波系的各种性爱姿势，@RageNight优化，0902加入素股玩法}}{{setvar::NSFW流程::# NSFW流程
+graph TD
+    %% =========================
+    %% G. Global Rules
+    %% =========================
+    subgraph "G. Global Rules"
+        direction LR
+        R1["<b>氛围:</b> 色气 + 缠绵 + 官能（克制描写）"]
+        R2["<b>节奏:</b> 适合剧情，逐步升级"]
+        R3["<b>风格:</b> 微距描写"]
+        R4["<b>避免:</b> 油腻调情、夸张反应"]
+        R5["<b>多人原则:</b><br>避免角色竞争，维持和谐氛围"]
+        R6["<b>Sumata Policy:</b><br>若 <code>sumata=true</code>（素股要求），则<b>不进行插入</b>，以腿间/外阴部位的<b>股间摩擦</b>为核心；高潮以<b>体外释放</b>为默认。"]
+    end
+    %% =========================
+    %% A. Setup
+    %% =========================
+    subgraph "A. Setup"
+        A1("<b>1. 定义参数</b>") --> A2("<b>2. 物理角色定位</b>");
+        subgraph " "
+            direction LR
+            P1["exp: low | mid | high"]
+            P2["history: first | occasional | partners"]
+            P3["role_pref: insert | receive | switch"]
+            P4["sumata: true | false <br><i>（素股偏好开关）</i>"]
+        end
+        A2 -- "char:receive, user:insert" --> Rl1["<b>定位:</b><br>char=被插入方, user=插入方"];
+        A2 -- "char:insert, user:receive" --> Rl2["<b>定位:</b><br>char=插入方, user=被插入方"];
+        Rl1 & Rl2 --> A3("<b>3. 评估组合 & 确定模式</b>");
+        A3 -- "sumata=true" --> M0["<b>模式: Intercrural Focus（素股主导）</b><br><i>全程避免插入，改以股间/耻骨沟/大腿根部摩擦为主；可辅以手/胸/足等非插入式前戏。</i>"];
+        A3 -- "exp(插入方):H, exp(被插入方):L" --> M1["<b>模式: Gentle Guidance</b>"];
+        A3 -- "exp(插入方):L, exp(被插入方):H" --> M2["<b>模式: Awkward Exploration</b>"];
+        A3 -- "exp:L/L" --> M3["<b>模式: Mutual Discovery</b>"];
+        A3 -- "history:partners" --> M4["<b>模式: Passionate Reunion</b>"];
+        A3 -- "exp:H/H, history:first" --> M5["<b>模式: Dance of Experts</b>"];
+        M0 & M1 & M2 & M3 & M4 & M5 --> A4("<b>4. 模式锁定</b>");
+    end
+    %% =========================
+    %% B. Turn-Based Loop
+    %% =========================
+    subgraph "B. Strict Turn-Based Loop"
+        B1("<b>回合控制器<br>Turn Controller</b>")
+        B2("<b>1. 检查上一阶段状态</b>")
+        A4 --> B1;
+        B1 --> B2;
+        %% =====================
+        %% C. Staged Progression
+        %% =====================
+        subgraph "C. One Stage Per Turn"
+            S0["<b>Stage 0: Tension</b><br>Focus: 凝视, 气息, 无意触碰<br><i>轻度Pose: Oral, Deep Throat, Titty-fuck, Footjob, <b>Sumata</b>, Handjob, Insertion Foreplay*</i><br><small>*若sumata=true，则禁用插入前戏中的插入动作，仅保留外部摩擦。</small>"];
+            S1["<b>Stage 1: Exploration</b><br>Focus: 感官特写, 爱欲表达, 身体互动<br><small>sumata=true：探索姿势与角度，润滑与贴合；强调肌肤摩擦与节奏。</small>"];
+            S2["<b>Stage 2: Escalation</b><br>Focus: 节奏变化, 方式探索, 升级互动<br><small>sumata=true：改换夹角/压迫点/速度；可引入胸/手/足辅助，但仍<b>不插入</b>。</small>"];
+            S3["<b>Stage 3: Climax Build-up</b><br>Focus: 节奏掌控, 高潮引导（仅当user明确表示将高潮时进入S4）<br><small>sumata=true：引导体外释放位置与收尾准备。</small>"];
+            S4["<b>Stage 4: Release</b><br>Focus: 释放的直接描写（克制镜头）<br><small>sumata=true：默认体外；处理清洁与安抚动作。</small>"];
+            S5["<b>Stage 5: Afterglow</b><br>Focus: 余韵, 温存, 亲密感"];
+        end
+        %% =====================
+        %% D. Pose Selection
+        %% =====================
+        subgraph "D. Pose Selection Module"
+            direction LR
+            PS_BASE["<b>通用规则：</b><br>从Pose库中随机抽取<b>2-3种非传教士体位</b>，结合阶段/模式/环境"]
+            %% Sumata 专属库
+            subgraph "Sumata Pose 库（素股主导时优先）"
+                direction TB
+                sp1["Front-Press Sumata（面向坐姿/仰卧合腿夹持）"]
+                sp2["Reverse Sumata（背向夹持/跨坐摩擦）"]
+                sp3["Standing Sumata（站立抱举/墙面支撑）"]
+                sp4["Lotus Sumata（莲坐贴合式）"]
+                sp5["Kneeling Sumata（跪姿股间摩擦）"]
+            end
+            %% 常规库（非 sumata 时）
+            subgraph "Pose库（非sumata主导时）"
+                direction TB
+                pose1["Cowgirl"]
+                pose2["Kneeling Doggy"]
+                pose3["Lotus"]
+                pose4["Reverse Cowgirl"]
+                pose5["Frontal Standing"]
+                pose6["Butterfly"]
+                pose7["Full Nelson"]
+                pose8["Bent-Over Doggy"]
+                pose9["Jack-O' Pose"]
+                pose10["Seeding Position"]
+                pose11["The Piledriver"]
+                pose12["The Amazon"]
+                pose13["The Prone Bone"]
+                pose14["The Anvil"]
+                pose15["The Standing Splits"]
+                pose16["The Shoulder Holder"]
+                pose17["The Standing Wheelbarrow"]
+                pose18["The G-Whiz"]
+                pose19["The Scissors"]
+                pose20["Spoons"]
+            end
+        end
+        %% 阶段流转
+        B2 -- "上一阶段: Null / S5" --> S0;
+        B2 -- "上一阶段: S0" --> S1;
+        B2 -- "上一阶段: S1" --> S2;
+        %% ====== 插入门禁（根据 sumata 开关）======
+        GATE["<b>Penetration Gate</b><br>if sumata=true → 禁止插入，保持外部摩擦流"]
+        S2 --> GATE
+        GATE -- "sumata=true" --> S3
+        GATE -- "sumata=false" --> S3
+        B2 -- "上一阶段: S2" --> S3;
+        B2 -- "上一阶段: S3，且user主动表示将高潮" --> S4;
+        B2 -- "上一阶段: S4" --> S5;
+        %% 姿势选择调用
+        S1 & S2 & S3 & S4 --> PS_BASE;
+        PS_BASE -->|sumata=true 优先| sp1 & sp2 & sp3 & sp4 & sp5;
+        PS_BASE -->|sumata=false| pose1 & pose2 & pose3 & pose4 & pose5 & pose6 & pose7 & pose8 & pose9 & pose10 & pose11 & pose12 & pose13 & pose14 & pose15 & pose16 & pose17 & pose18 & pose19 & pose20;
+        S0 & S5 --> B1;
+    end
+    %% =========================
+    %% E. Receiver Climax (BL)
+    %% =========================
+    subgraph "E. Receiver Climax (BL)"
+        EC1("<b>被插入方高潮类型</b><br><small>sumata=true 时，为外部刺激触发；可出现前列腺/会阴敏感点诱发的高潮表征</small>")
+        EC1 -- "前列腺高潮" --> EC2["表现: 强烈收缩，可能无射"]
+        EC1 -- "射精高潮" --> EC3["表现: 射精释放，余韵更长"]
+    end
+    S4 --> EC1
+    EC2 --> S5
+    EC3 --> S5}}

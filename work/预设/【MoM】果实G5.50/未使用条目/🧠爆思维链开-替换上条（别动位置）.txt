@@ -1,0 +1,10 @@
+{{//如果你开上面那个会爆思维链，就开这个，把上面那个关掉}}
+首先以`[incipere]`开始ECoT思考：
+"""
+[incipere]
+<thinking>
+{{getglobalvar::cot}}
+</thinking>
+[finire]
+"""
+{{getvar::emoji}}

@@ -1,0 +1,301 @@
+```html
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 引入高格调字体 -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Playfair+Display:ital,wght@0,700;1,400&family=Cinzel:wght@500&display=swap">
+    <title>小说模式</title>
+</head>
+
+<body>
+<div class="novel-header-container" id="novel-container">
+    <style>
+        /* 作用域变量定义 */
+        .novel-header-container {
+            /* === 白昼/默认模式 (Day Mode) === */
+            --novel-bg: linear-gradient(to bottom, transparent, rgba(125, 125, 125, 0.04), transparent);
+            --novel-text: var(--SmartThemeBodyColor); /* 跟随酒馆全局文字颜色 */
+            --novel-card-bg: rgba(125, 125, 125, 0.03); /* 极淡的卡片底色 */
+            --novel-border: rgba(125, 125, 125, 0.15);  /* 通用边框色 */
+            --novel-tag-bg: transparent;
+            /* 字体缩放变量 */
+            --novel-font-scale: 1.0;
+
+            /* 基础布局 */
+            font-family: 'Playfair Display', 'Noto Serif SC', serif;
+            color: var(--novel-text);
+            background: var(--novel-bg);
+            padding: 40px 20px 30px;
+            margin: 25px 0;
+            border-top: 1px solid var(--novel-border);
+            border-bottom: 1px solid var(--novel-border);
+            text-align: center;
+            position: relative;
+            animation: novelFadeIn 1s ease-out;
+            transition: all 0.5s ease; /* 丝滑切换动画 */
+            border-radius: 4px;
+        }
+
+        /* === 黑夜模式 (Night Mode) === */
+        .novel-header-container.night-mode {
+            --novel-bg: linear-gradient(to bottom, rgba(20, 24, 40, 0), rgba(20, 24, 40, 0.85), rgba(20, 24, 40, 0));
+            --novel-text: #e0e5f0;
+            --novel-card-bg: rgba(255, 255, 255, 0.08);
+            --novel-border: rgba(173, 216, 230, 0.25);
+            --novel-tag-bg: rgba(0, 0, 0, 0.2);
+            color: #e0e5f0 !important;
+        }
+
+        .novel-header-container.night-mode .novel-title {
+            color: #fff !important;
+            text-shadow: 0 0 10px rgba(173, 216, 230, 0.5);
+        }
+
+        /* 开关按钮 */
+        .theme-toggle-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: transparent;
+            border: 1px solid var(--novel-border);
+            color: var(--novel-text);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1em;
+            opacity: 0.5;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .theme-toggle-btn:hover {
+            opacity: 1;
+            background: var(--novel-card-bg);
+            transform: rotate(15deg) scale(1.1);
+        }
+
+        /* 字体大小控制容器 (修改：增加宽度以对齐) */
+        .font-size-controls {
+            position: absolute;
+            top: 50px;
+            right: 15px;
+            width: 32px; /* 与主题按钮同宽，实现居中对齐 */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            z-index: 10;
+            opacity: 0.5;
+            transition: opacity 0.3s ease;
+        }
+        .novel-header-container:hover .font-size-controls {
+            opacity: 1;
+        }
+
+        /* 字体控制按钮 (修改：加粗) */
+        .font-size-btn {
+            background: transparent;
+            border: 1px solid var(--novel-border);
+            color: var(--novel-text);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            font-weight: bold; /* 加粗 + 和 - 号 */
+            line-height: 1;
+            padding: 0;
+            transition: all 0.2s ease;
+        }
+        .font-size-btn:hover {
+            background: var(--novel-card-bg);
+            transform: scale(1.1);
+        }
+
+        /* 字体大小显示 */
+        .font-size-display {
+            font-size: 0.9em;
+            font-weight: 600;
+            color: var(--novel-text);
+            opacity: 0.8;
+            padding: 2px 0;
+            font-family: 'Noto Serif SC', serif;
+        }
+
+        /* 应用缩放的元素 */
+        .novel-chapter-num { font-size: calc(0.95em * var(--novel-font-scale)); letter-spacing: 2px; opacity: 0.6; margin-bottom: 6px; display: block; color: inherit; }
+        .novel-title { font-size: calc(1.7em * var(--novel-font-scale)); font-weight: 700; margin-bottom: 18px; letter-spacing: 1px; color: var(--SmartThemeHeaderColor, inherit); transition: color 0.5s ease; }
+        .novel-meta-card { font-size: calc(0.8em * var(--novel-font-scale)); padding: 5px 12px; border: 1px solid var(--novel-border); border-radius: 4px; background: var(--novel-card-bg); display: flex; align-items: center; gap: 6px; font-style: italic; opacity: 0.9; color: inherit; }
+        .novel-cp-group { font-size: calc(0.8em * var(--novel-font-scale)); display: flex; align-items: center; gap: 4px; padding: 3px 10px; border: 1px solid var(--novel-border); border-radius: 4px; background: var(--novel-card-bg); font-style: italic; opacity: 0.9; color: inherit; }
+        .novel-tag { font-size: calc(0.7em * var(--novel-font-scale)); padding: 3px 10px; border: 1px solid var(--novel-border); border-radius: 12px; background-color: var(--novel-tag-bg); color: var(--novel-text); opacity: 0.7; letter-spacing: 0.3px; }
+        .novel-preface { font-size: calc(0.9em * var(--novel-font-scale)); font-family: 'Noto Serif SC', serif; line-height: 1.8; padding: 0 15px; color: var(--novel-text); opacity: 0.85; position: relative; display: inline-block; max-width: 85%; transition: color 0.5s ease; }
+
+        /* 其他辅助样式 */
+        .novel-meta-single-row { display: flex; justify-content: center; gap: 15px; margin-bottom: 18px; flex-wrap: wrap; }
+        .novel-meta-multi-row  { display: flex; flex-direction: column; align-items: center; gap: 10px; margin-bottom: 18px; }
+        .novel-meta-label { font-size: 0.8em; opacity: 0.6; font-style: normal; font-weight: 600; }
+        .novel-cp-inline { display: flex; align-items: center; gap: 4px; }
+        .novel-cp-row    { display: flex; justify-content: center; align-items: center; gap: 8px; flex-wrap: wrap; }
+        .novel-cp-name { opacity: 0.95; font-weight: 500;}
+        .novel-cp-relation { opacity: 0.6; font-size: 0.85em; }
+        .novel-tags-wrapper { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 22px; }
+        .novel-preface::before { content: ''; display: block; width: 30px; height: 1px; background: var(--novel-border); margin: 0 auto 12px auto; }
+        @keyframes novelFadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+
+    <!-- 切换按钮 -->
+    <button class="theme-toggle-btn" onclick="toggleNovelTheme(this)" title="切换日/夜模式">
+        <span class="toggle-icon">☀</span>
+    </button>
+    
+    <!-- 字体大小控制 -->
+    <div class="font-size-controls">
+        <button class="font-size-btn font-increase-btn" title="增大字体">+</button>
+        <span class="font-size-display">肆</span>
+        <button class="font-size-btn font-decrease-btn" title="减小字体">-</button>
+    </div>
+
+    <span class="novel-chapter-num">$1</span>
+    <div class="novel-title">$2</div>
+    <div id="novel-meta-container" data-cp="$3" data-loc="$4"></div>
+    <div class="novel-tags-wrapper" id="novel-tags-container" data-tags="$5"></div>
+    <div class="novel-preface">$6</div>
+
+    <script>
+        (function () {
+            // === 1. 初始化和功能绑定 ===
+            const currentScript = document.currentScript;
+            const container = currentScript.closest('.novel-header-container');
+            
+            // --- 主题切换 ---
+            const themeBtn = container.querySelector('.theme-toggle-btn');
+            const themeIcon = themeBtn.querySelector('.toggle-icon');
+            const savedThemePref = localStorage.getItem('novel_theme_preference');
+            if (savedThemePref === 'night') {
+                container.classList.add('night-mode');
+                themeIcon.textContent = '☽';
+            }
+            window.toggleNovelTheme = function(btnElement) {
+                const localContainer = btnElement.closest('.novel-header-container');
+                const localIcon = btnElement.querySelector('.toggle-icon');
+                localContainer.classList.toggle('night-mode');
+                const isNight = localContainer.classList.contains('night-mode');
+                localIcon.textContent = isNight ? '☽' : '☀';
+                localStorage.setItem('novel_theme_preference', isNight ? 'night' : 'day');
+            };
+
+            // --- 字体大小调整 (逻辑已更新) ---
+            const increaseBtn = container.querySelector('.font-increase-btn');
+            const decreaseBtn = container.querySelector('.font-decrease-btn');
+            const sizeDisplay = container.querySelector('.font-size-display');
+            
+            const FONT_SCALE_STEP = 0.1;
+            const MIN_FONT_SCALE = 0.7; // 对应 "壹"
+            const MAX_FONT_SCALE = 1.6; // 对应 "拾"
+            const DEFAULT_FONT_SCALE = 1.0;
+
+            let currentFontScale = parseFloat(localStorage.getItem('novel_font_scale')) || DEFAULT_FONT_SCALE;
+
+            function applyFontSize() {
+                // 更新：增加了 玖 和 拾
+                const scaleToChinese = {
+                    "0.7": "壹", "0.8": "贰", "0.9": "叁", "1.0": "肆",
+                    "1.1": "伍", "1.2": "陆", "1.3": "柒", "1.4": "捌",
+                    "1.5": "玖", "1.6": "拾"
+                };
+                currentFontScale = Math.max(MIN_FONT_SCALE, Math.min(currentFontScale, MAX_FONT_SCALE));
+                container.style.setProperty('--novel-font-scale', currentFontScale);
+                const scaleKey = currentFontScale.toFixed(1);
+                sizeDisplay.textContent = scaleToChinese[scaleKey] || '肆';
+                localStorage.setItem('novel_font_scale', currentFontScale.toFixed(2));
+            }
+
+            increaseBtn.onclick = function() {
+                if (parseFloat(currentFontScale.toFixed(1)) < MAX_FONT_SCALE) {
+                    currentFontScale += FONT_SCALE_STEP;
+                    applyFontSize();
+                }
+            };
+            decreaseBtn.onclick = function() {
+                if (parseFloat(currentFontScale.toFixed(1)) > MIN_FONT_SCALE) {
+                    currentFontScale -= FONT_SCALE_STEP;
+                    applyFontSize();
+                }
+            };
+            applyFontSize(); // 初始加载时应用
+
+            // === 2. 元数据渲染 (无变动) ===
+            const metaContainer = container.querySelector('#novel-meta-container');
+            const cpRaw = metaContainer.getAttribute('data-cp') || '';
+            const locRaw = metaContainer.getAttribute('data-loc') || '';
+            const cpGroups = cpRaw.split(/[,，]/).map(g => g.trim()).filter(g => g);
+            const isSingleCP = cpGroups.length <= 1;
+
+            function parseCPGroup(group) {
+                const parts = group.split(/\s*([×xX&])\s*/);
+                let html = '';
+                parts.forEach((part, idx) => {
+                    if (!part.trim()) return;
+                    html += (idx % 2 === 1) 
+                        ? `<span class="novel-cp-relation">${part.trim()}</span>` 
+                        : `<span class="novel-cp-name">${part.trim()}</span>`;
+                });
+                return html;
+            }
+
+            if (isSingleCP) {
+                metaContainer.innerHTML = `
+                    <div class="novel-meta-single-row">
+                        <div class="novel-meta-card">
+                            <span class="novel-meta-label">CP</span>
+                            <div class="novel-cp-inline">${cpGroups[0] ? parseCPGroup(cpGroups[0]) : '-'}</div>
+                        </div>
+                        <div class="novel-meta-card">
+                            <span class="novel-meta-label">AT</span>
+                            <span>${locRaw}</span>
+                        </div>
+                    </div>`;
+            } else {
+                let cpGroupsHTML = cpGroups.map(g => `<div class="novel-cp-group">${parseCPGroup(g)}</div>`).join('');
+                metaContainer.innerHTML = `
+                    <div class="novel-meta-multi-row">
+                        <div class="novel-cp-row">
+                            <span class="novel-cp-row-label">CP</span>
+                            ${cpGroupsHTML}
+                        </div>
+                        <div class="novel-meta-card">
+                            <span class="novel-meta-label">AT</span>
+                            <span>${locRaw}</span>
+                        </div>
+                    </div>`;
+            }
+
+            const tagsContainer = container.querySelector('#novel-tags-container');
+            if (tagsContainer) {
+                const tagsRaw = tagsContainer.getAttribute('data-tags') || '';
+                const tags = tagsRaw.split(/[\/，,]/).map(t => t.trim()).filter(t => t);
+                tagsContainer.innerHTML = '';
+                tags.forEach(tag => {
+                    const span = document.createElement('span');
+                    span.className = 'novel-tag';
+                    span.textContent = tag;
+                    tagsContainer.appendChild(span);
+                });
+            }
+        })();
+    </script>
+</div>
+</body>
+</html>
+```

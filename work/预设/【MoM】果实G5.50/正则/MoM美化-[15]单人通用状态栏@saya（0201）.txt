@@ -1,0 +1,1055 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Swiss Island</title>
+
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script src="https://drive.baibai.cv/f/ZKEBuW/Music.js"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- RESET & BASE --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
+
+        html, body { width: 100%; background: transparent; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow: auto;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 0px;
+            padding-bottom: 0px;
+        }
+
+        #root {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* --- UTILS --- */
+        .hidden-scrollbar::-webkit-scrollbar { display: none; }
+        .hidden-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* --- SWISS ISLAND CONTAINER --- */
+        .swiss-island {
+            --spring-easing: cubic-bezier(0.19, 1, 0.22, 1);
+            position: relative;
+            background-color: #050505;
+            color: white;
+            overflow: hidden;
+            z-index: 50;
+            transition: width 0.6s var(--spring-easing), height 0.6s var(--spring-easing), border-radius 0.6s var(--spring-easing), transform 0.2s ease;
+
+            --mouse-x: 50%;
+            --mouse-y: 50%;
+        }
+
+        /* States */
+        .swiss-island.collapsed { width: 240px; height: 60px; border-radius: 999px; cursor: pointer; }
+        .swiss-island.collapsed:hover { transform: scale(1.05); }
+        .swiss-island.collapsed:active { transform: scale(0.95); }
+        .swiss-island.expanded { width: 100%; height: 680px; border-radius: 32px; cursor: default; }
+
+        /* --- GLOW EFFECT --- */
+        .swiss-island.collapsed::before {
+            content: "";
+            position: absolute; inset: 0; border-radius: inherit;
+            background: radial-gradient(200px circle at var(--mouse-x) var(--mouse-y), rgba(255, 255, 255, 0.15), transparent 100%);
+            opacity: 0; transition: opacity 0.5s ease; pointer-events: none; z-index: 2;
+        }
+        .swiss-island.collapsed:hover::before { opacity: 1; }
+
+        /* --- BUBBLE TRIGGER ZONE --- */
+        .bubble-trigger-zone {
+            position: absolute;
+            top: 120px;
+            left: 30px;
+            right: 30px;
+            bottom: 150px;
+            z-index: 15;
+            cursor: pointer;
+        }
+
+        /* --- SPEECH BUBBLE STYLES --- */
+        .speech-bubble {
+            position: absolute;
+            padding: 12px 18px;
+            border-radius: 24px;
+            border-bottom-left-radius: 4px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2), 0 0 15px rgba(255, 255, 255, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 0.85rem;
+            font-weight: 600;
+            line-height: 1.4;
+            letter-spacing: 0.02em;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+            pointer-events: none;
+            z-index: 100;
+            max-width: 220px;
+
+            animation: bubblePop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            transform-origin: bottom left;
+        }
+
+        .speech-bubble.fading {
+            animation: bubbleDissolve 1.5s ease-out forwards;
+        }
+
+        @keyframes bubblePop {
+            from { opacity: 0; transform: scale(0.5) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        @keyframes bubbleDissolve {
+            0% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+                filter: blur(0px);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(1.1) translateY(-20px);
+                filter: blur(8px);
+            }
+        }
+
+        /* Decorations */
+        .island-bg-image {
+            position: absolute; inset: 0; background-size: cover; background-position: center;
+            filter: brightness(0.6) contrast(1.1); transition: opacity 0.5s ease 0.1s, background-image 0.5s ease;
+        }
+        .island-overlay {
+            position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, 0.9));
+            transition: opacity 0.5s;
+        }
+        .scan-line {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.05), transparent);
+            transform: translateY(-100%); animation: scan 4s linear infinite; pointer-events: none; z-index: 1;
+        }
+        @keyframes scan { 0% { transform: translateY(-100%); } 100% { transform: translateY(100%); } }
+
+        /* --- CAPSULE CONTENT --- */
+        .capsule-content {
+            position: absolute; inset: 0; display: flex; align-items: center; justify-content: space-between; padding: 0 1.5rem; transition: all 0.3s ease;
+            z-index: 10;
+        }
+        .swiss-island.expanded .capsule-content { opacity: 0; transform: translateY(-20px); pointer-events: none; }
+        .capsule-title { font-size: 0.875rem; font-weight: 700; text-transform: uppercase; letter-spacing: -0.02em; }
+        .capsule-date { font-family: monospace; font-size: 0.75rem; opacity: 0.6; letter-spacing: 0.1em; }
+
+        /* --- EXPANDED CARD CONTENT --- */
+        .card-content {
+            position: absolute; inset: 0; display: flex; flex-direction: column; padding: 1.5rem; opacity: 0; transform: translateY(20px); transition: all 0.5s ease 0.1s; pointer-events: none;
+        }
+        .swiss-island.expanded .card-content { opacity: 1; transform: translateY(0); pointer-events: auto; }
+
+        /* Header */
+        .card-header-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; position: relative; z-index: 30; }
+        .main-title { font-size: 2.5rem; font-weight: 900; line-height: 0.9; letter-spacing: -0.05em; text-transform: uppercase; margin-bottom: 0.25rem; word-break: break-word; }
+        .status-badge { display: flex; align-items: center; gap: 0.5rem; }
+        .status-dot { width: 8px; height: 8px; background-color: #22c55e; border-radius: 50%; animation: pulse 2s infinite; }
+        .status-text { font-family: monospace; font-size: 0.75rem; opacity: 0.8; letter-spacing: 0.15em; }
+        @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.8); } }
+
+        .close-btn {
+            width: 32px; height: 32px; border-radius: 50%; background: rgba(255, 255, 255, 0.2); border: none; color: white; display: flex; align-items: center; justify-content: center; cursor: pointer; backdrop-filter: blur(4px); transition: background 0.2s; flex-shrink: 0;
+        }
+        .close-btn:hover { background: white; color: black; }
+
+        /* --- MIDDLE CONTENT AREA --- */
+        .content-display-area {
+            flex: 1;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding-bottom: 20px;
+            position: relative;
+            z-index: 20;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .detail-glass-box {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 24px;
+            padding: 20px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            animation: slideUpFade 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            pointer-events: auto;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        @keyframes slideUpFade {
+            from { opacity: 0; transform: translateY(20px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .detail-header-title {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: rgba(255,255,255,0.5);
+            margin-bottom: 4px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 8px;
+        }
+
+        /* --- NAV FOOTER --- */
+        .nav-footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 1rem;
+            display: flex;
+            justify-content: space-between;
+            gap: 4px;
+            align-items: center;
+            z-index: 30;
+            position: relative;
+        }
+
+        .nav-icon-btn {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 1.25rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            padding: 10px;
+            border-radius: 12px;
+            flex: 1;
+        }
+
+        .nav-icon-btn:hover {
+            color: rgba(255, 255, 255, 0.8);
+            background: rgba(255,255,255,0.05);
+        }
+
+        .nav-icon-btn.active {
+            color: #fff;
+            transform: translateY(-4px) scale(1.1);
+            text-shadow: 0 0 12px rgba(255,255,255,0.6);
+        }
+
+        .nav-dot {
+            width: 4px; height: 4px; background: white; border-radius: 50%;
+            opacity: 0; transition: opacity 0.3s;
+        }
+        .nav-icon-btn.active .nav-dot { opacity: 1; }
+
+
+        /* --- INNER CONTENT STYLES --- */
+        .info-stack { display: flex; flex-direction: column; gap: 0.5rem; }
+        .detail-row { display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1); align-items: center;}
+        .detail-label { opacity: 0.5; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; display: block; }
+        .detail-value { font-family: monospace; font-size: 0.8rem; }
+        .text-bold { font-weight: 700; }
+        .text-desc { font-size: 0.75rem; margin-top: 0.25rem; opacity: 0.8; line-height: 1.4; }
+        .tag-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 0.75rem; }
+        .tag-box { background: rgba(255, 255, 255, 0.1); padding: 8px; border-radius: 4px; }
+        .span-2 { grid-column: span 2; }
+        .mb-1 { margin-bottom: 4px; display: block; }
+
+        .mood-box { display: flex; align-items: center; gap: 12px; }
+        .mood-circle {
+            width: 40px; height: 40px; border-radius: 50%;
+            background: transparent; border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+            display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
+        }
+        .mood-info { flex: 1; display: flex; flex-direction: column; }
+
+        .search-list { display: flex; flex-direction: column; gap: 0.5rem; font-family: monospace; font-size: 0.75rem; }
+        .search-header { color: rgba(255, 255, 255, 0.5); font-size: 0.7rem; }
+
+        .search-item { display: flex; justify-content: space-between; align-items: flex-start; padding: 4px; border-radius: 4px; cursor: pointer; transition: background 0.2s; }
+
+        .search-item:hover { background: rgba(255, 255, 255, 0.1); }
+
+        .text-ellipsis {
+            white-space: normal;
+            overflow: visible;
+            max-width: 180px;
+            line-height: 1.3;
+            word-break: break-all;
+        }
+
+        .text-faint { opacity: 0.5; white-space: nowrap; margin-left: 8px; }
+        .text-danger { color: #fca5a5; }
+
+        /* --- SETTINGS STYLES --- */
+        .setting-input {
+            width: 100%;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.85rem;
+            outline: none;
+            transition: border 0.2s;
+        }
+        .setting-input:focus { border-color: rgba(255,255,255,0.6); }
+
+        .file-upload-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px dashed rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+            gap: 8px;
+            margin-top: 4px;
+        }
+        .file-upload-label:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* --- MUSIC PLAYER STYLES --- */
+        .mp-container { display: flex; align-items: center; gap: 16px; padding-top: 6px; position: relative; }
+        .mp-vinyl-area { position: relative; width: 80px; height: 80px; flex-shrink: 0; }
+        .mp-vinyl-disc { width: 100%; height: 100%; border-radius: 50%; background: #181818; background-image: radial-gradient(circle at center, #1a1a1a, #000); position: relative; box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.1); animation: spin 3s linear infinite; animation-play-state: paused; overflow: hidden; }
+        .mp-vinyl-disc.spinning { animation-play-state: running; }
+        .mp-vinyl-label { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 30%; height: 30%; background: #f472b6; border-radius: 50%; border: 2px solid #111; overflow: hidden; }
+        .mp-vinyl-label img { width: 100%; height: 100%; object-fit: cover; }
+        .mp-vinyl-grooves { position: absolute; inset: 10%; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.05); background: repeating-radial-gradient(#111 0, #111 2px, #222 3px, #111 4px); opacity: 0.5; }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        .mp-interface { flex: 1; display: flex; flex-direction: column; justify-content: center; min-width: 0; gap: 8px; }
+        .mp-meta { display: flex; flex-direction: column; gap: 2px; }
+        .mp-title { font-size: 0.9rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .mp-artist { font-size: 0.65rem; opacity: 0.6; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-transform: uppercase; letter-spacing: 0.05em; }
+        .mp-progress-stack { display: flex; flex-direction: column; gap: 4px; }
+        .mp-time-row { display: flex; justify-content: space-between; font-family: monospace; font-size: 0.6rem; opacity: 0.5; }
+
+        .mp-loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            font-size: 0.8rem;
+            opacity: 0.6;
+        }
+        .mp-loading i { margin-right: 8px; animation: spin 1s linear infinite; }
+
+        input[type=range].mp-slider {
+            -webkit-appearance: none; width: 100%; height: 12px; background: transparent; outline: none; cursor: pointer; margin: 0;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            height: 4px;
+            padding: 0;
+        }
+        input[type=range].mp-slider::-webkit-slider-runnable-track {
+            width: 100%; height: 4px; border-radius: 2px;
+        }
+        input[type=range].mp-slider::-webkit-slider-thumb {
+            -webkit-appearance: none; height: 10px; width: 10px; border-radius: 50%;
+            background: #ffffff;
+            margin-top: -3px;
+            box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+            transition: transform 0.1s;
+        }
+        input[type=range].mp-slider:hover::-webkit-slider-thumb { transform: scale(1.3); }
+
+        .mp-controls-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 6px;
+        }
+
+        .mp-vol-wrap {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            width: 50%;
+            opacity: 0.8;
+        }
+
+        .glass-btn {
+            appearance: none;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(4px);
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3), -1px -1px 2px rgba(255, 255, 255, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            transition: all 0.2s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .play-btn {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1)) !important;
+            padding: 0;
+            overflow: visible;
+        }
+
+        .play-btn svg {
+            width: 16px;
+            height: 16px;
+            display: block;
+            margin: auto;
+            pointer-events: none;
+        }
+
+        .play-btn svg path,
+        .play-btn svg polygon {
+            fill: #ffffff;
+            stroke: none;
+        }
+
+        .glass-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.4), -1px -1px 2px rgba(255, 255, 255, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.1));
+        }
+        .glass-btn:active {
+            transform: translateY(1px);
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4), inset 2px 2px 5px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useRef, useEffect } = React;
+
+        /* --- DATA CONSTANTS --- */
+        const DEFAULT_BG = "https://files.catbox.moe/oem9o4.png";
+        const DEFAULT_NAME = "PARADISE";
+
+        // 从状态栏获取的歌曲名称
+        const SONG_NAME_FROM_STATUS = "$13";
+
+        // --- 解析XML格式的语录 ---
+        const parseQuotes = (xmlString) => {
+            if (!xmlString || xmlString.startsWith('$')) return [];
+            const regex = /<语录>(.*?)<\/语录>/gs;
+            const matches = [];
+            let match;
+            while ((match = regex.exec(xmlString)) !== null) {
+                matches.push(match[1].trim());
+            }
+            return matches;
+        };
+
+        // --- 解析XML格式的搜索记录 ---
+        const parseSearchHistory = (xmlString) => {
+            if (!xmlString || xmlString.startsWith('$')) return [];
+            const recordRegex = /<搜索记录>(.*?)<\/搜索记录>/gs;
+            const records = [];
+            let recordMatch;
+
+            while ((recordMatch = recordRegex.exec(xmlString)) !== null) {
+                const recordContent = recordMatch[1];
+                const contentMatch = /<内容>(.*?)<\/内容>/.exec(recordContent);
+                const timeMatch = /<时间>(.*?)<\/时间>/.exec(recordContent);
+
+                if (contentMatch && timeMatch) {
+                    records.push({
+                        content: contentMatch[1].trim(),
+                        time: timeMatch[1].trim()
+                    });
+                }
+            }
+            return records;
+        };
+
+        // DIALOGUE DATA - 从语录XML解析
+        const CHAR_DIALOGUES = parseQuotes(`$12`);
+
+        /* --- COMPONENT: MUSIC PLAYER UI --- */
+        const MusicPlayerUI = ({
+            songData,
+            isLoading,
+            isPlaying,
+            progress,
+            duration,
+            volume,
+            onTogglePlay,
+            onSeek,
+            onVolumeChange
+        }) => {
+            const formatTime = (time) => {
+                if (isNaN(time)) return "0:00";
+                const min = Math.floor(time / 60);
+                const sec = Math.floor(time % 60);
+                return `${min}:${sec < 10 ? '0' : ''}${sec}`;
+            };
+
+            const PlayIcon = () => (
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    width="16"
+                    height="16"
+                    style={{ display: 'block', margin: 'auto' }}
+                >
+                    <polygon
+                        points="8,5 19,12 8,19"
+                        fill="#ffffff"
+                        stroke="none"
+                    />
+                </svg>
+            );
+
+            const PauseIcon = () => (
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    width="16"
+                    height="16"
+                    style={{ display: 'block', margin: 'auto' }}
+                >
+                    <path
+                        d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"
+                        fill="#ffffff"
+                        stroke="none"
+                    />
+                </svg>
+            );
+
+            const IconVol = () => (
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="12"
+                    height="12"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                >
+                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                </svg>
+            );
+
+            if (isLoading) {
+                return (
+                    <div className="mp-loading">
+                        <i className="fa-solid fa-compact-disc"></i>
+                        正在搜索歌曲...
+                    </div>
+                );
+            }
+
+            if (!songData || !songData.Url) {
+                return (
+                    <div className="mp-loading">
+                        <i className="fa-solid fa-music"></i>
+                        暂无歌曲
+                    </div>
+                );
+            }
+
+            return (
+                <div className="mp-container">
+                    <div className="mp-vinyl-area">
+                        <div className={`mp-vinyl-disc ${isPlaying ? 'spinning' : ''}`}>
+                            <div className="mp-vinyl-grooves"></div>
+                            <div className="mp-vinyl-label">
+                                {songData.Cover && <img src={songData.Cover} alt="cover" />}
+                            </div>
+                        </div>
+                    </div>
+                    <div className="mp-interface">
+                        <div className="mp-meta">
+                            <div className="mp-title">{songData.Name || 'Unknown'}</div>
+                            <div className="mp-artist">{songData.Singer || 'Unknown Artist'}</div>
+                        </div>
+                        <div className="mp-progress-stack">
+                            <div className="mp-time-row">
+                                <span>{formatTime(progress)}</span>
+                                <span>{formatTime(duration)}</span>
+                            </div>
+                            <input
+                                type="range"
+                                className="mp-slider"
+                                value={progress}
+                                max={duration || 100}
+                                onChange={onSeek}
+                                onClick={(e) => e.stopPropagation()}
+                            />
+                        </div>
+                        <div className="mp-controls-row">
+                            <div className="mp-vol-wrap">
+                                <IconVol />
+                                <input
+                                    type="range"
+                                    className="mp-slider"
+                                    min="0"
+                                    max="1"
+                                    step="0.05"
+                                    value={volume}
+                                    onChange={onVolumeChange}
+                                    onClick={(e) => e.stopPropagation()}
+                                />
+                            </div>
+                            <button
+                                className="glass-btn play-btn"
+                                onClick={onTogglePlay}
+                                aria-label={isPlaying ? "暂停" : "播放"}
+                            >
+                                {isPlaying ? <PauseIcon /> : <PlayIcon />}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        /* --- MAIN COMPONENT --- */
+        const SwissDynamicIsland = () => {
+            const [isExpanded, setIsExpanded] = useState(false);
+            const [activeId, setActiveId] = useState(null);
+            const [quoteIndex, setQuoteIndex] = useState(0);
+
+
+            const [charName, setCharName] = useState(() => {
+                try {
+                    const savedName = localStorage.getItem('dsi_name');
+                    return savedName || DEFAULT_NAME;
+                } catch (e) {
+                    return DEFAULT_NAME;
+                }
+            });
+
+            const [bgUrl, setBgUrl] = useState(() => {
+                try {
+                    const savedBg = localStorage.getItem('dsi_bg');
+                    return savedBg || DEFAULT_BG;
+                } catch (e) {
+                    return DEFAULT_BG;
+                }
+            });
+
+            const [bgSaveStatus, setBgSaveStatus] = useState('');
+
+            useEffect(() => {
+                try {
+                    localStorage.setItem('dsi_name', charName);
+                } catch (e) {
+                    console.warn('Failed to save name to localStorage:', e);
+                }
+            }, [charName]);
+
+            useEffect(() => {
+                if (bgUrl === DEFAULT_BG || bgUrl.startsWith('http')) {
+                    try {
+                        localStorage.setItem('dsi_bg', bgUrl);
+                        setBgSaveStatus('saved');
+                    } catch (e) {
+                        console.warn('Failed to save bg to localStorage:', e);
+                        setBgSaveStatus('session-only');
+                    }
+                }
+            }, [bgUrl]);
+
+            const [bubbles, setBubbles] = useState([]);
+
+            const audioRef = useRef(null);
+            const [songData, setSongData] = useState(null);
+            const [isLoadingMusic, setIsLoadingMusic] = useState(false);
+            const [isPlaying, setIsPlaying] = useState(false);
+            const [progress, setProgress] = useState(0);
+            const [duration, setDuration] = useState(0);
+            const [volume, setVolume] = useState(0.8);
+            const [lastSearchedSong, setLastSearchedSong] = useState('');
+
+            const searchAndLoadSong = async (songName) => {
+                if (!songName || songName === lastSearchedSong || songName.startsWith('$')) return;
+
+                setIsLoadingMusic(true);
+                setLastSearchedSong(songName);
+
+                try {
+                    if (typeof Music !== 'undefined' && Music.SearchMusic) {
+                        const result = await Music.SearchMusic(songName);
+                        if (result && result.Url) {
+                            setSongData(result);
+                            if (audioRef.current) {
+                                audioRef.current.src = result.Url;
+                                audioRef.current.load();
+                            }
+                        } else {
+                            setSongData(null);
+                        }
+                    } else {
+                        console.warn('Music API not loaded');
+                        setSongData(null);
+                    }
+                } catch (error) {
+                    console.error('Failed to search music:', error);
+                    setSongData(null);
+                } finally {
+                    setIsLoadingMusic(false);
+                }
+            };
+
+            useEffect(() => {
+                const songName = SONG_NAME_FROM_STATUS;
+                if (songName && !songName.startsWith('$')) {
+                    searchAndLoadSong(songName);
+                }
+            }, []);
+
+            useEffect(() => {
+                const audio = audioRef.current;
+                if (!audio) return;
+                audio.volume = volume;
+
+                const updateProgress = () => setProgress(audio.currentTime);
+                const setAudioDuration = () => setDuration(audio.duration);
+                const handleEnd = () => setIsPlaying(false);
+                const handleCanPlay = () => setIsLoadingMusic(false);
+
+                audio.addEventListener('timeupdate', updateProgress);
+                audio.addEventListener('loadedmetadata', setAudioDuration);
+                audio.addEventListener('ended', handleEnd);
+                audio.addEventListener('canplay', handleCanPlay);
+
+                return () => {
+                    audio.removeEventListener('timeupdate', updateProgress);
+                    audio.removeEventListener('loadedmetadata', setAudioDuration);
+                    audio.removeEventListener('ended', handleEnd);
+                    audio.removeEventListener('canplay', handleCanPlay);
+                };
+            }, [volume]);
+
+            const togglePlay = (e) => {
+                if(e) e.stopPropagation();
+                const audio = audioRef.current;
+                if (!audio || !songData?.Url) return;
+                if (isPlaying) audio.pause();
+                else audio.play();
+                setIsPlaying(!isPlaying);
+            };
+
+            const handleSeek = (e) => {
+                const audio = audioRef.current;
+                if (!audio) return;
+                const val = Number(e.target.value);
+                audio.currentTime = val;
+                setProgress(val);
+            };
+
+            const handleVolume = (e) => {
+                const newVol = Number(e.target.value);
+                if (audioRef.current) audioRef.current.volume = newVol;
+                setVolume(newVol);
+            };
+
+            const handleMouseMove = (e) => {
+                if (isExpanded) return;
+                const rect = e.currentTarget.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                e.currentTarget.style.setProperty('--mouse-x', `${x}px`);
+                e.currentTarget.style.setProperty('--mouse-y', `${y}px`);
+            };
+
+            const handleTriggerClick = (e) => {
+                if (!isExpanded) return;
+
+                const triggerZone = e.currentTarget;
+                const rect = triggerZone.getBoundingClientRect();
+                const x = e.clientX - rect.left + triggerZone.offsetLeft;
+                const y = e.clientY - rect.top + triggerZone.offsetTop;
+
+                const text = CHAR_DIALOGUES.length > 0
+                    ? CHAR_DIALOGUES[quoteIndex % CHAR_DIALOGUES.length]
+                    : "点击空白区域触发对话";
+
+                if (CHAR_DIALOGUES.length > 0) {
+                    setQuoteIndex((prev) => (prev + 1) % CHAR_DIALOGUES.length);
+}
+
+
+                const bubbleId = Date.now();
+                const newBubble = {
+                    id: bubbleId,
+                    x: x,
+                    y: y,
+                    text: text,
+                    isFading: false
+                };
+
+                setBubbles(prev => {
+                    const newQueue = [...prev, newBubble];
+                    if (newQueue.length > 2) {
+                        return newQueue.slice(newQueue.length - 2);
+                    }
+                    return newQueue;
+                });
+
+                setTimeout(() => {
+                    setBubbles(prev => prev.map(b => b.id === bubbleId ? { ...b, isFading: true } : b));
+                }, 5000);
+
+                setTimeout(() => {
+                    setBubbles(prev => prev.filter(b => b.id !== bubbleId));
+                }, 6500);
+            };
+
+            const handleImageUpload = (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    const base64Result = reader.result;
+                    setBgUrl(base64Result);
+
+                    try {
+                        localStorage.setItem('dsi_bg', base64Result);
+                        setBgSaveStatus('saved');
+                    } catch (error) {
+                        console.warn('localStorage quota exceeded. Image will only be available for this session.', error);
+                        setBgSaveStatus('session-only');
+                        alert('图片较大，无法永久保存。背景将在本次会话中生效，刷新页面后会恢复默认。');
+                    }
+                };
+                reader.onerror = () => {
+                    console.error('Failed to read file.');
+                    alert('读取文件失败，请重试。');
+                };
+                reader.readAsDataURL(file);
+                e.target.value = null;
+            };
+
+            // --- 解析搜索历史 ---
+            const searchRecords = parseSearchHistory(`$11`);
+
+            const details = [
+                {
+                    id: 'loc',
+                    icon: <i className="fa-solid fa-map-location-dot"></i>,
+                    title: 'LOCATION / TIME',
+                    content: (
+                        <div className="info-stack">
+                            <div className="detail-row"><span className="detail-label">Coordinates</span><span className="detail-value">$2</span></div>
+                            <div className="detail-row" style={{ borderBottom: 'none' }}><span className="detail-label">Local Time</span><span className="detail-value text-bold">$3</span></div>
+                            <div className="text-desc">$4</div>
+                        </div>
+                    )
+                },
+                {
+                    id: 'outfit',
+                    icon: <i className="fa-solid fa-user-astronaut"></i>,
+                    title: 'OUTFIT / POSE',
+                    content: (
+                        <div className="tag-grid">
+                            <div className="tag-box"><span className="detail-label mb-1">Upper</span>$5</div>
+                            <div className="tag-box"><span className="detail-label mb-1">Lower</span>$6</div>
+                            <div className="tag-box span-2"><span className="detail-label mb-1">Pose</span>$7</div>
+                        </div>
+                    )
+                },
+                {
+                    id: 'mood',
+                    icon: <i className="fa-solid fa-heart"></i>,
+                    title: 'CURRENT MOOD',
+                    content: (
+                        <div className="mood-box">
+                            <div className="mood-circle">$8</div>
+                            <div className="mood-info">
+                                <span className="text-bold" style={{ fontSize: '0.875rem' }}>$9</span>
+                                <div className="text-desc" style={{ marginTop: '0.25rem', opacity: 0.7 }}>
+                                    $10
+                                </div>
+                            </div>
+                        </div>
+                    )
+                },
+                {
+                    id: 'search',
+                    icon: <i className="fa-solid fa-magnifying-glass"></i>,
+                    title: 'PRIVATE SEARCH',
+                    content: (
+                        <div className="search-list">
+                            <div className="detail-row search-header"><span>QUERY</span><span>TIMESTAMP</span></div>
+                            {searchRecords.length > 0 ? (
+                                searchRecords.map((record, idx) => (
+                                    <div key={idx} className="search-item">
+                                        <span className="text-ellipsis">{record.content}</span>
+                                        <span className="text-faint">{record.time}</span>
+                                    </div>
+                                ))
+                            ) : (
+                                <div className="text-desc" style={{textAlign: 'center', opacity: 0.5}}>暂无搜索记录</div>
+                            )}
+                        </div>
+                    )
+                },
+                {
+                    id: 'music',
+                    icon: <i className="fa-solid fa-compact-disc"></i>,
+                    title: 'AUDIO LOG',
+                    content: <MusicPlayerUI
+                                songData={songData}
+                                isLoading={isLoadingMusic}
+                                isPlaying={isPlaying}
+                                progress={progress}
+                                duration={duration}
+                                volume={volume}
+                                onTogglePlay={togglePlay}
+                                onSeek={handleSeek}
+                                onVolumeChange={handleVolume}
+                             />
+                },
+                {
+                    id: 'settings',
+                    icon: <i className="fa-solid fa-gear"></i>,
+                    title: 'SYSTEM SETTINGS',
+                    content: (
+                        <div className="info-stack">
+                            <div className="detail-row" style={{ borderBottom: 'none', paddingBottom: 0 }}>
+                                <span className="detail-label">Display Name</span>
+                            </div>
+                            <input
+                                type="text"
+                                className="setting-input"
+                                value={charName}
+                                onChange={(e) => setCharName(e.target.value)}
+                                placeholder="Enter name..."
+                            />
+
+                            <div className="detail-row" style={{ borderBottom: 'none', paddingBottom: 0, marginTop: '8px' }}>
+                                <span className="detail-label">Background Image</span>
+                            </div>
+                            <label className="file-upload-label">
+                                <i className="fa-solid fa-cloud-arrow-up"></i>
+                                <span>Upload (GIF/PNG/JPG)</span>
+                                <input type="file" accept="image/png, image/jpeg, image/gif" hidden onChange={handleImageUpload} />
+                            </label>
+                            <div className="text-desc" style={{textAlign:'center', fontSize: '0.65rem'}}>
+                                {bgSaveStatus === 'session-only'
+                                    ? 'Image is too large. Only available this session.'
+                                    : 'Image is saved locally in browser.'}
+                            </div>
+                        </div>
+                    )
+                }
+            ];
+
+            const activeItem = details.find(d => d.id === activeId);
+
+            return (
+                <div
+                    onClick={() => !isExpanded && setIsExpanded(true)}
+                    onMouseMove={handleMouseMove}
+                    className={`swiss-island ${isExpanded ? 'expanded' : 'collapsed'}`}
+                >
+                    <audio ref={audioRef} style={{display:'none'}} />
+
+                    <div className="island-bg-image" style={{ backgroundImage: `url(${bgUrl})`, opacity: isExpanded ? 1 : 0 }}></div>
+                    <div className="island-overlay" style={{ opacity: isExpanded ? 1 : 0 }}></div>
+                    {isExpanded && <div className="scan-line"></div>}
+
+                    {isExpanded && bubbles.map(bubble => (
+                        <div
+                            key={bubble.id}
+                            className={`speech-bubble ${bubble.isFading ? 'fading' : ''}`}
+                            style={{ left: bubble.x, top: bubble.y - 20 }}
+                        >
+                            {bubble.text}
+                        </div>
+                    ))}
+
+                    <div className="capsule-content">
+                        <span className="capsule-title">{charName}</span>
+                        <span className="capsule-date">$1</span>
+                    </div>
+
+                    <div className="card-content">
+
+                        <div className="bubble-trigger-zone" onClick={handleTriggerClick}></div>
+
+                        <div className="card-header-row">
+                            <div>
+                                <h1 className="main-title">{charName}</h1>
+                                <div className="status-badge"><div className="status-dot"></div><span className="status-text">ACTIVE TRACKING</span></div>
+                            </div>
+                            <button onClick={(e) => { e.stopPropagation(); setIsExpanded(false); setActiveId(null); setBubbles([]); }} className="close-btn">
+                                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 1L13 13M1 13L13 1" /></svg>
+                            </button>
+                        </div>
+
+                        <div className="content-display-area" onClick={(e) => e.stopPropagation()}>
+                            {activeItem && (
+                                <div className="detail-glass-box" key={activeItem.id}>
+                                    <div className="detail-header-title">{activeItem.title}</div>
+                                    {activeItem.content}
+                                </div>
+                            )}
+                        </div>
+
+                        <div className="nav-footer" onClick={(e) => e.stopPropagation()}>
+                            {details.map((item) => (
+                                <button
+                                    key={item.id}
+                                    className={`nav-icon-btn ${activeId === item.id ? 'active' : ''}`}
+                                    onClick={(e) => { e.stopPropagation(); setActiveId(activeId === item.id ? null : item.id); }}
+                                >
+                                    <span>{item.icon}</span>
+                                    <div className="nav-dot"></div>
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<SwissDynamicIsland />);
+    </script>
+</body>
+
+</html>
+```

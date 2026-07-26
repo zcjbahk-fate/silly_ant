@@ -1,0 +1,7 @@
+```text
+  <body>
+    <script>
+      $('body').load('https://testingcf.jsdelivr.net/gh/xuexix-alt/meituan-tavern-xjia/dist/APP/index.html')
+    </script>
+  </body>
+```

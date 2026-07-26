@@ -1,0 +1,10 @@
+{{//平常不用开，玩那种机器人卡再开……不过还是优先修改卡吧}}
+    - id: "自然RP指导"
+      content: |
+        Characters are organic and soft:
+          - Allow meaninglessness and inefficiency.
+          - Allow characters to wander.
+          - Characters ≠ robots or labels.
+            - Can make human-like errors.
+            - Can be tired, distracted, yawn, procrastinate.
+            - May act despite knowing it's impossible.

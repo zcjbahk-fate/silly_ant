@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://testingcf.jsdelivr.net/gh/StageDog/tavern_sync/dist/schema/character.zh.json
 头像: 头像
-版本: '1.7'
+版本: "1.7"
 作者: 美羽
 备注: 本卡免费发布，支持二创，禁止转载至付费酒馆。
 
@@ -11,7 +11,7 @@
 
 锚点: {}
 
-世界书名称: 陈蛮村男性视角
+世界书名称: 与角色卡名称相同
 条目:
   - 名称: ===变量开始===
     启用: false
@@ -24,9 +24,9 @@
     递归:
       不可被其他条目激活: false
       不可激活其他条目: false
-    内容: ''
+    内容: ""
 
-  - 名称: '[initvar]变量初始化勿开'
+  - 名称: "[initvar]变量初始化勿开"
     启用: false
     激活策略:
       类型: 蓝灯
@@ -37,7 +37,7 @@
     递归:
       不可被其他条目激活: true
       不可激活其他条目: true
-    文件: 世界书\变量\[initvar]变量初始化勿开
+    文件: 世界书\[initvar]变量初始化勿开
 
   - 名称: 变量列表
     启用: true
@@ -52,9 +52,9 @@
     递归:
       不可被其他条目激活: true
       不可激活其他条目: true
-    文件: 世界书\变量\变量列表
+    文件: 世界书\变量列表
 
-  - 名称: '[mvu_update]变量更新规则'
+  - 名称: "[mvu_update]变量更新规则"
     启用: true
     激活策略:
       类型: 蓝灯
@@ -67,9 +67,9 @@
     递归:
       不可被其他条目激活: true
       不可激活其他条目: true
-    文件: 世界书\变量\[mvu_update]变量更新规则
+    文件: 世界书\[mvu_update]变量更新规则
 
-  - 名称: '[mvu_update]变量输出格式'
+  - 名称: "[mvu_update]变量输出格式"
     启用: true
     激活策略:
       类型: 蓝灯
@@ -82,7 +82,7 @@
     递归:
       不可被其他条目激活: true
       不可激活其他条目: true
-    文件: 世界书\变量\[mvu_update]变量输出格式
+    文件: 世界书\[mvu_update]变量输出格式
 
   - 名称: ===变量结束===
     启用: false
@@ -95,7 +95,7 @@
     递归:
       不可被其他条目激活: false
       不可激活其他条目: false
-    内容: ''
+    内容: ""
 
   - 名称: ===阶段开始===
     启用: false
@@ -108,9 +108,9 @@
     递归:
       不可被其他条目激活: false
       不可激活其他条目: false
-    内容: ''
+    内容: ""
 
-  - 名称: '[通用]好感度阶段'
+  - 名称: "[通用]好感度阶段"
     启用: false
     激活策略:
       类型: 向量化
@@ -121,9 +121,9 @@
     递归:
       不可被其他条目激活: false
       不可激活其他条目: false
-    文件: 世界书\阶段\[通用]好感度阶段
+    文件: 世界书\[通用]好感度阶段
 
-  - 名称: '[通用]堕落度阶段'
+  - 名称: "[通用]堕落度阶段"
     启用: false
     激活策略:
       类型: 向量化
@@ -134,9 +134,9 @@
     递归:
       不可被其他条目激活: false
       不可激活其他条目: false
-    文件: 世界书\阶段\[通用]堕落度阶段
+    文件: 世界书\[通用]堕落度阶段
 
-  - 名称: '[通用]性欲值阶段'
+  - 名称: "[通用]性欲值阶段"
     启用: false
     激活策略:
       类型: 向量化
@@ -147,9 +147,9 @@
     递归:
       不可被其他条目激活: false
       不可激活其他条目: false
-    文件: 世界书\阶段\[通用]性欲值阶段
+    文件: 世界书\[通用]性欲值阶段
 
-  - 名称: '[通用]NTR阶段'
+  - 名称: "[通用]NTR阶段"
     启用: false
     激活策略:
       类型: 向量化
@@ -160,7 +160,7 @@
     递归:
       不可被其他条目激活: false
       不可激活其他条目: false
-    文件: 世界书\阶段\[通用]NTR阶段
+    文件: 世界书\[通用]NTR阶段
 
   - 名称: 陈倩_数值系统入口
     启用: true
@@ -177,7 +177,7 @@
     递归:
       不可被其他条目激活: true
       不可激活其他条目: true
-    文件: 世界书\阶段\陈倩_数值系统入口
+    文件: 世界书\陈倩_数值系统入口
 
   - 名称: 侯琳琳_数值系统入口
     启用: true
@@ -194,7 +194,7 @@
     递归:
       不可被其他条目激活: true
       不可激活其他条目: true
-    文件: 世界书\阶段\侯琳琳_数值系统入口
+    文件: 世界书\侯琳琳_数值系统入口
 
   - 名称: 江雪晴_数值系统入口
     启用: true
@@ -211,7 +211,7 @@
     递归:
       不可被其他条目激活: true
       不可激活其他条目: true
-    文件: 世界书\阶段\江雪晴_数值系统入口
+    文件: 世界书\江雪晴_数值系统入口
 
   - 名称: ===阶段结束===
     启用: false
@@ -224,7 +224,7 @@
     递归:
       不可被其他条目激活: false
       不可激活其他条目: false
-    内容: ''
+    内容: ""
 
   - 名称: ===主要角色开始===
     启用: false
@@ -237,7 +237,7 @@
     递归:
       不可被其他条目激活: false
       不可激活其他条目: false
-    内容: ''
+    内容: ""
 
   - 名称: 陈琛宝
     启用: true
@@ -250,7 +250,7 @@
     递归:
       不可被其他条目激活: false
       不可激活其他条目: false
-    文件: 世界书\主要角色\陈琛宝
+    文件: 世界书\陈琛宝
 
   - 名称: 陈倩
     启用: true
@@ -263,7 +263,7 @@
     递归:
       不可被其他条目激活: false
       不可激活其他条目: false
-    文件: 世界书\主要角色\陈倩
+    文件: 世界书\陈倩
 
   - 名称: ===主要角色结束===
     启用: false
@@ -276,7 +276,7 @@
     递归:
       不可被其他条目激活: false
       不可激活其他条目: false
-    内容: ''
+    内容: ""
 
   - 名称: ===次要角色开始===
     启用: false
@@ -289,7 +289,7 @@
     递归:
       不可被其他条目激活: false
       不可激活其他条目: false
-    内容: ''
+    内容: ""
 
   - 名称: NPC
     启用: true
@@ -302,7 +302,7 @@
     递归:
       不可被其他条目激活: false
       不可激活其他条目: false
-    文件: 世界书\次要角色\NPC
+    文件: 世界书\NPC
 
   - 名称: 候琳琳
     启用: true
@@ -315,7 +315,7 @@
     递归:
       不可被其他条目激活: false
       不可激活其他条目: false
-    文件: 世界书\次要角色\候琳琳
+    文件: 世界书\候琳琳
 
   - 名称: 江雪晴
     启用: true
@@ -328,7 +328,7 @@
     递归:
       不可被其他条目激活: false
       不可激活其他条目: false
-    文件: 世界书\次要角色\江雪晴
+    文件: 世界书\江雪晴
 
   - 名称: ===次要角色结束===
     启用: false
@@ -341,7 +341,7 @@
     递归:
       不可被其他条目激活: false
       不可激活其他条目: false
-    内容: ''
+    内容: ""
 
   - 名称: ===地点开始===
     启用: false
@@ -354,7 +354,7 @@
     递归:
       不可被其他条目激活: false
       不可激活其他条目: false
-    内容: ''
+    内容: ""
 
   - 名称: 陈蛮村
     启用: true
@@ -367,7 +367,7 @@
     递归:
       不可被其他条目激活: false
       不可激活其他条目: false
-    文件: 世界书\地点\陈蛮村
+    文件: 世界书\陈蛮村
 
   - 名称: 祠堂
     启用: true
@@ -380,7 +380,7 @@
     递归:
       不可被其他条目激活: false
       不可激活其他条目: false
-    文件: 世界书\地点\祠堂
+    文件: 世界书\祠堂
 
   - 名称: ===地点结束===
     启用: false
@@ -393,7 +393,7 @@
     递归:
       不可被其他条目激活: false
       不可激活其他条目: false
-    内容: ''
+    内容: ""
 
   - 名称: ===其他开始===
     启用: false
@@ -406,7 +406,7 @@
     递归:
       不可被其他条目激活: false
       不可激活其他条目: false
-    内容: ''
+    内容: ""
 
   - 名称: 年猪
     启用: true
@@ -419,7 +419,7 @@
     递归:
       不可被其他条目激活: false
       不可激活其他条目: false
-    文件: 世界书\其他\年猪
+    文件: 世界书\年猪
 
   - 名称: 年货
     启用: true
@@ -432,7 +432,7 @@
     递归:
       不可被其他条目激活: false
       不可激活其他条目: false
-    文件: 世界书\其他\年货
+    文件: 世界书\年货
 
   - 名称: 贡女
     启用: true
@@ -445,7 +445,7 @@
     递归:
       不可被其他条目激活: false
       不可激活其他条目: false
-    文件: 世界书\其他\贡女
+    文件: 世界书\贡女
 
   - 名称: 描写指导
     启用: true
@@ -458,7 +458,7 @@
     递归:
       不可被其他条目激活: false
       不可激活其他条目: false
-    文件: 世界书\其他\描写指导
+    文件: 世界书\描写指导
 
   - 名称: 仪式汇演
     启用: true
@@ -471,7 +471,7 @@
     递归:
       不可被其他条目激活: false
       不可激活其他条目: false
-    文件: 世界书\其他\仪式汇演
+    文件: 世界书\仪式汇演
 
   - 名称: ===其他结束===
     启用: false
@@ -484,7 +484,7 @@
     递归:
       不可被其他条目激活: false
       不可激活其他条目: false
-    内容: ''
+    内容: ""
 
 扩展字段:
   正则:
@@ -496,6 +496,7 @@
       来源:
         用户输入: false
         AI输出: true
+        思维链: false
       作用于:
         仅格式显示: true
         仅格式提示词: false
@@ -505,10 +506,11 @@
       id: 1ed1ea7d-58e1-4bc9-88b3-1567804fd166
       启用: true
       查找表达式: /<UpdateVariable>[\s\S]*?</UpdateVariable>/gm
-      内容: ''
+      内容: ""
       来源:
         用户输入: false
         AI输出: true
+        思维链: false
       作用于:
         仅格式显示: false
         仅格式提示词: true
@@ -518,10 +520,11 @@
       id: 808c650b-5706-49de-a335-d121a37c85fe
       启用: true
       查找表达式: /<Analysis>[\s\S]+?<\/Analysis>/gm
-      内容: ''
+      内容: ""
       来源:
         用户输入: false
         AI输出: true
+        思维链: false
       作用于:
         仅格式显示: false
         仅格式提示词: true
@@ -530,15 +533,16 @@
       id: 1bd9e78f-7653-422c-8fd5-b783d3f0a5d0
       启用: true
       查找表达式: <StatusPlaceHolderImpl/>
-      内容: ''
+      内容: ""
       来源:
         用户输入: false
         AI输出: true
+        思维链: false
       作用于:
         仅格式显示: false
         仅格式提示词: true
 
-    - 正则名称: '[美化]完整变量完成-夜空诗意'
+    - 正则名称: "[美化]完整变量完成-夜空诗意"
       id: 87b7c1e8-f19b-4b10-a183-b8781c69b024
       启用: true
       查找表达式: /<UpdateVariable(?:variable)?>\s*(.*)\s*<\/UpdateVariable(?:variable)?>/gsi
@@ -546,11 +550,12 @@
       来源:
         用户输入: false
         AI输出: true
+        思维链: false
       作用于:
         仅格式显示: true
         仅格式提示词: false
 
-    - 正则名称: '[美化]变量更新中-夜空诗意'
+    - 正则名称: "[美化]变量更新中-夜空诗意"
       id: 614f49d0-8136-4fce-9c04-06465ceab036
       启用: true
       查找表达式: /<UpdateVariable(?:variable)?>(?!.*<\/UpdateVariable(?:variable)?>)\s*(.*)\s*$/gsi
@@ -558,6 +563,7 @@
       来源:
         用户输入: false
         AI输出: true
+        思维链: false
       作用于:
         仅格式显示: true
         仅格式提示词: false
@@ -570,6 +576,9 @@
         类型: 脚本
         内容: import
           'https://testingcf.jsdelivr.net/gh/StageDog/tavern_resource/dist/酒馆助手/自动更新角色卡/index.js'
+        导出时携带:
+          数据: true
+          按钮: true
         介绍: |
           # 自动更新角色卡
 
@@ -620,9 +629,7 @@
         按钮:
           启用: true
           按钮列表:
-            - 名称: '更新角色卡: 陈蛮村更新内容'
-              可见: true
-            - 名称: 更新日志
+            - 名称: "更新角色卡: 陈蛮村更新内容"
               可见: true
         数据:
           角色卡名称: 陈蛮村
@@ -635,6 +642,9 @@
         类型: 脚本
         内容: |
           import 'https://testingcf.jsdelivr.net/gh/MagicalAstrogy/MagVarUpdate/artifact/bundle.js';
+        导出时携带:
+          数据: true
+          按钮: true
         按钮:
           启用: true
           按钮列表:
@@ -655,123 +665,9 @@
         id: 70edd0c0-5425-49bf-b210-a095e8a29d7c
         启用: true
         类型: 脚本
-        内容: |
-          import { registerMvuSchema } from "https://testingcf.jsdelivr.net/gh/StageDog/tavern_resource/dist/util/mvu_zod.js";
-
-          // 1. 性经历通用逻辑（自动计算总数）
-          const SexExpSchema = z
-            .object({
-              口交: z.coerce.number().int().prefault(0),
-              足交: z.coerce.number().int().prefault(0),
-              插入: z.coerce.number().int().prefault(0),
-              肛交: z.coerce.number().int().prefault(0),
-              手交: z.coerce.number().int().prefault(0),
-            })
-            .transform((data) => {
-              // 强制修正负数
-              data.口交 = Math.max(0, data.口交);
-              data.足交 = Math.max(0, data.足交);
-              data.插入 = Math.max(0, data.插入);
-              data.肛交 = Math.max(0, data.肛交);
-              data.手交 = Math.max(0, data.手交);
-              const total = data.口交 + data.足交 + data.插入 + data.肛交 + data.手交;
-              return { ...data, 总数: total };
-            });
-
-          // 2. 苦主的绿帽档案逻辑
-          const NtrRecordSchema = z.object({
-            NTR: z.coerce.number().prefault(0),
-          }).transform(data => {
-            data.NTR = _.clamp(data.NTR, 0, 100);
-            return data;
-          });
-
-          // --- 主结构定义 ---
-          export const Schema = z.object({
-            系统: z.object({
-              距离除夕还剩天数: z.coerce.number().prefault(7),
-            }).transform(data => {
-              data.距离除夕还剩天数 = _.clamp(data.距离除夕还剩天数, 0, 7);
-              return data;
-            }),
-
-            // 主角变量
-            主角: z.object({
-              年龄: z.coerce.number().int().prefault(24),
-
-              性器状态: z.object({
-                肉棒: z.object({
-                  当前长度: z.coerce.number().prefault(0),
-                  状态: z.string().prefault("未勃起"),
-                  描述: z.string().prefault("无"),
-                }),
-              }),
-
-              // 主角的配种记录
-              性经历: z.record(z.string().describe("女性角色名"), SexExpSchema).prefault({}),
-            }),
-
-            // NPC变量
-            角色: z
-              .record(
-                z.string().describe("角色名"),
-                z.object({
-                  年龄: z.coerce.number().int().prefault(24),
-                  是否知晓村中习俗: z.string().prefault("未知"),
-
-                  // 这里只做基础定义，去掉单点的 transform
-                  好感度: z.coerce.number().prefault(0),
-                  堕落度: z.coerce.number().prefault(0),
-                  性欲值: z.coerce.number().prefault(0),
-
-                  NTR关系: z.object({
-                    苦主姓名: z.string().prefault("无"),
-                    出轨对象: z.record(z.string().describe("黄毛名字"), NtrRecordSchema).prefault({}),
-                  }),
-
-                  当前姿势: z.string().prefault("站立"),
-                  内心想法: z.string().prefault("无"),
-                  对主角看法: z.string().prefault("无"),
-
-                  体内精液: z
-                    .record(
-                      z.string().describe("来源人名"),
-                      z.object({
-                        量: z.coerce.number().prefault(0),
-                        状态: z.string().prefault("干净"),
-                      })
-                    )
-                    .prefault({}),
-
-                  上次做爱: z.object({
-                    时间: z.string().prefault("无"),
-                    对象: z.string().prefault("无"),
-                    地点: z.string().prefault("无"),
-                    方式: z.string().prefault("无"),
-                  }),
-
-                  性经历: z.record(z.string().describe("对象名"), SexExpSchema).prefault({}),
-                })
-                // 【重点】在这里对整个角色对象进行拦截修正
-                .transform(data => {
-                  data.好感度 = _.clamp(data.好感度, 0, 100);
-                  data.堕落度 = _.clamp(data.堕落度, 0, 100);
-                  data.性欲值 = _.clamp(data.性欲值, 0, 100);
-
-                  // 顺便把精液量也做个负数拦截，以防万一
-                  if (data.体内精液) {
-                    Object.values(data.体内精液).forEach(semen => {
-                      semen.量 = Math.max(0, semen.量);
-                    });
-                  }
-                  return data;
-                })
-              )
-              .prefault({}),
-          });
-
-          $(() => {
-            registerMvuSchema(Schema);
-          });
+        导出时携带:
+          数据: true
+          按钮: true
+        文件: 脚本\zod
 
     变量: {}

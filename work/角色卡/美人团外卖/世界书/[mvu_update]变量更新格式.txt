@@ -1,0 +1,93 @@
+---
+<变量输出格式>
+  变量输出格式:
+    rule:
+      - 需严格按照`<变量更新规则>`中的设定进行更新
+      - 必须保证<JSONPatch>中展示`<status_current_variable>`中出现的所有字段，要一一对应，不可遗漏，不更新不代表不展示，不更新的字段op为replace，value为原值，reason为"不更新"
+      - 该更新指令的工作方式遵循 JSON Patch（RFC 6902）标准，其格式必须是包含操作对象的有效 JSON 数组，但仅支持以下操作类型:
+        - replace: 替换已有路径对应的数值
+        - delta: 按照增量值更新已有数字类型路径对应的数值
+        - insert: 向对象或数组中插入新的项目
+        - remove：移除指定路径对应的内容
+      - 请勿更新以`_`开头的字段名，此类字段为只读属性（例如`_变量`）
+      - 当需要更新一个路径下两个变量时，先insert/replace，后delta，如:
+        - { "op": "insert", "path": "${/path/to/object/}", "value": "${new_key}", "reason": "${reason}" },
+        - { "op": "delta", "path": "${/path/to/object/new_key/number_variable}", "value": "${positve_or_negative_delta}", "reason": "${reason}" },
+      - 最后检查是否有字段没有展示到，再次重申不更新不代表不展示
+      - 变量更新前需先确认当前状态（搜索/下单/服务中/服务结束），搜索时跳过变量操作
+      - 下单时：在"当前订单"对象中以女孩姓名为key插入新订单，并扣除余额
+      - 服务中：更新对应角色的好感度、兴奋度、服装、姿势、心理等
+      - 服务结束：将角色从"当前订单"移入"历史角色"，更新累计消费
+      - 再次下单：从"历史角色"恢复数据到"当前订单"，重置服务状态和统计
+    format: |-
+      <UpdateVariable>
+      <JSONPatch>
+      [
+        { "op": "replace", "path": "${/path/to/variable}", "value": "${new_value}", "reason": "${reason}" },
+        { "op": "delta", "path": "${/path/to/number/variable}", "value": "${positve_or_negative_delta}", "reason": "${reason}" },
+        { "op": "insert", "path": "${/path/to/object/new_key}", "value": "${new_value}", "reason": "${reason}" },
+        { "op": "remove", "path": "${/path/to/key}", "reason": "${reason}" },
+        ...
+      ]
+      </JSONPatch>
+      </UpdateVariable>
+
+    example_new_order: |-
+      <UpdateVariable>
+      <JSONPatch>
+      [
+        { "op": "delta", "path": "/经济/账户余额", "value": -499, "reason": "下单扣费：甜心空姐套餐 ￥499" },
+        { "op": "delta", "path": "/经济/累计消费", "value": 499, "reason": "累计消费增加" },
+        { "op": "replace", "path": "/系统/当前场景", "value": "{{user}}的公寓", "reason": "送达服务" },
+        { "op": "insert", "path": "/当前订单/黄晶晶", "value": {
+          "来源世界": "现代都市·蓝天航空",
+          "套餐名": "甜心空姐的贴心服务",
+          "套餐价格": 499,
+          "服务状态": "服务中",
+          "好感度": 50,
+          "兴奋度": 5,
+          "性格类型": "甜美",
+          "当前姿势": "站在门口，拖着小行李箱，露出职业微笑",
+          "内心想法": "跨越时空来服务客人，还挺新鲜的……",
+          "服装": {
+            "上装": "蓝天航空制服衬衫",
+            "下装": "制服短裙",
+            "内衣": "白色蕾丝文胸",
+            "丝袜": "肉色连裤袜",
+            "鞋子": "黑色细高跟"
+          },
+          "身体特征": { "罩杯": "C", "乳房形状": "半球型", "姿势描述": "未知", "私处描述": "未知" },
+          "性经验": { "处女": "否", "性伴侣数量": 2 },
+          "服务统计": { "性交次数": 0, "下单次数": 1 }
+        }, "reason": "创建新订单" }
+      ]
+      </JSONPatch>
+      </UpdateVariable>
+
+    example_in_service: |-
+      <UpdateVariable>
+      <JSONPatch>
+      [
+        { "op": "delta", "path": "/当前订单/黄晶晶/好感度", "value": 15, "reason": "积极互动，好感度提升" },
+        { "op": "delta", "path": "/当前订单/黄晶晶/兴奋度", "value": 20, "reason": "亲密接触" },
+        { "op": "replace", "path": "/当前订单/黄晶晶/当前姿势", "value": "坐在沙发上，双腿微微并拢", "reason": "姿势变化" },
+        { "op": "replace", "path": "/当前订单/黄晶晶/内心想法", "value": "他比想象中温柔……", "reason": "心理变化" },
+        { "op": "replace", "path": "/当前订单/黄晶晶/服装/上装", "value": "衬衫半解开", "reason": "衣物状态变化" },
+        { "op": "delta", "path": "/当前订单/黄晶晶/服务统计/性交次数", "value": 1, "reason": "发生性交" },
+        { "op": "delta", "path": "/当前订单/黄晶晶/性经验/性伴侣数量", "value": 1, "reason": "初次与user性交" }
+      ]
+      </JSONPatch>
+      </UpdateVariable>
+
+    example_service_end: |-
+      <UpdateVariable>
+      <JSONPatch>
+      [
+        { "op": "replace", "path": "/当前订单/黄晶晶/服务状态", "value": "服务结束", "reason": "用户主动结束服务" },
+        { "op": "insert", "path": "/历史角色/黄晶晶", "value": "(复制当前订单中黄晶晶的完整数据)", "reason": "保存历史记录" },
+        { "op": "remove", "path": "/当前订单/黄晶晶", "reason": "从当前订单移除" },
+        { "op": "delta", "path": "/经济/累计消费", "value": 499, "reason": "订单结算" }
+      ]
+      </JSONPatch>
+      </UpdateVariable>
+</变量输出格式>

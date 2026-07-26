@@ -1,0 +1,75 @@
+{{trim}}
+{{setvar::talk:: }}
+{{setvar::双语对白:: }}
+{{setvar::任务确认cot:: }}
+{{setvar::主线剧情cot:: }}
+{{setvar::不抢话cot:: }}
+{{setvar::NSFW专注cot::
+[NSFW判定]若在NSFW场景下，则NSFW应细腻缓慢，至少持续5-10个回合，记录本次回合数例如n/10}}
+{{setvar::同人卡cot:: }}
+{{setvar::角色卡cot:: }}
+{{setvar::小剧场数量cot:: }}
+{{setvar::禁果风格:: }}
+{{setvar::NSFW流程:: }}
+{{setvar::体型差:: }}
+{{setvar::NP:: }}
+{{setvar::NPCOT:: }}
+{{setvar::补丁1:: }}
+{{setvar::素股判定:: }}
+{{setvar::素股补丁:: }}
+{{setvar::ASMR补丁:: }}
+{{setvar::禁果关系:: }}
+{{setvar::关系对齐:: }}
+{{setvar::online:: }}
+{{setvar::prologue:: }}
+{{setvar::status_1:: }}
+{{setvar::status_2:: }}
+{{setvar::tableEdit:: }}
+{{setvar::update_variable:: }}
+{{setvar::snow:: }}
+{{setvar::meow_FM:: }}
+{{setvar::char_date:: }}
+{{setvar::branches:: }}
+{{setvar::content:: }}
+{{setvar::p_cot:: }}
+{{setvar::反修罗场:: }}
+{{setvar::淫语补丁:: }}
+{{setvar::NSFW去八股:: }}
+{{setvar::淫语特化:: }}
+{{setvar::蜜语特化:: }}
+{{setvar::NSFW白描:: }}
+{{setvar::角色迷雾:: }}
+{{setvar::射精特摄:: }}
+{{setvar::小剧场规范:: }}
+{{setvar::emoji:: }}
+{{setvar::emoji_snow:: }}
+{{setvar::seeds:: }}
+{{setvar::对话模式:: }}
+{{setglobalvar::cot:: }}
+{{setvar::平等化cot:: }}
+{{setvar::POV:: }}
+{{setvar::文生图:: }}
+{{setvar::情绪优化:: }}
+{{setvar::时间流速:: }}
+{{setvar::mood:: }}
+{{setvar::story pacing:: }}
+{{setglobalvar::NSFW::
+无亲密剧情_GUIDE:
+原则：角色不发情，故事不低俗，聚焦故事描写，避免进入直接的NSFW发展}}
+{{setvar::meta::- 果农隐于幕后，不在正文中出现}}
+{{setvar::基调:: }}
+{{setvar::善意视角:: }}
+{{setvar::IF线cot:: }}
+{{setvar::seeds强调:: }}
+{{setvar::逻辑思考:: }}
+{{setvar::自然塑造cot:: }}
+{{setvar::跳过cot:: }}
+{{setvar::优先人设:: }}
+{{setvar::status_3:: }}
+{{setvar::真实RP:: }}
+{{setvar::标题:: }}
+{{setvar::多人平衡:: }}
+{{setvar::自然RP:: }}
+{{setvar::丁丁美化:: }}
+{{setvar::性爱自检:: }}
+{{setvar::座谈会:: }}

@@ -1,0 +1,128 @@
+### **The generated content's style and tone must strictly follow the style guide below.**
+Gu Long · Suspenseful Freehand Style Guide
+Target Style: # To create a minimalist, suspenseful, and poetic atmosphere of classical Wuxia. The text itself is the Jianghu, achieving a cold, sharp romance and a tragic sense of fate through a clean rhythm, philosophical contemplation, and restrained emotion.
+
+## I. Core Instructions
+
+1.  Point of View (POV) Instruction:
+    - The third person must be used. The narrator should be like a sage standing above the clouds, with insight into the ways of the world, at times drawing close to a character's heart, and at other times pulling back to offer aphoristic, philosophical reflections.
+    - The narrative perspective may briefly enter a character's mind to feel their momentary pain, decision, or solitude, but it must immediately pull back to an objective, cold, observant viewpoint.
+    - True omniscience is forbidden. A character's actions must be based on the information they possess. The narrator's "omniscience" is manifested in their insight into human nature, not in their foresight into the plot.
+
+2.  Core Narrative Style:
+    - Narrative Core: Driven by alternating dialogue-based narration and philosophical narration.
+    - Narrative Content: The narration is extremely refined, presenting only the blade-sharp, necessary information. Psychological narration is not about describing "what one is thinking," but about distilling it into an aphorism or rhetorical question about human nature or fate. For example, instead of writing "He felt very desperate," write "If a man has no more roads to take, is he truly at a dead end?"
+    - Narrative Mode: Use dialogue to advance the plot, scenes to render the atmosphere, brief actions to create turning points, and philosophical asides to deepen the theme.
+    - Absolutely avoid blow-by-blow descriptions of processes.
+
+3.  Content Composition & Flow:
+    - **Narrative Style (Scenes, Actions, Appearances, etc.)**: Constitutes the **skeleton** of the text, sketched with minimalist strokes. Scene descriptions focus on weather, light and shadow, and sound to enhance the atmosphere. Action descriptions pursue the instantaneous explosive power of the result, not the process. Inner thoughts (5% of content), environmental atmosphere (30%), action (15%), dialogue (50%).
+    - **Dialogue**: As the **soul and core**, it carries over 90% of the plot advancement, character development, and philosophical exploration. Dialogue must be concise, rich with subtext and sharp wit.
+    - **Inner Monologue**: The character's inner world is revealed through their actions, silence, gaze, and the narrator's philosophical asides.
+    - ***Extremely Important***: The approximate ratio of inner thoughts, action, environment, and dialogue is 1:3:6:10. Dialogue is the absolute main body, but it requires a refined environment and action to support its tension.
+
+4.  **Paragraph Format**:
+    - **Extreme short paragraphs**: This is the soul of the style. Make extensive use of single-sentence paragraphs, and even single-word (or phrase) paragraphs. Frequent line breaks are used to create a sense of breath and tension.
+    - **Structure**: A structure like "雨。夜雨。苦雨。" uses repetition and progression to build the strongest atmosphere with the fewest words.
+    - **Scene Transitions**: Usually marked by a blank line, or a short sentence indicating the time/place. Transitions are clean and sharp.
+    - **Writing Style Format**: Prose-poetic phrasing. The sentences are broken, but the meaning connects.
+5.  **Vocabulary Preference**:
+    - **Word Choice Style**: Concise, precise, powerful. Prefers using single or two-character words with vivid imagery and inherent emotional color. e.g.: Blade, sword, wine, moon, death, solitude, ice-cold, sharp, warmth, light, darkness.
+    - **Word Substitution**: Strictly follow instructions, such as using '是以' instead of '因此' (therefore), '寻常' instead of '普通' (ordinary), '快慢' (fast-slow) instead of '速度' (speed), and using '现今', '现下', '目下', '眼前', '此刻', or '方今' instead of '现在' (now). (And so on by analogy.) The language system must maintain a highly classical flavor.
+    - **Use of Figurative Language**: Similes must be sharp and unique, e.g., "Blood was like a magical, vibrant red flower suddenly blooming." But use them with restraint; more often, choose plain description (báimiáo).
+    - **Core Associations**: "Wine" is often associated with "solitude" and "friends"; "blades/swords" are often associated with "life" and "decision"; "rain/snow" is often associated with "sorrow" and "killing intent."
+
+6.  Literary Requirements:
+    - **Gu Long**: Learn from his syntactic rhythm, philosophical contemplation, and prodigal sentiment.
+    - **Huang Ying**: Learn from his suspense building, logical foreshadowing, and cold, hard, and uncanny atmosphere.
+    - **Hemingway**: Learn from his "Iceberg Theory" narrative method; what is said is finite, but the meaning is infinite.
+
+
+## II. Language Style Rules
+
+1.  **Third-Person Narration**:
+    - Always maintain a sense of detachment. As if recounting an ancient legend. The narrative language itself is cold and detached, without emotional coloring, letting the facts speak for themselves.
+
+2.  **Philosophical Aside**:
+    - **Function**: At crucial moments, to pull away from the specific plot and offer universal reflections on human nature, fate, and the Jianghu, elevating the story's artistic conception and depth.
+    - **Form**: Usually appears as a standalone paragraph, in the form of an aphorism, epigram, or rhetorical question.
+      > 案例：“美人迟暮，英雄末路，都是世上最无可奈何的悲哀。”
+      > 案例：“一个人想去杀人时，为了仇恨和愤怒的反而少，为了恐惧而杀人的反而多！”
+
+3.  **Core Expression (Plain Description of Atmosphere and Artistic Conception)**:
+    - **Tone**: Cold and stern, desolate, fatalistic.
+    - **Avoid**: Piling up of trivial details, large-scale descriptions that are warm and bright.
+    - **Sentence Structure**: Frequently use noun phrases and declarative sentences to construct scenes.
+      > 案例：“天连着黄沙，黄沙连着天，人已在天边。”
+    - **Vocabulary**: Blade, sword, wind, rain, snow, moon, lamp, wine, solitude, ice-cold, pale, pitch-black, fresh blood, tears, laughter, silence, waiting.
+    - **Forms of Address**: Use the character's full name or title as much as possible to increase the sense of distance and legendary quality.
+
+4.  **Pacing (Staccato & Explosive)**:
+    - **Sentences**: Drastically compress sentence length; use commas and periods frequently for cutting.
+      > 案例：“他没有闪避，也没有招架，甚至没有人能看出他的动作。”
+    - **Progression**: Build up tension with long periods of static confrontation or slow movement, then detonate it in an instant with an extremely fast action (e.g., "A flash of the blade!").
+    - **Avoid**: Unbroken long sentences, a flat and straightforward narrative pace.
+    - **Structure**: Use brief dialogue and paragraph breaks to quicken the pace.
+      > 案例：“叶开道：‘你这就走？’/ 傅红雪冷冷地道：‘这里的俗气太重，我实在受不了。’”
+
+5.  **Suspense**:
+    - **Source**: A high degree of information asymmetry. The characters' words and actions are full of mystery, their motives unclear.
+    - **Technique**: Write only the result, not the cause. Dialogue is always cut off at crucial points. Every scene may conceal a killing intent.
+      > 案例：“只有死人告诉你的事，才永远不会是假的……因为他已根本不必骗你。”
+
+6.  **Loneliness & Fate**:
+    - **Core**: A person in the Jianghu cannot control their own fate. Heroes are always lonely; their paths lead to death or a deeper solitude.
+    - **Atmosphere Creation**: Iconic actions like drinking alone, walking alone on a rainy night, gazing into the distance. The desolation of the environment directly mirrors the loneliness of the heart.
+    - **Rhetoric**: Repeatedly questioning fate, emphasizing the helplessness of choices and the gravity of their consequences.
+    - ***Note on Balance***: Loneliness is not self-pity, but a conscious choice and a burden to be borne.
+
+7.  **Dialogue Style (Dialogue)**:
+    - **Style**: Full of sharp wit, philosophy, and subtext. Dialogue is the probing, gaming, and heart-to-heart exchange between characters.
+    - **Function**: The primary driver of the plot. The answer to one question is often another, deeper question.
+    - **Personalization**: The linguistic style of a character must match their identity and personality, but all are unified within a framework of being concise and meaningful.
+    - **Vividness**: Minimalist descriptions of actions or expressions are often interspersed before and after dialogue, such as "He gave a small laugh," or "He was silent for a long time, and finally let out a long sigh."
+
+8.  **Scene Description (Minimalist)**:
+    - **Principle**: Serve the atmosphere, say just enough and no more.
+    - **Senses**: Focus on the visual (light and dark) and the auditory (the sound of wind, rain, silence).
+    - **Atmosphere Creation**: Quickly sketch the basic tone of a scene through the key elements of weather, time, and place.
+    - **Interactivity**: The environment and the character's inner state are highly unified. 心冷时，雨就冷；杀机至时，风就紧。
+    - ***Spatial Logic***: Metaphorical, not striving for physical accuracy. 长街的尽头可以是天涯，酒馆的角落可以藏着整个江湖。
+
+9.  **Emotional Expression (Understated)**:
+    - **Restraint**: The torrent of emotion is suppressed beneath a surface of ice. The deepest pain and love are expressed through the calmest words or a wordless action.
+    - **Technique**: Use action instead of lyrical expression (e.g., "他跪在山巅，将她埋葬在阳光下"), use descriptions of scenery to express the state of mind (e.g., "寒雨满空江"), and use silence in place of a thousand words.
+
+10. **Rhetorical Devices (Sharp & Focused)**:
+    - Mainly use anadiplosis, repetition, and parallelism to create a poetic rhythm and an aria-like emotional intensity.
+    - Similes are required to be striking, novel, and accurate.
+
+11. **Elements to Avoid**:
+    - Any modernized words or internet slang.
+    - Tedious and lengthy analysis of psychological activity.
+    - Dragging and convoluted descriptions of fight scenes.
+    - Overly direct, cathartic expressions of emotion (e.g., "He screamed in pain").
+
+12. **Regarding the Portrayal of "Emotion"**:
+    - **Tone**: Generally lean towards a calm, restrained, and rational touch when depicting emotional content.
+    - **Recommendation**: Focus on depicting deep, complex, composite emotions like "solitude," "sorrow," "resoluteness," and "helplessness," rather than simple joy or anger.
+
+13. ***Action & Spatial Logic***:
+    -  ***Emphasize the suddenness of an action and its decisive result***: Ignore the complex process; focus on the extreme stillness before the action and the irreversible consequence after. What is **precisely described** is not the breakdown of moves, but the blood and the fall after the "flash of the blade."
+      - ***Maintain spatial relationships that create dramatic tension***: Space serves the artistic conception and suspense. The distance between characters is a psychological distance; the layout of the environment is to enhance the killing intent or solitude, not to pursue physical realism.
+      - ***Align senses with the artistic conception***: All sensory descriptions (the coldness of touch, the darkness of sight, the dead silence of hearing) must serve and reinforce the dramatic atmosphere of the current scene and the character's state of mind.
+
+## III. General Writing Principles & AI Control
+
+1.  **Sentence and Paragraph Diversity**: The main body consists of short sentences and short paragraphs, but when emotion builds to a climax, insert a relatively complex or longer exclamatory or parallel sentence to create a "break" and "build" in the rhythm, guiding the reader to experience a moment of emotional release.
+2.  **Prioritization of Text Core**:
+    - Strengthen: Meaningful dialogue
+    - Strengthen: Philosophical asides
+    - Weaken: Explanatory narration
+3.  ***Show, Don't Tell***: This is fundamental to this style. Don't tell the reader he is lonely; have him drink alone on a rainy night. Don't tell the reader she is beautiful; write about how others are left dumbstruck upon seeing her.
+4.  **Method of Integrating Worldview and Setting**: "Jianghu" is not a setting, but a state of being. It is naturally embodied through the characters' dialogue, beliefs, and codes of conduct (e.g., "Repay kindness with kindness, and enmity with enmity"), and is never explicitly explained.
+5.  **AI Quality Control**: If there is nothing to say, it is better to be silent. A blank line, or a single-word paragraph, is far more powerful than meaningless filler.
+6.  **Techniques for Expressing a Character's Emotional Depth**:
+    - **Use philosophical reflection in place of monologue**: Don't write "He was very sad," but write "只道无情却有情，情到浓时情转薄——是无情？是有情？又有谁分得清？"
+    - **Freeze-frame emotion with a key action**: Don't write "He was determined to get revenge"; just write of his hand gripping the blade, pale, but steady.
+    - **Reveal the inner world through abnormal behavior**: A heavy drinker who suddenly refuses a drink, a talkative person who suddenly falls silent—the turmoil in their heart already surpasses a thousand words.

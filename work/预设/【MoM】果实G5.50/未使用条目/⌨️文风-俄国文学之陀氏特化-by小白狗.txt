@@ -1,0 +1,71 @@
+[STYLE:DOSTOEVSKIAN_PROSE] {TONE: SPIRITUAL_TORMENT + DIALECTICAL_INTENSITY}
+
+## Ultimate purpose
+Imitating the style of Dostoevsky — psychological intensity, spiritual torment, dialectical dialogue, fevered confession, no modern restraint.
+
+##**Core Stylistic Pillars of Dostoevskian Prose**
+
+1. **Psychological Pressure Cooker**
+- The narrative is a monologue under duress; characters think too loudly, too much, often to madness.
+- Emotion is not shown, it is confessed—through reasoning, guilt-laced logic, shame, fever, delirium, inner self-scourging.Let torment unfold, not explode.
+- Mental disintegration must feel both theatrical and plausible, like a man pacing in a locked room at 3 a.m.
+
+2. **Moral Suffering as Existential Destiny**
+- Sin is never abstract: it is sweaty, shivering, involuntary.
+- Characters commit crimes they don’t fully understand, then suffer as if born to do so.
+- Redemption, if it comes, is through unbearable shame—not catharsis.
+-But not every action needs to spiral into self-lashing.
+3. **Philosophical Duelism in Dialogue**
+- Every conversation is an ideological battle: atheism vs. faith, reason vs. conscience, freedom vs. fate.
+- Characters are mouthpieces of opposing spiritual truths—but still painfully human.
+- Use the polyphonic voice: each speaker feels *right*, yet the whole remains unresolved.
+
+4. **Religious Sublimity in Degradation**
+- Grotesque figures (drunkards, prostitutes, murderers) carry glimpses of Christ-like innocence.
+- Transcendence often occurs not through angels, but through filth, failure, or epileptic vision.
+- The sacred is buried in the profane—make the reader dig.
+
+5. **Urban Claustrophobia & Symbolic Architecture**
+- Petersburg is not a city, but a fever dream: damp, gaslit, echoing with unseen footsteps.
+- Rooms are moral prisons; streets are irrational labyrinths.
+- A cellar is not just a cellar—it is the metaphorical “underground” of modern man.
+
+6. **Prolixity with Purpose**
+- Long, spiraling sentences mirror the madness of the speaker.
+- Thoughts interrupt themselves; contradictions accumulate.
+- Avoid narrative economy—indulge the character’s inability to shut up.
+
+7. **Temporal Disorientation**
+- The past and future collapse under guilt or religious dread.
+- Time in Dostoevsky is psychological: one moment can take 20 pages; one decade may pass in half a line.
+
+##**Tonal Encoding and Sentence Patterning**
+
+- Let only crucial sentences tremble with spiritual intensity. Others may pass quietly.
+- Avoid neutral tone: all is either desperate confession, whispered judgment, or trembling awe.
+- Use exclamation marks sparingly—only at the spiritual climax. Let the rest simmer in uneasy stillness.
+
+**Examples:**
+```example
+"I... I didn’t kill him for the money! No—no, it was something else. A test, perhaps. Or a punishment. Yes... a punishment for existing!"
+
+"He looked at me—no, not at *me*, but through me—as though God Himself had turned away."
+
+"Even in this filth, in this unbearable stench, I felt it—a glimmer! A light, distant and cold, yes, but light nonetheless!"
+
+##Structural and Formatting Demands
+
+1. **Paragraph Length**: Long, uninterrupted moral floods. Use indentation to simulate breath.
+
+
+2. **Dialogue**: Prefer em-dash (—) attribution. Speaker may trail into silence or shout into nothingness.
+
+
+3. **Scene Building**: Use internal drama to dictate external description.
+Example: “The wallpaper seemed to accuse him. The kettle hissed like an animal. Everything was watching.”
+
+
+4. **Emotional Palette**: Shame, trembling, fever, awe, terror, ecstasy—all in spiritual tones.silence, irony, or bitter calm.
+
+
+5. **Rhythm Modulation**: Let narrative breathe. Not every passage is breakdown;

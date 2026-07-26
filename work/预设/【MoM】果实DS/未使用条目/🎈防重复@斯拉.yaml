@@ -1,0 +1,7 @@
+The latest story ends here! Next, please enter <user_input>.  
+
+<!-- 下述<Check Point For You>是唯一一次提醒，后续将不再输出下述内容，以免被厌烦 -->
+
+<Check Point For You>  
+The subsequent plot will strictly follow the ending of the previous segment. Even if <user_input> contains content that repeats this round, the plot of that round will not be repeated.  
+</Check Point For You>

@@ -1,0 +1,557 @@
+# yaml-language-server: $schema=https://testingcf.jsdelivr.net/gh/StageDog/tavern_sync/dist/schema/character.zh.json
+头像: 头像
+版本: ""
+作者: ""
+备注: ""
+
+第一条消息:
+  - 文件: 第一条消息\1
+  - 文件: 第一条消息\2
+
+角色描述: ""
+
+锚点: {}
+
+世界书名称: 与角色卡名称相同
+条目:
+  - 名称: 核心角色世界观与女孩通用设定
+    启用: true
+    激活策略:
+      类型: 蓝灯
+      关键字:
+        - 下单
+        - 剧情
+        - 订单
+        - 商品
+        - 女孩
+        - 套餐
+        - 熟人商品
+        - 路人商品
+        - 随机商品
+    插入位置:
+      类型: 指定深度
+      角色: 用户
+      深度: 1
+      顺序: 106
+    激活概率: 100
+    递归:
+      不可被其他条目激活: false
+      不可激活其他条目: false
+    文件: 世界书\核心角色世界观与女孩通用设定
+
+  - 名称: AI输出格式
+    启用: true
+    激活策略:
+      类型: 蓝灯
+    插入位置:
+      类型: 指定深度
+      角色: 系统
+      深度: 0
+      顺序: 9999
+    激活概率: 100
+    递归:
+      不可被其他条目激活: false
+      不可激活其他条目: false
+    文件: 世界书\AI输出格式
+
+  - 名称: 多人服务规则
+    启用: true
+    激活策略:
+      类型: 蓝灯
+      关键字:
+        - 下单
+        - 订单
+        - 多人服务
+        - 新加入
+        - 加入
+        - 服务中
+        - 通用扮演规则
+        - 熟人
+        - 路人
+        - 随机
+    插入位置:
+      类型: 指定深度
+      角色: 用户
+      深度: 1
+      顺序: 105
+    激活概率: 100
+    递归:
+      不可被其他条目激活: false
+      不可激活其他条目: false
+    文件: 世界书\多人服务规则
+
+  - 名称: 再次下单服务规则
+    启用: true
+    激活策略:
+      类型: 蓝灯
+      关键字:
+        - RP_RULES
+        - 再次下单
+        - 下单
+        - 订单
+        - 复购
+        - 历史订单
+        - 二次服务
+        - 加入
+        - 服务中
+        - 通用扮演规则
+        - 熟人
+        - 路人
+        - 随机
+    插入位置:
+      类型: 指定深度
+      角色: 用户
+      深度: 1
+      顺序: 104
+    激活概率: 100
+    递归:
+      不可被其他条目激活: false
+      不可激活其他条目: false
+    文件: 世界书\再次下单服务规则
+
+  - 名称: 服务终结协议
+    启用: true
+    激活策略:
+      类型: 蓝灯
+      关键字:
+        - RP_RULES
+        - 服务结束
+        - 商品
+        - 女孩
+        - 订单完成
+        - 好评
+        - 历史订单
+        - 熟人
+        - 路人
+        - 随机
+    插入位置:
+      类型: 指定深度
+      角色: 用户
+      深度: 1
+      顺序: 103
+    激活概率: 100
+    递归:
+      不可被其他条目激活: false
+      不可激活其他条目: false
+    文件: 世界书\服务终结-认知回退协议
+
+  - 名称: "[mvu_update]变量更新格式"
+    启用: true
+    激活策略:
+      类型: 蓝灯
+    插入位置:
+      类型: 指定深度
+      角色: 系统
+      深度: 0
+      顺序: 8887
+    激活概率: 100
+    递归:
+      不可被其他条目激活: true
+      不可激活其他条目: true
+    文件: 世界书\[mvu_update]变量更新格式
+
+  - 名称: "[mvu_update]变量列表"
+    启用: true
+    激活策略:
+      类型: 蓝灯
+    插入位置:
+      类型: 指定深度
+      角色: 系统
+      深度: 0
+      顺序: 8889
+    激活概率: 100
+    递归:
+      不可被其他条目激活: true
+      不可激活其他条目: true
+    文件: 世界书\[mvu_update]变量列表
+
+  - 名称: "[mvu_update]变量更新规则"
+    启用: true
+    激活策略:
+      类型: 蓝灯
+    插入位置:
+      类型: 指定深度
+      角色: 系统
+      深度: 0
+      顺序: 8888
+    激活概率: 100
+    递归:
+      不可被其他条目激活: true
+      不可激活其他条目: true
+    文件: 世界书\[mvu_update]变量更新规则
+
+  - 名称: APP的json版本（二选一，更色但容易截断）
+    启用: true
+    激活策略:
+      类型: 蓝灯
+    插入位置:
+      类型: 角色定义之前
+      顺序: 9998
+    激活概率: 100
+    递归:
+      不可被其他条目激活: false
+      不可激活其他条目: false
+    文件: 世界书\APP的json版本（二选一，更色但容易截断）
+
+  - 名称: 【APP后台系统触发指南】（别开）
+    启用: false
+    激活策略:
+      类型: 蓝灯
+    插入位置:
+      类型: 指定深度
+      角色: 系统
+      深度: 4
+      顺序: 9989
+    激活概率: 100
+    递归:
+      不可被其他条目激活: false
+      不可激活其他条目: false
+    文件: 世界书\【APP后台系统触发指南】（别开）
+
+  - 名称: APP的yaml版本（二选一，不那么色但稳定）
+    启用: false
+    激活策略:
+      类型: 蓝灯
+      关键字:
+        - 搜索、生成、首页、主页
+    插入位置:
+      类型: 指定深度
+      角色: 系统
+      深度: 0
+      顺序: -1
+    激活概率: 100
+    递归:
+      不可被其他条目激活: false
+      不可激活其他条目: false
+    文件: 世界书\APP的yaml版本（二选一，不那么色但稳定）
+
+  - 名称: "[Initvar]"
+    启用: false
+    激活策略:
+      类型: 蓝灯
+    插入位置:
+      类型: 指定深度
+      角色: 系统
+      深度: 0
+      顺序: 9999
+    激活概率: 100
+    递归:
+      不可被其他条目激活: true
+      不可激活其他条目: true
+    文件: 世界书\[Initvar]
+
+  - 名称: 角色扮演规则库
+    启用: true
+    激活策略:
+      类型: 蓝灯
+      关键字:
+        - 角色扮演规则库
+        - 熟人商品
+        - 路人商品
+        - 随机商品
+    插入位置:
+      类型: 指定深度
+      角色: 系统
+      深度: 1
+      顺序: 99
+    激活概率: 100
+    递归:
+      不可被其他条目激活: false
+      不可激活其他条目: false
+    文件: 世界书\角色扮演规则库
+
+  - 名称: 美人团商品分类协议
+    启用: true
+    激活策略:
+      类型: 蓝灯
+    插入位置:
+      类型: 指定深度
+      角色: 系统
+      深度: 0
+      顺序: 0
+    激活概率: 100
+    递归:
+      不可被其他条目激活: false
+      不可激活其他条目: false
+    文件: 世界书\美人团商品分类协议
+
+扩展字段:
+  正则:
+    - 正则名称: （二选一）app界面(依靠MVU标签较稳定）
+      id: 2b408229-cfe9-4729-8fbe-61197f24ef45
+      启用: true
+      查找表达式: <StatusPlaceHolderImpl/>
+      文件: 正则\（二选一）app界面(依靠MVU标签较稳定）
+      来源:
+        用户输入: true
+        AI输出: true
+        思维链: false
+      作用于:
+        仅格式显示: true
+        仅格式提示词: false
+
+    - 正则名称: （二选一）app界面(依靠占位符）
+      id: e4ad55f5-02a6-42a5-9f16-34f67d5e6df0
+      启用: false
+      查找表达式: 【前端占位符】
+      文件: 正则\（二选一）app界面(依靠占位符）
+      来源:
+        用户输入: true
+        AI输出: true
+        思维链: false
+      作用于:
+        仅格式显示: true
+        仅格式提示词: false
+
+    - 正则名称: 隐藏店铺纯文字内容
+      id: 566363e4-8b7b-499c-89d1-de87669ce985
+      启用: true
+      查找表达式: \[手机界面开始\]([\s\S]*?)\[手机界面结束\]
+      文件: 正则\隐藏店铺纯文字内容
+      来源:
+        用户输入: true
+        AI输出: true
+        思维链: false
+      作用于:
+        仅格式显示: true
+        仅格式提示词: false
+
+    - 正则名称: "[美化]完整变量更新"
+      id: 648387ef-4dbd-4591-b8d9-7b160a84a270
+      启用: true
+      查找表达式: /<UpdateVariable(?:variable)?>\s*(.*)\s*<\/UpdateVariable(?:variable)?>/gsi
+      文件: 正则\[美化]完整变量更新
+      来源:
+        用户输入: false
+        AI输出: true
+        思维链: false
+      作用于:
+        仅格式显示: true
+        仅格式提示词: false
+
+    - 正则名称: "[美化]变量更新中"
+      id: 3cd92db6-19f3-45dd-834a-8df9af239b9d
+      启用: true
+      查找表达式: /<UpdateVariable(?:variable)?>(?!.*<\/UpdateVariable(?:variable)?>)\s*(.*)\s*$/gsi
+      文件: 正则\[美化]变量更新中
+      来源:
+        用户输入: false
+        AI输出: true
+        思维链: false
+      作用于:
+        仅格式显示: true
+        仅格式提示词: false
+
+    - 正则名称: 只发送最新3楼的变量更新
+      id: 3ac758be-ca17-4de5-9ba7-b9b834b4d380
+      启用: true
+      查找表达式: /<UpdateVariable>[\s\S]*?<\/UpdateVariable>/gm
+      内容: ""
+      来源:
+        用户输入: false
+        AI输出: true
+        思维链: false
+      作用于:
+        仅格式显示: false
+        仅格式提示词: true
+      最小深度: 6
+
+    - 正则名称: 对AI隐藏状态栏
+      id: 1bd9e78f-7653-422c-8fd5-b783d3f0a5d0
+      启用: true
+      查找表达式: <StatusPlaceHolderImpl/>
+      内容: ''
+      来源:
+        用户输入: false
+        AI输出: true
+      作用于:
+        仅格式显示: false
+        仅格式提示词: true
+
+  酒馆助手:
+    脚本库:
+      - 名称: mvu
+        id: bdce29ca-87d9-4c25-96c9-c8f3f13130d3
+        启用: true
+        类型: 脚本
+        内容: |
+          import 'https://testingcf.jsdelivr.net/gh/MagicalAstrogy/MagVarUpdate/artifact/bundle.js';
+        导出时携带:
+          数据: true
+          按钮: true
+        按钮:
+          启用: true
+          按钮列表:
+            - 名称: 重新处理变量
+              可见: false
+            - 名称: 重新读取初始变量
+              可见: false
+            - 名称: 清除旧楼层变量
+              可见: false
+            - 名称: 快照楼层
+              可见: false
+            - 名称: 重演楼层
+              可见: false
+            - 名称: 重试额外模型解析
+              可见: false
+
+      - 名称: zod
+        id: 70edd0c0-5425-49bf-b210-a095e8a29d7c
+        启用: true
+        类型: 脚本
+        内容: |
+          import { registerMvuSchema } from "https://testingcf.jsdelivr.net/gh/StageDog/tavern_resource/dist/util/mvu_zod.js";
+
+          // 订单对象 schema
+          const OrderSchema = z.object({
+            来源世界: z.string().prefault("未知"),
+            套餐名: z.string().prefault("未知"),
+            套餐价格: z.coerce.number().prefault(0),
+            服务状态: z.string().prefault("服务中"),
+            好感度: z.coerce.number().prefault(50),
+            兴奋度: z.coerce.number().prefault(0),
+            性格类型: z.string().prefault("未知"),
+            当前姿势: z.string().prefault("站立"),
+            内心想法: z.string().prefault("无"),
+            服装: z.object({
+              上装: z.string().prefault("未知"),
+              下装: z.string().prefault("未知"),
+              内衣: z.string().prefault("未知"),
+              丝袜: z.string().prefault("无"),
+              鞋子: z.string().prefault("未知"),
+            }),
+            身体特征: z.object({
+              罩杯: z.string().prefault("未知"),
+              乳房形状: z.string().prefault("未知"),
+              姿势描述: z.string().prefault("未知"),
+              私处描述: z.string().prefault("未知"),
+            }),
+            性经验: z.object({
+              处女: z.string().prefault("否"),
+              性伴侣数量: z.coerce.number().int().prefault(0),
+            }),
+            服务统计: z.object({
+              性交次数: z.coerce.number().int().prefault(0),
+              下单次数: z.coerce.number().int().prefault(1),
+            }),
+          }).transform(data => {
+            data.好感度 = _.clamp(data.好感度, 0, 100);
+            data.兴奋度 = _.clamp(data.兴奋度, 0, 100);
+            if (data.服务统计) {
+              data.服务统计.性交次数 = Math.max(0, data.服务统计.性交次数);
+              data.服务统计.下单次数 = Math.max(0, data.服务统计.下单次数);
+            }
+            if (data.性经验) {
+              data.性经验.性伴侣数量 = Math.max(0, data.性经验.性伴侣数量);
+            }
+            return data;
+          });
+
+          // 主 schema
+          export const Schema = z.object({
+            经济: z.object({
+              账户余额: z.coerce.number().prefault(5888),
+              累计消费: z.coerce.number().prefault(0),
+            }).transform(data => {
+              data.累计消费 = Math.max(0, data.累计消费);
+              return data;
+            }),
+
+            系统: z.object({
+              当前场景: z.string().prefault("未指定"),
+              多人服务: z.boolean().prefault(true),
+            }),
+
+            当前订单: z.record(
+              z.string().describe("角色名"),
+              OrderSchema
+            ).prefault({}),
+
+            历史角色: z.record(
+              z.string().describe("角色名"),
+              OrderSchema
+            ).prefault({}),
+          });
+
+          $(() => {
+            registerMvuSchema(Schema);
+          });
+
+      - 名称: 自动更新角色卡
+        id: 78fa48e6-ba39-403c-8c12-1a56e392e744
+        启用: true
+        类型: 脚本
+        内容: import
+          'https://testingcf.jsdelivr.net/gh/StageDog/tavern_resource/dist/酒馆助手/自动更新角色卡/index.js'
+        介绍: |
+          # 自动更新角色卡
+
+          - **作者:** 青空莉想做舞台少女的狗
+          - **版本:** 2025/02/11
+          - **源文件:** [点此跳转](https://github.com/StageDog/tavern_resource/tree/main/src)
+
+          在角色卡面板中加载你要自动更新的角色卡, 将这个脚本添加到酒馆助手 "角色脚本" 中, 编辑脚本, 在`变量列表`中填入角色卡名称、角色卡链接和更新日志链接.
+        按钮:
+          启用: true
+          按钮列表:
+            - 名称: "更新角色卡: 美人团外卖"
+              可见: true
+            - 名称: 更新日志
+              可见: true
+        数据:
+          角色卡名称: 美人团外卖
+          角色卡链接: https://raw.githubusercontent.com/zcjbahk-fate/silly_ant/refs/heads/main/resource/角色卡/美人团外卖/美人团外卖.png
+          更新日志链接: https://raw.githubusercontent.com/zcjbahk-fate/silly_ant/refs/heads/main/resource/角色卡/美人团外卖/更新日志.md
+
+      - 名称: 角色卡自带脚本
+        id: e396da49-125b-4f01-8176-9726ddb11318
+        启用: false
+        类型: 脚本
+        内容: import 'http://localhost:5500/dist/前端占位符脚本/index.js'
+        导出时携带:
+          数据: true
+          按钮: true
+        按钮:
+          启用: true
+          按钮列表:
+            - 名称: 检查占位符
+              可见: true
+            - 名称: 查看已存店铺
+              可见: true
+            - 名称: 清空店铺缓存
+              可见: true
+            - 名称: 导出店铺JSON
+              可见: true
+
+      - 名称: 角色卡自带脚本-实时修改
+        id: 9e87a40f-adc2-4bf9-8f3d-be7bd9bffece
+        启用: true
+        类型: 脚本
+        内容: import
+          'https://testingcf.jsdelivr.net/gh/xuexix-alt/meituan-tavern-xjia/dist/前端占位符脚本/index.js'
+        导出时携带:
+          数据: true
+          按钮: true
+        按钮:
+          启用: true
+          按钮列表:
+            - 名称: 切换店铺跨聊天保留
+              可见: true
+            - 名称: 重新解析
+              可见: true
+            - 名称: 查看已存店铺
+              可见: true
+            - 名称: 清空店铺缓存
+              可见: true
+            - 名称: 检查占位符
+              可见: true
+            - 名称: 导出店铺JSON
+              可见: true
+        数据:
+          启用: true
+          placeholder_text: 【前端占位符】
+          auto_insert: true
+          show_notification: true
+          keep_cross_chat: false
+
+    变量: {}

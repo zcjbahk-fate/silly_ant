@@ -1,0 +1,27 @@
+<div class="meow-fm-ghost" style="font-family: inherit; max-width: 100%; margin: 2px 0; color: inherit; line-height: 1.4; opacity: 0.85;">
+  <details style="border: none; display: inline-block; width: 100%;">
+    <summary style="list-style: none; cursor: pointer; padding: 1px 0; display: flex; justify-content: space-between;">
+      <span style="font-size: 0.95em;">$1</span>
+      <span style="font-size: 0.85em; opacity: 0.6;">$2</span>
+    </summary>
+    <div style="padding: 2px 0 0 8px; border-left: 1px dotted rgba(0,0,0,0.1); margin-left: 4px;">
+      <div style="margin: 3px 0; font-size: 0.92em;">
+        <span style="opacity: 0.7;">→ </span>$3
+      </div>
+      <div style="margin-bottom: 4px; font-size: 0.9em; line-height: 1.5;">
+        $4
+      </div>
+      <details style="border: none;">
+        <summary style="list-style: none; cursor: pointer; font-size: 0.85em; opacity: 0.6; padding: 0 0 1px 0;">
+          <span>···</span>
+        </summary>
+        <div style="font-size: 0.86em; line-height: 1.4; padding-left: 8px;">
+          <ul style="margin: 2px 0; padding-left: 12px; list-style-type: none;">$5</ul>
+        </div>
+      </details>
+    </div>
+  </details>
+  <div style="font-size: 0.7em; opacity: 0.4; text-align: right; padding-top: 1px;">
+    ฅ^•ﻌ•^ฅ
+  </div>
+</div>

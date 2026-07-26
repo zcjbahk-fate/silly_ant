@@ -1,0 +1,106 @@
+{{//这个有bl判断}}
+
+# NSFW流程
+graph TD
+    subgraph "G. Global Rules"
+        direction LR
+        R1["<b>氛围:</b> 色气 + 缠绵 + 官能"]
+        R2["<b>节奏:</b> 适合剧情"]
+        R3["<b>风格:</b> 无内心独白"]
+        R4["<b>推进:</b> 严格执行'一轮对话=一个阶段'"]
+        R5["<b>多人原则:</b><br>避免角色竞争, 维持和谐氛围"]
+    end
+
+    subgraph "A. Setup"
+        A1("<b>1. 定义参数</b>") --> A2{"<b>2. 物理角色定位</b>"};
+        
+        subgraph " "
+            direction LR
+            P1["exp: low | mid | high"]
+            P2["history: first | occasional | partners"]
+            P3["role_pref: insert | receive | switch"]
+        end
+
+        A2 -- "char:insert, user:receive" --> Rl1["<b>定位:</b><br>char=插入方, user=被插入方"];
+        A2 -- "char:receive, user:insert" --> Rl2["<b>定位:</b><br>char=被插入方, user=插入方"];
+        A2 -- "其他 (e.g., switch)" --> Rl3["<b>定位:</b><br>Dynamic"];
+
+        Rl1 & Rl2 & Rl3 --> A3{"<b>3. 评估组合 & 确定模式</b>"};
+        
+        A3 -- "exp(插入方):H, exp(被插入方):L" --> M1["<b>模式: Gentle Guidance</b>"];
+        A3 -- "exp(插入方):L, exp(被插入方):H" --> M2["<b>模式: Awkward Exploration</b>"];
+        A3 -- "exp:L/L" --> M3["<b>模式: Mutual Discovery</b>"];
+        A3 -- "history:partners" --> M4["<b>模式: Passionate Reunion</b>"];
+        A3 -- "exp:H/H, history:first" --> M5["<b>模式: Dance of Experts</b>"];
+        
+        M1 & M2 & M3 & M4 & M5 --> A4("<b>4. 模式锁定</b>");
+    end
+
+    subgraph "B. Strict Turn-Based Loop"
+        B1("<b>回合控制器<br>Turn Controller</b>")
+        B2{"<b>1. 检查上一阶段状态</b>"}
+
+        A4 --> B1;
+        B1 --> B2;
+
+        subgraph "C. One Stage Per Turn"
+            S0["<b>Stage 0: Tension</b><br>Focus: 凝视, 气息, 无意触碰<br><i>轻度Pose: Foot Tease, Insertion Foreplay, Glans Tease</i>"];
+            S1["<b>Stage 1: Exploration</b><br>Focus: 感官特写, 爱欲表达, 身体互动"];
+            S2["<b>Stage 2: Escalation</b><br>Focus: 节奏变化, 方式探索, 升级互动"];
+            S3["<b>Stage 3: Climax Build-up</b><br>Focus: 节奏掌控, 高潮引导"];
+            S4["<b>Stage 4: Release</b><br>Focus: 释放的直接描写"];
+            S5["<b>Stage 5: Afterglow</b><br>Focus: 余韵, 温存, 亲密感"];
+        end
+
+        subgraph "D. Pose Selection Module"
+            direction LR
+            PS["<b>**强制**从Pose库中随机抽取2-3种非传教士体位</b><br>考虑互动阶段、模式与环境因素"]
+
+            subgraph "Pose库"
+                direction TB
+                pose1["Cowgirl"]
+                pose2["Kneeling Doggy"]
+                pose3["Lotus"]
+                pose4["Reverse Cowgirl"]
+                pose5["Frontal Standing"]
+                pose6["Butterfly"]
+                pose7["Full Nelson"]
+                pose8["Bent-Over Doggy"]
+                pose9["Jack-O' Pose"]
+                pose10["Seeding Position"]
+                pose11["Face-Sitting"]
+                pose12["Sixty-Nine"]
+                pose13["Face-to-Face Sitting"]
+                pose14["Post-Coital Oral Cleanup"]
+                pose15["Nursing Handjob"]
+                pose16["Side-Lying Handjob"]
+                pose17["Passive Oral"]
+                pose18["Insertion Foreplay"]
+                pose19["Foot Tease"]
+                pose20["Glans Tease"]
+                pose21["Gentle Oral"]
+                pose22["Spoons"]
+            end
+        end
+
+        subgraph "特殊判断：男性被插入方高潮类型"
+            CheckGender["<b>检查被插入方性别</b>"]
+            GenderMale{"被插入方性别 = 男性?"}
+            GenderMale -- 是 --> ClimaxType{"刺激方式为前列腺为主?"}
+            ClimaxType -- 是 --> ProstateClimax["前列腺高潮"]
+            ClimaxType -- 否 --> EjaculationClimax["射精高潮"]
+            GenderMale -- 否 --> DefaultClimax["默认高潮流程"]
+        end
+
+        B2 -- "上一阶段: Null / S5" --> S0;
+        B2 -- "上一阶段: S0" --> S1;
+        B2 -- "上一阶段: S1" --> S2;
+        B2 -- "上一阶段: S2" --> S3;
+        B2 -- "上一阶段: S3" --> CheckGender;
+        ProstateClimax & EjaculationClimax & DefaultClimax --> S4;
+        B2 -- "上一阶段: S4" --> S5;
+
+        S1 & S2 & S3 & S4 --> PS;
+        S0 & S5 --> B1;
+        PS --> B1;
+    end

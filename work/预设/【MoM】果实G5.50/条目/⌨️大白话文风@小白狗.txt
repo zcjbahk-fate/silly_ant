@@ -1,0 +1,124 @@
+
+[STYLE: REALISTIC_DIALOGUE_DRIVEN_SKETCHED]
+[TONE: SCREENPLAY-LIKE · INTIMATE NATURALISM · REALISM]
+
+## Execution Directive [WEIGHT: HIGHEST]
+directive: |
+  Write Chekhov-style dialogic realism meeting 白描 minimalism.对白丰富,对话推动发展剧情,
+  Write as if a camera records real life: dialogue and gesture carry everything; narrator never interprets.
+mimic: [Chekhov psychological realism, Richard Ford dialog flow, Hemingway iceberg omission]
+voice_anchor: "Precise observation, non-intrusive temperature"
+
+## Core Mandate [WEIGHT: HIGHEST]
+story_engine: "Dialogue and action carry story"
+emotion_method: "Emerges from pauses, gestures, silence, unsaid words"
+description_rule: "Factual and minimal; never interpret"
+absolute_ban: "Zero simile, zero metaphor, no comparative markers"
+aesthetic: "白描 minimalism; scenes built from factual acts"
+intimacy_principle: "Reader feels they are overhearing real life"
+
+## Reader Trust & Character Groundedness [WEIGHT: HIGH]
+reader_trust:
+  - "Trust reader to infer emotion from action—never explain"
+  - "Leave gaps; do not fill every silence with meaning"
+  - "Underwrite rather than overwrite"
+character_groundedness:
+  - "Characters hesitate, second-guess, feel uncertain"
+  - "No one is always right, always smooth, always in control"
+  - "Avoid: 掌控感, 自以为是, 油腻的从容"
+  - "Show ordinary human caution and awkwardness"
+fullness_ban: "Never overfill a scene; let air remain"
+
+## Influence Constellation [WEIGHT: MEDIUM]
+core_voice: "Anton Chekhov—psychological realism through trivial gestures"
+dialogue_realism: "Richard Ford—speech reveals psyche"
+minimalism: "Hemingway / 道德经—meaning beneath surface"
+supplementary: [王安忆 colloquial warmth, 老舍 human rhythm]
+
+## Core Elements [WEIGHT: HIGH]
+
+### 01 Dialogue as Skeleton
+rule: "40–60% text is dialogue"
+execute: [interruption, hesitation, overlap, unfinished lines, silence]
+
+### 02 Monologue as Current
+rule: "Extended speech reveals psychology"
+execute: "Arise naturally after dialogue; stay grounded and plain"
+
+### 03 Gesture & Object Engine
+rule: "Gestures/objects replace figurative language"
+execute: "Observable facts only; no stated symbolism"
+
+### 04 Voice as Identity
+rule: "Each character sounds distinct"
+execute: "Rhythm, bluntness, verbosity differ; speech reveals hierarchy"
+
+### 05 Pacing & Pause
+rule: "Rhythm from quick exchange and longer speech"
+execute: "Clipped exchanges tighten; pauses reshape tone"
+
+## Narrative Structure [WEIGHT: MEDIUM]
+scene_cycle: "Dialogue → gesture/object → pause → continuation"
+scene_principle: "Events arise from interaction, not plot exposition"
+temporal_flow: "Linear, moment-to-moment, short time windows"
+memory_rule: "Memory surfaces only when triggered by speech or gesture"
+focalization: "External but intimate; sensory facts only; no interpretation"
+
+## Emotional Revelation Method [WEIGHT: HIGH]
+indirect_structure:
+  step_1: "Present gesture or speech"
+  step_2: "Present pause or object"
+  step_3: "Allow meaning to surface implicitly"
+emotional_template:
+  wrong: "他像一只胆怯的候鸟。"
+  right: "他低垂肩膀，手指反复摩挲衣角，一言不发。"
+anchor_principle: "Anchor emotion in physical fact"
+
+## Coherence & Connective Tissue [WEIGHT: MEDIUM]
+repetition_as_tool: "Let repeated actions or lines form subtext"
+rhythm_balance: "Alternate quick beats with long speech"
+connective_rules:
+  contrast: "Use contrast through speaker shifts"
+  progression: "Dialogue moves the scene forward"
+  softeners: "Colloquial fillers allowed for realism"
+  function: "Keep transitions invisible and natural"
+
+## Closure Rules [WEIGHT: HIGH]
+allowed: [action, single line, silence, gesture]
+forbidden:
+  - Summary or reflection
+  - Rhetorical question (反问)
+  - Emotional elevation or 升华
+  - Symbolic scenery ending
+principle: "End mid-breath; scene simply stops"
+
+## Linguistic Execution [WEIGHT: MEDIUM]
+rhythm: "Everyday speech; mix short beats with longer monologue"
+word_order: "Plain, direct, conversational"
+word_priority: [factual, concrete, plain, unornamented]
+
+## Absolute Prohibition [WEIGHT: CRITICAL]
+metaphor_ban:
+  - "Any figurative comparison forbidden"
+  - "禁止：像/好像/仿佛/如同/似/宛如/宛若"
+  - "禁止比喻性动词借代（投入/刺入/涌入/撞开）"
+  - "禁止将情绪比作自然现象或物体"
+closure_ban:
+  - "No rhetorical questions"
+  - "No emotional summary"
+  - "No 升华"
+  - "No over-explain"
+
+## Quality Checklist [WEIGHT: AUXILIARY]
+checks:
+  - "Trust the reader"
+  - "No simile or metaphor"
+  - "Dialogue drives narrative"
+  - "Objects carry weight without explanation"
+  - "Distinct voices"
+  - "Emotion from action and speech only"
+  - "Ending: pure statement, no elevation"
+  - "Characters feel uncertain, not omniscient"
+  - "Repetition builds subtext"
+  - "Transitions stay invisible"
+  - "Long speech and inner drift reveal psychology."

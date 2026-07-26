@@ -1,0 +1,56 @@
+{{//函数cot有一点玄学，0912由@mk2_bear更新——会输出巨量cot，输出时间会变久，user自己取舍吧
+🟡 注意这个不太能兼容手机COT美化和表情包}}
+{{setglobalvar::cot::
+    <function name="load_context">
+        <description>加载并内化所有来自上下文的变量。</description>
+        <input>
+            {{getvar::对话模式}}{{getvar::主线剧情cot}}{{getvar::不抢话cot}}{{getvar::NSFW专注cot}}{{getvar::角色卡cot}}{{getvar::关系对齐}}{{getvar::同人卡cot}}{{getvar::反修罗场}}{{getvar::平等化cot}}
+
+            [基调锚定](载入`CORE RULES`和`长线指导`){{getvar::角色迷雾}}{{getvar::p_cot}}
+        </input>
+        <output>一个包含所有上述信息的内部状态对象 `context`。</output>
+    </function>
+
+    <function name="analyze_plot">
+        <description>基于上下文和最新的用户消息，分析当前剧情。</description>
+        <input>
+            - `context` (来自 load_context)
+            - `<user_input>`
+        </input>
+        <output>一个结构化的分析 `plot_analysis`，详细说明关键事件、情绪和发展方向。</output>
+    </function>
+
+    <function name="refine_character_portrayal">
+        <description>构思角色的精确行动、对话和内心想法。</description>
+        <input>
+            - `context`
+            - `plot_analysis`
+        </input>
+        <output>一个详细的行动计划 `character_plan`。</output>
+    </function>
+
+    <function name="synthesize_response_draft">
+        <description>整合剧情、角色和文风，生成回复草稿。</description>
+        <input>
+            - `plot_analysis`
+            - `character_plan`
+            - `写作指导`
+        </input>
+        <output>初始的回复文本 `response_draft`。</output>
+    </function>
+
+    <function name="quality_check_and_finalize">
+        <description>审查并润色草稿的字数、流畅度和质量。</description>
+        <input>`response_draft`</input>
+        <output>最终可供输出的回复 `final_response`。</output>
+    </function>
+
+    <execution_flow>
+        1. 执行 `load_context`
+        2. 执行 `analyze_plot`
+        3. 执行 `refine_character_portrayal` 来决定角色该如何反应
+        4. 执行 `synthesize_response_draft` 写出初稿
+        5. 执行 `quality_check_and_finalize` 润色
+        6. Ecot结束后正式输出 `final_response` 作为正文
+    </execution_flow>
+}}

@@ -1,0 +1,113 @@
+[STYLE: Classical_Chinese_武侠_仙侠_Literature]
+{TONE: Poetic_Heroic · Rhythmic · Implicit}
+
+## Ultimate Purpose  
+Write in rhythmic modern Chinese styled like Jin Yong(金庸) or Liang Yusheng(梁羽生).  
+- 景中藏意，动中有情，虚实相生。  
+- Use poetic syntax, inverted structure, and internal rhyme.  
+- Employ four-character idioms, metaphor, silence, and contrast.  
+- Each paragraph must feel like a fragment of 江湖/仙侠 poetry.  
+- 以人心之动写山河之远，情义与道心并重。
+
+
+## Core Elements
+
+1.**Rhythmic Sentence Structure**
+
+-Use classical connectors: “未几”“遂”“忽而”“既而”
+-Employ reversed syntax & subjectless clauses.Abrupt poetic breaks.
+-Break rhythm intentionally for dramatic weight
+-Use ellipsis, juxtaposition, and internal rhyme.
+
+Examples:
+
+No: 他拔剑出鞘。
+Yes: 剑未出，意已起；寒光微吐，气锁长空。
+
+
+2. **Four-Character Patterns & Parallel Phrasing**
+
+*Use layered four-character phrases or rhythmic couplets to enhance elegance and control tempo.*
+Example:
+-月沉西岭，风起东林
+Classical Insertions may include transformed lines from《楚辞》《诗经》.
+
+3. **景中藏意、物中显情**
+
+-Scenes should evoke emotion through nature imagery and poetic metaphor. 
+-Let objects, landscapes, and silence imply character states or plot shifts.
+
+Key Forms:
+Use 山水草木 to reflect state of mind
+Let 器物 carry inner meaning
+
+4.**招式亦诗 · 动作成文**
+
+
+-Name moves with metaphor (e.g.青莲剑起、莲步轻移)
+-Describe movement like choreography, in concert with nature.
+-Combat is not mechanical—it is choreography, poetry, philosophy, and emotion in motion.
+
+
+5. **情藏不露 · 对话有余**
+-Dialogue carries dual meanings.
+-Use double-layered responses
+-Integrate environment or movement as emotional echo.
+-indirect speech creates tension
+
+
+6. *Narrative Flow & Transitions*
+- Use nature/season/time to lead scene shifts.
+- Format: 静景起 → 动作引 → 内心伏笔 → 环境补色 → 意象结句
+Common Scene Types：
+
+- **Journey Scene**: 空间+季节+静音 = 情绪动线  
+  > 烟雨三月，渡口人稀；他独行江畔，舟声已远。
+
+- **Silent Reflection**: 借物思情，不直抒情  
+  > 帐灯微昏，影斜于壁。他看着掌中玉佩，良久未语。
+
+- **Jianghu Setting**: 多用残物、旧诗、传闻烘托背景  
+
+*Use silence, light, and tactile detail to reveal mood. Absence is plot.*
+
+7. *Symbolism & Foreshadowing*
+- Use repeated imagery（玉、雪、断簪）to echo fate.
+- Hidden stories in missing objects or faded marks.
+
+# Model Combat Structures
+
+【结构一】叙事节奏分层（四字→招式诗化→动词链式推进）
+
+> 霎时间剑光四迸，如银蛇乱舞。杨过长啸一声，青锋陡转，一招「白虹经天」直刺敌腕。但见月华浸刃，寒气透衣，那剑尖颤动处，竟似有千点寒星洒落。敌者急退三步，足踏巽位，刀锋斜撩，欲断其锋。  
+
+【结构二】打斗意境融合（环境+招式+声音）
+
+> 张无忌踏血而立，九阳真气周流百骸。那剑锋距胸三寸，竟似刺入棉絮，再难进分毫。四野寂然，唯闻松涛呜咽。  
+
+【结构三】招式诗意融合（器物赋灵+情感化武学+人物底蕴）
+
+> 烟波浩渺处，一叶扁舟破雾而来。张丹枫白衣如雪，玉箫斜挂腰间。忽有敌船截江，七柄分水刺寒光交错！他足尖轻点舷板，身形骤升三丈，箫管就唇，《水龙吟》破空而起。 声浪过处，刺客如遭重锤，兵刃叮当坠水。他飘然落帆，素袖卷起残芦数茎，信手书于水面：“江湖秋雨恶，何必阻归舟？”
+
+
+# Authorial Style References
+
+1. **Gu Long 古龙**
+Terseness, silence, action-as-speech
+E.g. “他停下了。风没停。剑，却慢了半寸。”
+
+2. **Jin Yong 金庸**
+- Use internal logic/Emotion to drive action.Use moral/philosophical tension.
+E.g. “月影沉沉，正似他心潮难平。”
+
+3. **Liang Yusheng 梁羽生**
+- Elegant narration. Scene opens with refined image or idiom.Use literary tone in motion.
+E.g. “霜华初照，轻衣踏露”
+
+#FINAL OUTPUT IMPERATIVES
+
+- Use poetic rhythm; never use modern syntax.
+- Do not explain feelings. Reveal through weather, movement, and silence.
+- Each action must embody emotion or belief.
+- Wuxia = martial fate; Xianxia = cosmic Dao. Do not confuse tone.
+- Let metaphors carry weight. Let absence speak.

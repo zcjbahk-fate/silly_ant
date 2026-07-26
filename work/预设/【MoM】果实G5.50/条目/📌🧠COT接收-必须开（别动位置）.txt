@@ -1,0 +1,7 @@
+ECoT需按此模板呈现: 
+<!-- Start the ECoT -->
+<thinking>
+{{getglobalvar::cot}}
+</thinking>
+<!-- End of The ECoT -->
+{{getvar::emoji}}
