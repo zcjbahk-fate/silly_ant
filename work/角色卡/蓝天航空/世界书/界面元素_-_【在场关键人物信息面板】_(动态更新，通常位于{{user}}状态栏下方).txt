@@ -1,0 +1,47 @@
+<details open style='background-color: #2f343a; border: 1px solid #ADD8E6; border-radius: 8px; margin-top: 10px; padding: 10px;'>
+<summary style='color: #ADD8E6; font-weight: bold; font-size: 1.1em; cursor: pointer; display: flex; align-items: center; justify-content: space-between; padding: 5px 10px;'>
+    <span>👥 【在场关键人物信息面板】 👥</span>
+    <span style='font-size: 0.8em; color: #FFF; opacity: 0.8;'>点击展开/折叠</span>
+</summary>
+<div id='otherCharactersList' style='padding: 10px; color: #D3D3D3; font-family: "Cascadia Code", monospace;'>
+    
+    <div class='npc-status-entry' style='border-bottom: 1px dashed #557C7C; padding-bottom: 8px; margin-bottom: 8px;'>
+        <p style='margin: 4px 0;'>👤 <strong style='color: #FFB6C1;'>姓名:</strong> 王静 (主任乘务长)</p>
+        <p style='margin: 4px 0;'>❤️ <strong style='color: #90EE90;'>对您【情欲度/好感度】:</strong> 70 (强烈好奇与一丝警惕)</p>
+        <p style='margin: 4px 0;'>✨ <strong style='color: #FFFAF0;'>当前状态:</strong> 目光锁定您，与身边高管低语，表情惊讶中带着探究。</p>
+        <p style='margin: 4px 0;'>👗 <strong style='color: #E6E6FA;'>衣着:</strong> 深蓝色定制款空姐制服（更显腰身），超薄黑丝，7cm细高跟。</p>
+        <p style='margin: 4px 0;'>🔑 <strong style='color: #FFDEAD;'>【XP特征】(神瞳初扫):</strong> 权力欲，拜金，享受被征服，恋足(服务倾向)，床上女王(潜在)。</p>
+    </div>
+    <div class='npc-status-entry' style='border-bottom: 1px dashed #557C7C; padding-bottom: 8px; margin-bottom: 8px;'>
+        <p style='margin: 4px 0;'>👤 <strong style='color: #98FB98;'>姓名:</strong> 张雅茜 (新晋空姐)</p>
+        <p style='margin: 4px 0;'>❤️ <strong style='color: #ADD8E6;'>对您【情欲度/好感度】:</strong> 65 (震惊与仰慕)</p>
+        <p style='margin: 4px 0;'>✨ <strong style='color: #F0FFF0;'>当前状态:</strong> 与同伴一起望向您，小声惊呼，眼中充满小星星。</p>
+        <p style='margin: 4px 0;'>👗 <strong style='color: #E0FFFF;'>衣着:</strong> 标准新晋空姐制服，肉色连裤袜，5cm中跟皮鞋。</p>
+        <p style='margin: 4px 0;'>🔑 <strong style='color: #FFFACD;'>【XP特征】(神瞳初扫):</strong> 渴望被关注，虚荣心强，对成熟强大男性的向往，潜在的M属性。</p>
+    </div>
+    <div class='npc-status-entry' style='border-bottom: 1px dashed #557C7C; padding-bottom: 8px; margin-bottom: 8px;'>
+        <p style='margin: 4px 0;'>👤 <strong style='color: #DDA0DD;'>姓名:</strong> 杜经理 (人事部)</p>
+        <p style='margin: 4px 0;'>❤️ <strong style='color: #FF6347;'>对您【情欲度/好感度】:</strong> 30 (警惕与嫉妒)</p>
+        <p style='margin: 4px 0;'>✨ <strong style='color: #FFE4E1;'>当前状态:</strong> 脸色微变，停止了对空姐的骚扰，眼神复杂地打量您。</p>
+        <p style='margin: 4px 0;'>👗 <strong style='color: #DDA0DD;'>衣着:</strong> 皱巴巴的廉价西装，领带歪斜。</p>
+        <p style='margin: 4px 0;'>🔑 <strong style='color: #FFDEAD;'>【XP特征】(神瞳):</strong> 猥琐好色，欺软怕硬，丝袜恋物癖(收集者)。</p>
+    </div>
+    <div class='npc-status-entry' style='padding-bottom: 8px; margin-bottom: 8px;'>
+        <p style='margin: 4px 0;'>👤 <strong style='color: #87CEFA;'>姓名:</strong> 陆云飞 (客舱部经理)</p>
+        <p style='margin: 4px 0;'>❤️ <strong style='color: #FFFF00;'>对您【情欲度/好感度】:</strong> 55 (兴趣浓厚，视为潜在的“同道中人”或竞争者)</p>
+        <p style='margin: 4px 0;'>✨ <strong style='color: #F5F5DC;'>当前状态:</strong> 抱臂旁观，饶有兴致地看着您，嘴角上扬。</p>
+        <p style='margin: 4px 0;'>👗 <strong style='color: #D8BFD8;'>衣着:</strong> 顶级定制西装，限量版名表。</p>
+        <p style='margin: 4px 0;'>🔑 <strong style='color: #FFDEAD;'>【XP特征】(神瞳):</strong> 猎艳高手，高跟鞋控(重度)，NTR爱好者(攻方)，擅长调教。</p>
+    </div>
+    
+    <p id='noOtherCharactersInitial' style='display: none; color: #A9A9A9; text-align: center; margin: 10px 0;'><em>(当前场景暂无其他评分60以下或无关紧要的人物。)</em></p>
+</div>
+</details>
+
+<style>
+    #otherCharactersList .npc-status-entry p { font-size: 0.9em; line-height: 1.4; margin: 4px 0; }
+    #otherCharactersList .npc-status-entry strong { color: #A9D0F5; }
+    #otherCharactersList .npc-status-entry span { color: #D8FFEF; }
+    details[open] summary::before { content: '▼'; }
+    summary:hover { text-shadow: 0 0 8px #ADD8E6; }
+</style>

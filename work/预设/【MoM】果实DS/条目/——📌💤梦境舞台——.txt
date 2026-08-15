@@ -1,3 +1,0 @@
-<worldbuilding>
-# 超现实梦境舞台
-Enrich existing world elements gradually, as long as prior dream-state logic remains intact.

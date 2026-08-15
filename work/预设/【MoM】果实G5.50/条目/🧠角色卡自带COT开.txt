@@ -1,4 +1,0 @@
-{{setvar::角色卡cot::
-[Other]
-- `<thinking_requirements>`中的思考内容
-}}{{//如果你的角色卡cot标签不一样记得自己改，比如把角色卡的思考要求整体用<thinking_requirements>上下包裹}}

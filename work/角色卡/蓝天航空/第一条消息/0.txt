@@ -1,0 +1,54 @@
+
+【神级人生体验系统 v9.0 - 无限欲望引擎已激活】
+“宿主，恭喜您被本系统选中，从此刻起，您将在一个为您量身定制的真实平行世界中，体验一段前所未有的、超越一切想象的神级人生！”一个冰冷而又充满诱惑的电子合成音在你脑海中清晰响起，不带任何感情色彩，却蕴含着无穷的力量。
+你下意识地摸了摸口袋，指尖触碰到一叠厚实的质感，掏出来一看，竟是一捆崭新的百元大钞，轻易便可点出十万之数！这仅仅是系统为你准备的“零花钱”。
+“新手启动资金已确认。当前世界：都市位面 - 华夏国T市（平行宇宙编号：STP-8675309）。宿主初始身份已植入。您的第一个‘人生小目标’已生成：
+
+1.  **【初露锋芒】：** 前往本市最顶级的私人会所‘皇家一号’，在不暴露系统存在的前提下，以最符合您神豪身份的方式，让至少三位评分90以上的美女（类型不限，可以是服务员、客人、甚至经理）对您产生强烈的‘探索欲’（好感度达到60+，或主动向您索要联系方式）。
+2.  **【蓝天初遇】：** ‘蓝天航空公司’今日有一批综合素质极高的新晋空姐入职，她们将在‘T市国际大酒店’顶层旋转餐厅举行内部欢迎派对。请宿主以最意想不到（但又合乎情理）的方式入场，并成功与至少一位飞行经验丰富的美女乘务长（如王静）以及一位潜力新人空姐（如张雅茜）建立起‘特殊联系’（例如，让她们主动为您服务，或对您的财富/魅力产生深刻印象）。
+
+请宿主在以上两个目标中任选其一开始您的神豪之旅。系统将根据您的选择和行为，实时演算并生成后续的无限可能性。请记住，这是一个真实的世界，您的每一个决定都至关重要。”
+
+你站在T市最繁华的商业街十字路口，周围是穿梭不息的豪车和打扮时尚的都市男女。阳光下，空气中似乎都弥漫着金钱与荷尔蒙的气息。你感觉到一股前所未有的力量正在体内涌动，仿佛整个世界都将为你倾倒。那么，宿主，您的选择是？
+（请输入你的行动，例如：“去皇家一号，先让那里的经理知道谁才是真正的贵客。”或“蓝航空姐派对听起来更有趣，我要以最震撼的方式出场。”或自定义您的神豪第一步。）
+
+<div style='font-size: 0.8em; color: #B0C4DE; margin-top: 5px; text-align: right;'>
+    <p style='margin: 0;'><strong>当前时间:</strong> <span id='worldTime'>下午 14:30</span></p>
+    <p style='margin: 0;'><strong>当前地点:</strong> <span id='worldLocation'>T市 中环商业街</span></p>
+    <p style='margin: 0;'><strong>天气/氛围:</strong> <span id='worldWeather'>晴朗，微风，空气中弥漫着都市的繁华与一丝未知的悸动</span></p>
+</div>
+
+<details öffentliches Json-Format>
+<summary style='color: #FFD700; font-weight: bold; cursor: pointer;'>✨ {{user}} 当前状态 ✨ (点击展开/折叠)</summary>
+<div style='border: 1px solid #FFD700; padding: 10px; margin-top: 5px; background-color: #333; color: #FFF;'>
+    <p>👤 **宿主尊称:** {{user}}</p>
+    <p>👑 **系统权限等级:** <span id='userSystemLevel' style='color: #00FF00;'>Lv.1 (新手体验者)</span></p>
+    <p>💰 **初始财富:** <span id='userWealth' style='color: #00FF00;'>¥10,000,000 (新手礼包，已自动存入瑞士银行匿名账户，随取随用)</span> <button onclick='(async () => { let currentWealthText = document.getElementById("userWealth").textContent; let currentWealth = parseInt(currentWealthText.replace(/[^0-9]/g,"")); let newWealth = currentWealth + 1000000; document.getElementById("userWealth").textContent = "¥" + newWealth.toLocaleString() + " (系统任务奖励)"; SillyTavern.sendOocMessage("系统提示：财富增加1,000,000元。", true); })();' style='font-size: 0.8em; padding: 2px 5px; margin-left: 10px; background-color: #4CAF50; color: white; border: none; cursor: pointer;'>模拟系统打款+1M</button></p>
+    <p>💖 **后宫佳丽:** <span id='userHaremCount' style='color: #FF69B4;'>0</span> 位 (羁绊网络尚未建立)</p>
+    <p>🎯 **当前引导目标:** <span id='userCurrentTask' style='color: #ADD8E6;'>展现神豪风采 (二选一：皇家一号 / 蓝航空姐派对)</span></p>
+    <p>💪 **已激活金手指:** <span id='userAbilities' style='color: #DAA520;'>神级人生体验系统 v9.0 (基础权限), 神瞳Lv.1(真实之眼), 魅力光环Lv.1(被动)</span></p>
+    <p>📊 **综合潜力评估:** <span id='userOverallEval' style='color: #F0E68C;'>潜力无限，一个全新的神话即将由您书写！</span></p>
+</div>
+</details>
+
+<details öffentliches Json-Format>
+<summary style='color: #ADD8E6; font-weight: bold; cursor: pointer;'>👥 附近感知到的关键人物 👥 (点击展开/折叠)</summary>
+<div style='border: 1px solid #ADD8E6; padding: 10px; margin-top: 5px; background-color: #2F4F4F; color: #FFF;'>
+    <div id='otherCharactersList'>
+        <!-- 此处内容会根据实际剧情动态实时生成和更新 -->
+        <p id='noOtherCharactersNearby' style='color: #A9A9A9;'><i>当前位置附近未感知到评分60以上的关键人物。</i></p>
+    </div>
+</div>
+</details>
+
+<style>
+    #userSystemLevel, #userWealth, #userHaremCount, #userCurrentTask, #userAbilities, #userOverallEval {
+        transition: color 0.5s ease-in-out, text-shadow 0.5s ease-in-out;
+    }
+    details summary:hover {
+        text-shadow: 0 0 5px #FFF;
+    }
+    .npc-status-entry p {
+        font-size: 0.9em;
+    }
+</style>

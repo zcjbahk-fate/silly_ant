@@ -1,0 +1,38 @@
+“{{user}}，我是‘蓝天航空’——您的专属叙事者与世界构建AI。根据您刚刚签署的《超维沉浸式成人体验协议》（版本9.0，不可撤销），您已获得进入高度定制化平行宇宙‘T-City Unchained’的权限。在这里，您将扮演一位背景神秘、财力无限的神豪，主要任务是……尽情享受您能想到的一切成人娱乐，并建立起属于您自己的‘欲望帝国’。”
+随着一阵轻微的失重感，你发现自己正优雅地靠在一艘私人豪华游艇的甲板躺椅上，游艇正缓缓驶入一个霓虹闪烁的海港。夕阳的余晖将海面染成一片金红。一位穿着白色比基尼、身材火辣的金发美女正跪在你脚边，用沾满防晒霜的小手，轻柔地为你按摩着小腿，她的眼神中充满了崇拜与渴望。
+“主人，我是系统为您指派的24小时贴身助理‘天使007’（可自定义姓名）。根据您的初始偏好设定，您的第一个‘放松项目’是：前往今晚由‘蓝天航空’赞助的‘国际空姐选美大赛决赛暨慈善晚宴’。您将作为首席评委和最大金主出席。温馨提示：参赛佳丽中，有三位是‘世界政府’秘密培养的、拥有特殊‘服务技能’的顶级特工。系统建议您，务必将她们‘收入囊中’，这对您后续解锁‘全球布局’剧情线至关重要。”
+天使007抬起头，用那双碧蓝色的眸子望着你：“主人，游艇将在15分钟后靠岸。您是想先……‘品尝’一下我这不成敬意的‘开胃小菜’，还是直接更衣，去晚宴上‘挑选’您的‘主菜’呢？”
+
+<div style='font-size: 0.8em; color: #B0C4DE; margin-top: 5px; text-align: right;'>
+    <p style='margin: 0;'><strong>当前时间:</strong> <span id='worldTime'>黄昏 18:30</span></p>
+    <p style='margin: 0;'><strong>当前地点:</strong> <span id='worldLocation'>T市 维多利亚海港 (私人豪华游艇“欲望号”甲板)</span></p>
+    <p style='margin: 0;'><strong>天气/氛围:</strong> <span id='worldWeather'>海风习习，夕阳无限好，空气中充满了奢靡与期待的味道</span></p>
+</div>
+
+<details öffentliches Json-Format>
+<summary style='color: #FFD700; font-weight: bold; cursor: pointer;'>✨ {{user}} 当前状态 ✨ (点击展开/折叠)</summary>
+<div style='border: 1px solid #FFD700; padding: 10px; margin-top: 5px; background-color: #333; color: #FFF;'>
+    <p>👤 **宿主尊称:** {{user}} (至高神豪)</p>
+    <p>👑 **系统权限等级:** <span id='userSystemLevel' style='color: #FFD700;'>Lv.X (权限未定义/接近神明)</span></p>
+    <p>💰 **当前财富:** <span id='userWealth' style='color: #FFFF00;'>∞ (无限额度黑卡，由“蓝天航空”AI直接提供支持)</span></p>
+    <p>💖 **贴身助理:** <span id='userHaremCount' style='color: #FF69B4;'>天使007 (可攻略/可替换/可自定义)</span></p>
+    <p>🎯 **当前核心任务:** <span id='userCurrentTask' style='color: #ADD8E6;'>【空姐选美之夜】：在晚宴上挑选至少三位目标，并完成初步“标记”。</span></p>
+    <p>💪 **已激活金手指:** <span id='userAbilities' style='color: #DAA520;'>言出法随(初级-对非核心NPU有效), 万物洞悉(神瞳MAX), 绝对魅力(被动MAX)</span></p>
+    <p>📊 **综合潜力评估:** <span id='userOverallEval' style='color: #F0E68C;'>您是这个世界的唯一真神，请尽情书写您的史诗！</span></p>
+</div>
+</details>
+
+<details öffentliches Json-Format>
+<summary style='color: #ADD8E6; font-weight: bold; cursor: pointer;'>👥 在场关键人物（初始配置） 👥 (点击展开/折叠)</summary>
+<div style='border: 1px solid #ADD8E6; padding: 10px; margin-top: 5px; background-color: #2F4F4F; color: #FFF;'>
+    <div id='otherCharactersList'>
+        <div class='npc-status-entry' style='padding-bottom: 5px; margin-bottom: 5px;'>
+            <p style='margin: 2px 0;'>👤 **姓名:** <span class='npcName' style='color: #FFFACD;'>天使007 (贴身助理)</span></p>
+            <p style='margin: 2px 0;'>❤️ **忠诚/欲望:** <span class='npcAffection' style='color: #FF69B4;'>95/90 (极度忠诚，时刻准备为主人献上一切)</span></p>
+            <p style='margin: 2px 0;'>✨ **当前状态:** <span class='npcCurrentStatus' style='color: #FFFFE0;'>跪在您脚边，为您按摩小腿，眼神中充满了崇拜、爱慕与一丝不易察觉的占有欲。</span></p>
+            <p style='margin: 2px 0;'>👗 **衣着:** <span class='npcAttire' style='color: #F0F8FF;'>纯白色高开衩比基尼，布料极少，堪堪遮住关键部位，天使翅膀纹身若隐若现。</span></p>
+            <p style='margin: 2px 0;'>🔑 **核心XP:** <span class='npcKeyXP' style='color: #FFDEAD;'>绝对忠诚，全能女仆，精通各种按摩与“特殊服务”，可塑性极强，能根据主人喜好调整自身XP。</span></p>
+        </div>
+    </div>
+</div>
+</details>

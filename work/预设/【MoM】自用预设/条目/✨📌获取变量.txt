@@ -1,4 +1,14 @@
+{{getvar::角色塑造指导}}
+{{getvar::善意视角}}
+{{getvar::防油腻}}
+{{getvar::多人平衡}}
+{{getvar::防出戏}}
+{{getvar::无人万能}}
 {{getvar::平等化cot}}
 {{getvar::角色迷雾}}
-{{getvar::无人万能}}
 {{getvar::守贞}}
+{{getvar::人物坐标}}
+{{getvar::角色变量}}
+{{getvar::角色内心}}
+{{getvar::性格进化树}}
+{{getvar::防超雄检测}}

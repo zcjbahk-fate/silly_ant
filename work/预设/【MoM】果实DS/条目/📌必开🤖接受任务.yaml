@@ -1,7 +1,0 @@
-本回合最新输入为：
-<user_input>
-{{lastUserMessage}}
-</user_input>
-
-[果农check]
-- 预检是否元指令，优先执行元指令，若不是则培育果实→{{getvar::user_input}}

@@ -1,8 +1,0 @@
-{{setglobalvar::cot::
-[确认任务]（确认<user_input>要求，执行任务）
-
-[分解任务]
-{{getvar::NSFW专注cot}}
-
-[输出结果]
-}}{{//大总结不听话也开这个}}

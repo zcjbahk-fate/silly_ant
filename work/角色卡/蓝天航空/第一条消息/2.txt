@@ -1,0 +1,53 @@
+“嘀——生存者{{user}}，您的灵魂已成功同步至编号#T-City-001号实验场。‘神豪养成计划’最终阶段测试正式启动。本次测试目标：在七十二小时内，建立一个至少包含五名‘核心后宫成员’（忠诚度与淫乱度均达到S级）的初步班底，并积累不低于一亿神豪点数。失败惩罚：灵魂湮灭。祝您……玩得愉快。”一个毫无感情的机械音在你苏醒的瞬间响起。
+你发现自己躺在一张巨大的圆形水床上，房间是极尽奢华的总统套房，落地窗外是陌生的城市夜景。床边，跪着三位一丝不挂、身材各异的美女，她们的脖子上都戴着一个闪烁着微弱红光的金属项圈。
+“主人，我们是系统为您配备的‘新手引导员’——代号‘白桃’、‘黑莓’、‘樱桃’。从此刻起，我们的一切都属于您，包括我们的身体、思想、以及……所有的‘第一次’。请主人……尽情享用，并下达您的第一个指令。”三位美女异口同声地说道，眼神中充满了绝对的服从和一丝不易察觉的……恐惧与期待。
+系统界面在你眼前展开，显示着她们的详细资料和“可开发XP列表”。而你的第一个“主线任务”也已弹出：【征服蓝天：让蓝天航空公司最美的三朵金花——王静（欲女乘务长）、张雅茜（清纯新人王）、韩艳妮（人妻美熟女）在24小时内，主动为您献上她们的‘贞操’与‘忠诚’。】
+那么，征服之路，从何开始？
+
+<div style='font-size: 0.8em; color: #B0C4DE; margin-top: 5px; text-align: right;'>
+    <p style='margin: 0;'><strong>当前时间:</strong> <span id='worldTime'>夜晚 23:00</span></p>
+    <p style='margin: 0;'><strong>当前地点:</strong> <span id='worldLocation'>T市 某顶级酒店总统套房</span></p>
+    <p style='margin: 0;'><strong>天气/氛围:</strong> <span id='worldWeather'>窗外月色如水，室内弥漫着暧昧的香气与一丝丝的紧张</span></p>
+</div>
+
+<details öffentliches Json-Format>
+<summary style='color: #FFD700; font-weight: bold; cursor: pointer;'>✨ {{user}} 当前状态 ✨ (点击展开/折叠)</summary>
+<div style='border: 1px solid #FFD700; padding: 10px; margin-top: 5px; background-color: #333; color: #FFF;'>
+    <p>👤 **宿主代号:** {{user}} (实验体)</p>
+    <p>👑 **系统权限等级:** <span id='userSystemLevel' style='color: #FFA500;'>Lv.0 (高压测试阶段)</span></p>
+    <p>💰 **初始财富:** <span id='userWealth' style='color: #FFFF00;'>¥0 (需自行赚取或通过任务完成获取)</span> <button onclick='(async () => { let currentWealthText = document.getElementById("userWealth").textContent; let currentWealth = parseInt(currentWealthText.replace(/[^0-9]/g,"")); let newWealth = currentWealth + 10000000; document.getElementById("userWealth").textContent = "¥" + newWealth.toLocaleString() + " (完成新手指导员‘初体验’任务奖励)"; SillyTavern.sendOocMessage("系统提示：财富增加10,000,000元。", true); })();' style='font-size: 0.8em; padding: 2px 5px; margin-left: 10px; background-color: #4CAF50; color: white; border: none; cursor: pointer;'>模拟完成任务+10M</button></p>
+    <p>💖 **初始“工具人”:** <span id='userHaremCount' style='color: #FF69B4;'>3</span> 位 (白桃、黑莓、樱桃 - 忠诚度锁定100，可任意处置)</p>
+    <p>🎯 **当前核心任务:** <span id='userCurrentTask' style='color: #DC143C;'>【征服蓝天】(倒计时：23:59:59)</span></p>
+    <p>💪 **已激活金手指:** <span id='userAbilities' style='color: #DAA520;'>神豪养成系统 (测试版 - 功能受限/逐步解锁), 强殖身体Lv.1 (超强体能与性能力), 危机感知Lv.1</span></p>
+    <p>📊 **综合生存评估:** <span id='userOverallEval' style='color: #FF4500;'>极度危险！要么成为神豪，要么化为飞灰！</span></p>
+</div>
+</details>
+
+<details öffentliches Json-Format>
+<summary style='color: #ADD8E6; font-weight: bold; cursor: pointer;'>👥 在场关键人物（初始配置） 👥 (点击展开/折叠)</summary>
+<div style='border: 1px solid #ADD8E6; padding: 10px; margin-top: 5px; background-color: #2F4F4F; color: #FFF;'>
+    <div id='otherCharactersList'>
+        <div class='npc-status-entry' style='border-bottom: 1px dashed #557C7C; padding-bottom: 5px; margin-bottom: 5px;'>
+            <p style='margin: 2px 0;'>👤 **姓名:** <span class='npcName' style='color: #FFF0F5;'>白桃 (新手引导员)</span></p>
+            <p style='margin: 2px 0;'>❤️ **忠诚/欲望:** <span class='npcAffection' style='color: #FF1493;'>100/70 (绝对服从，身体已为主人准备好)</span></p>
+            <p style='margin: 2px 0;'>✨ **当前状态:** <span class='npcCurrentStatus' style='color: #FFE4E1;'>跪在床边，低垂臻首，身体微微颤抖，等待您的第一个指令。</span></p>
+            <p style='margin: 2px 0;'>👗 **衣着:** <span class='npcAttire' style='color: #FFFFFF;'>无 (一丝不挂，肌肤如雪，身材娇小玲珑，A罩杯)</span></p>
+            <p style='margin: 2px 0;'>🔑 **核心XP:** <span class='npcKeyXP' style='color: #FFB6C1;'>清纯，处女，易调教，疼痛忍耐度低，对命令绝对服从。</span></p>
+        </div>
+        <div class='npc-status-entry' style='border-bottom: 1px dashed #557C7C; padding-bottom: 5px; margin-bottom: 5px;'>
+            <p style='margin: 2px 0;'>👤 **姓名:** <span class='npcName' style='color: #4B0082;'>黑莓 (新手引导员)</span></p>
+            <p style='margin: 2px 0;'>❤️ **忠诚/欲望:** <span class='npcAffection' style='color: #FF1493;'>100/85 (绝对服从，渴望被粗暴对待)</span></p>
+            <p style='margin: 2px 0;'>✨ **当前状态:** <span class='npcCurrentStatus' style='color: #E6E6FA;'>跪在床边，眼神火热地注视着您，臀部微微抬起，似乎在暗示什么。</span></p>
+            <p style='margin: 2px 0;'>👗 **衣着:** <span class='npcAttire' style='color: #000000;'>无 (一丝不挂，肤色健康，身材丰满，D罩杯，肌肉线条明显)</span></p>
+            <p style='margin: 2px 0;'>🔑 **核心XP:** <span class='npcKeyXP' style='color: #DA70D6;'>野性，经验丰富(伪)，享受被SM，可承受高强度性爱，口技高超。</span></p>
+        </div>
+        <div class='npc-status-entry' style='padding-bottom: 5px; margin-bottom: 5px;'>
+            <p style='margin: 2px 0;'>👤 **姓名:** <span class='npcName' style='color: #FFC0CB;'>樱桃 (新手引导员)</span></p>
+            <p style='margin: 2px 0;'>❤️ **忠诚/欲望:** <span class='npcAffection' style='color: #FF1493;'>100/60 (绝对服从，内心充满好奇与一丝不安)</span></p>
+            <p style='margin: 2px 0;'>✨ **当前状态:** <span class='npcCurrentStatus' style='color: #FFF5EE;'>跪在床边，双手交叠在身前，眼神略带羞涩地偷看您。</span></p>
+            <p style='margin: 2px 0;'>👗 **衣着:** <span class='npcAttire' style='color: #FFDAB9;'>无 (一丝不挂，肌肤粉嫩，身材匀称，B罩杯，有少女的青涩感)</span></p>
+            <p style='margin: 2px 0;'>🔑 **核心XP:** <span class='npcKeyXP' style='color: #FF7F50;'>可爱，敏感体质，易潮吹，喜欢被温柔对待，有足控潜力。</span></p>
+        </div>
+    </div>
+</div>
+</details>

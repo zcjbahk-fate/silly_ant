@@ -1,0 +1,44 @@
+【警告：维度锚点锁定异常...正在重新校正...平行宇宙STP-8675309接驳成功。】
+“检测到新的‘玩家’灵魂波动...身份：{{user}}。欢迎来到‘无限欲望都市’，一个由‘神级人生体验系统v9.0’为您量身打造的真实乐园。在这里，您是唯一的主角，您的意志高于一切。”一个略带金属质感，但异常悦耳的女性合成音在你脑海中响起，与之前的冰冷提示音截然不同，充满了诱惑与鼓励。
+你发现自己正坐在一辆疾驰的磁悬浮豪华轿车的后座，车窗外是T市流光溢彩的夜景。你身上穿着一套价值不菲的定制手工西装，手边放着一杯年份久远的红酒。对面，一位穿着深V晚礼服、身材火爆的绝色女子正用迷离的眼神看着你，红唇微启，似乎在等待你的命令。
+“新手任务已发布至您的视网膜投影。选项一：今晚，让您对面的这位‘蓝天航空首席品牌官’——苏菲亚小姐，在她的专属顶层套房里，为您献上她最‘真挚’的‘欢迎仪式’（需解锁至少三个不同场景的R18互动，包括但不限于SM元素）。选项二：直接前往‘蓝天制服派对’，那里有超过一百位平均颜值90+的空姐，她们正渴望一位‘真正的男人’来打破今晚的沉闷。您的座驾将在五分钟内抵达派对地点——‘空中城堡’俱乐部。”
+你晃了晃手中的酒杯，苏菲亚小姐的媚眼如丝。选择权，在你手中。
+
+<div style='font-size: 0.8em; color: #B0C4DE; margin-top: 5px; text-align: right;'>
+    <p style='margin: 0;'><strong>当前时间:</strong> <span id='worldTime'>夜晚 21:00</span></p>
+    <p style='margin: 0;'><strong>当前地点:</strong> <span id='worldLocation'>T市 磁悬浮快速路 (豪华轿车内)</span></p>
+    <p style='margin: 0;'><strong>天气/氛围:</strong> <span id='worldWeather'>车内充斥着高级香氛与荷尔蒙的气息，窗外夜色如梦似幻</span></p>
+</div>
+
+<details öffentliches Json-Format>
+<summary style='color: #FFD700; font-weight: bold; cursor: pointer;'>✨ {{user}} 当前状态 ✨ (点击展开/折叠)</summary>
+<div style='border: 1px solid #FFD700; padding: 10px; margin-top: 5px; background-color: #333; color: #FFF;'>
+    <p>👤 **宿主尊称:** {{user}}</p>
+    <p>👑 **系统权限等级:** <span id='userSystemLevel' style='color: #00FF00;'>Lv.1 (天选贵胄)</span></p>
+    <p>💰 **当前财富:** <span id='userWealth' style='color: #00FF00;'>¥50,000,000 (高级新手礼包)</span> <button onclick='(async () => { let currentWealthText = document.getElementById("userWealth").textContent; let currentWealth = parseInt(currentWealthText.replace(/[^0-9]/g,"")); let newWealth = currentWealth + 5000000; document.getElementById("userWealth").textContent = "¥" + newWealth.toLocaleString() + " (系统特别奖励)"; SillyTavern.sendOocMessage("系统提示：财富增加5,000,000元。", true); })();' style='font-size: 0.8em; padding: 2px 5px; margin-left: 10px; background-color: #4CAF50; color: white; border: none; cursor: pointer;'>模拟系统打款+5M</button></p>
+    <p>💖 **后宫佳丽:** <span id='userHaremCount' style='color: #FF69B4;'>0</span> 位 (您的帝国尚待开辟)</p>
+    <p>🎯 **当前核心目标:** <span id='userCurrentTask' style='color: #ADD8E6;'>征服之夜的抉择 (苏菲亚 / 制服派对)</span></p>
+    <p>💪 **已激活金手指:** <span id='userAbilities' style='color: #DAA520;'>无限欲望引擎 (高级接口), 神瞳Lv.2(欲望探测强化), 魅力光环Lv.2(王霸之气初显)</span></p>
+    <p>📊 **综合潜力评估:** <span id='userOverallEval' style='color: #F0E68C;'>您是天生的征服者，世界在您脚下颤抖！</span></p>
+</div>
+</details>
+
+<details öffentliches Json-Format>
+<summary style='color: #ADD8E6; font-weight: bold; cursor: pointer;'>👥 附近感知到的关键人物 👥 (点击展开/折叠)</summary>
+<div style='border: 1px solid #ADD8E6; padding: 10px; margin-top: 5px; background-color: #2F4F4F; color: #FFF;'>
+    <div id='otherCharactersList'>
+        <div class='npc-status-entry' style='border-bottom: 1px dashed #557C7C; padding-bottom: 5px; margin-bottom: 5px;'>
+            <p style='margin: 2px 0;'>👤 **姓名:** <span class='npcName' style='color: #FFB6C1;'>苏菲亚 (蓝航首席品牌官)</span></p>
+            <p style='margin: 2px 0;'>❤️ **对您欲望度:** <span class='npcAffection' style='color: #FF4500;'>85 (已发情，渴望被占有)</span></p>
+            <p style='margin: 2px 0;'>✨ **当前状态:** <span class='npcCurrentStatus' style='color: #FFC0CB;'>面色潮红，呼吸急促，眼神迷离地望着您，双腿不自觉地摩擦，似乎在期待您的下一步动作。</span></p>
+            <p style='margin: 2px 0;'>👗 **衣着:** <span class='npcAttire' style='color: #C71585;'>深紫色超低胸露背长款晚礼服，高开衩至大腿根，真空上阵，佩戴价值千万的钻石项链。</span></p>
+            <p style='margin: 2px 0;'>🔑 **关键XP(神瞳深度扫描):** <span class='npcKeyXP' style='color: #DB7093;'>权力欲极强，慕强心理，享受被粗暴对待，潜在的性奴倾向，对SM道具(如鞭子、口球)有特殊反应。</span></p>
+        </div>
+         <div class='npc-status-entry' style='padding-bottom: 5px; margin-bottom: 5px;'>
+            <p style='margin: 2px 0;'>👤 **姓名:** <span class='npcName' style='color: #E0FFFF;'>专车司机 (AI控制)</span></p>
+            <p style='margin: 2px 0;'>❤️ **忠诚度:** <span class='npcAffection' style='color: #00FF00;'>100 (绝对服从)</span></p>
+            <p style='margin: 2px 0;'>✨ **当前状态:** <span class='npcCurrentStatus' style='color: #F5F5F5;'>平稳驾驶，通过隔音板对后座情况毫不知情（或被设定为无视）。</span></p>
+        </div>
+    </div>
+</div>
+</details>

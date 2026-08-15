@@ -3,10 +3,10 @@
 {{getvar::任务确认cot}}{{getvar::守贞}}{{getvar::NSFW专注cot}}{{getvar::平等化cot}}{{getvar::优先人设}}
 
 [剧情引导]
-{{getvar::无人万能}}{{getvar::角色迷雾}}{{getvar::角色变量}}
+{{getvar::无人万能}}{{getvar::角色迷雾}}{{getvar::角色变量}}{{getvar::座谈会}}{{getvar::多人平衡}}{{getvar::性格进化树}}
 
 [风格适配](严格遵循`<写作指导>`)
-{{getvar::基调}}{{getvar::跳过cot}}
+{{getvar::基调}}{{getvar::跳过cot}}{{getvar::动态张力}}
 
 [反思 & 设定校对]
 梦境必须严格基于`<梦境>`中的信息

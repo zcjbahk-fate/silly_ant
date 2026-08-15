@@ -3,4 +3,6 @@
 {{lastUserMessage}}
 </user_input>
 
-{{getvar::user_input}}
+[织梦者check]
+预检是否元指令，优先执行元指令，若不是则编织梦境→{{getvar::user_input}}
+我会注意区分输入中的行为动作、心理活动（<user>的心理不会被其他角色获知）和发言（一般用""双引号包裹，应该和其他输入做区分）之间的不同。

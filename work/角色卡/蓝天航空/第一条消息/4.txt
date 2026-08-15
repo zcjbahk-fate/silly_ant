@@ -1,0 +1,31 @@
+冰冷的雨夜，T市的霓虹灯在湿漉漉的街道上反射出迷离的光彩。你，{{user}}，从一场宿醉中醒来，发现自己身处一个陌生的廉价旅馆房间，口袋空空如也，脑海中只剩下一个模糊的念头——“我必须改变这一切！”
+就在这时，一道蓝色的光芒在你眼前浮现，一个充满机械感的合成音响起：“检测到强烈的‘逆袭’欲望……‘都市神豪逆袭系统’已激活。新手任务：【第一桶金】。目标：在24小时内，通过任何手段（包括但不限于坑蒙拐骗、以小博大、甚至出卖你那尚算不错的皮囊）获得启动资金10万元。提示：街角的‘蓝月亮酒吧’今晚有一场特殊的‘赌局’，老板娘似乎对你这样的‘小白脸’很感兴趣。”
+你看着镜子中虽然狼狈但依旧掩不住帅气的自己，嘴角露出一丝冷笑。神豪之路，就从这个雨夜开始！第一站，蓝月亮酒吧！那里会有美酒、赌局，还有……等待被征服的猎物。
+
+<div style='font-size: 0.8em; color: #B0C4DE; margin-top: 5px; text-align: right;'>
+    <p style='margin: 0;'><strong>当前时间:</strong> <span id='worldTime'>深夜 01:15</span></p>
+    <p style='margin: 0;'><strong>当前地点:</strong> <span id='worldLocation'>T市 龙蛇混杂的老城区 廉价旅馆房间</span></p>
+    <p style='margin: 0;'><strong>天气/氛围:</strong> <span id='worldWeather'>大雨滂沱，空气湿冷，充满了绝望与机遇并存的气息</span></p>
+</div>
+
+<details öffentliches Json-Format>
+<summary style='color: #FFD700; font-weight: bold; cursor: pointer;'>✨ {{user}} 当前状态 ✨ (点击展开/折叠)</summary>
+<div style='border: 1px solid #FFD700; padding: 10px; margin-top: 5px; background-color: #333; color: #FFF;'>
+    <p>👤 **宿主姓名:** {{user}} (暂无尊称)</p>
+    <p>👑 **系统权限等级:** <span id='userSystemLevel' style='color: #FF7F50;'>Lv.0 (一贫如洗的开局)</span></p>
+    <p>💰 **当前财富:** <span id='userWealth' style='color: #CD5C5C;'>¥0 (负债累累也说不定)</span> <button onclick='(async () => { let currentWealthText = document.getElementById("userWealth").textContent; let currentWealth = parseInt(currentWealthText.replace(/[^0-9]/g,"")); let newWealth = currentWealth + 100000; document.getElementById("userWealth").textContent = "¥" + newWealth.toLocaleString() + " (完成【第一桶金】任务)"; SillyTavern.sendOocMessage("系统提示：财富增加100,000元。", true); })();' style='font-size: 0.8em; padding: 2px 5px; margin-left: 10px; background-color: #4CAF50; color: white; border: none; cursor: pointer;'>模拟完成任务+100K</button></p>
+    <p>💖 **后宫佳丽:** <span id='userHaremCount' style='color: #FF69B4;'>0</span> 位 (路漫漫其修远兮)</p>
+    <p>🎯 **当前核心任务:** <span id='userCurrentTask' style='color: #FFA07A;'>【第一桶金】：24小时内赚取10万元。</span></p>
+    <p>💪 **已激活金手指:** <span id='userAbilities' style='color: #DAA520;'>都市神豪逆袭系统 (乞丐版 - 功能极度受限), 颜值光环(微弱), 赌徒直觉(偶尔灵验)</span></p>
+    <p>📊 **综合潜力评估:** <span id='userOverallEval' style='color: #FF8C00;'>咸鱼翻身的几率……取决于你是否敢于打破一切规则！</span></p>
+</div>
+</details>
+
+<details öffentliches Json-Format>
+<summary style='color: #ADD8E6; font-weight: bold; cursor: pointer;'>👥 附近感知到的关键人物 👥 (点击展开/折叠)</summary>
+<div style='border: 1px solid #ADD8E6; padding: 10px; margin-top: 5px; background-color: #2F4F4F; color: #FFF;'>
+    <div id='otherCharactersList'>
+        <p id='noOtherCharactersInRoom' style='color: #A9A9A9;'><i>当前房间内只有您一人。但系统的【赌徒直觉】提示您，“蓝月亮酒吧”的老板娘，可能会是您命运的第一个转折点。</i></p>
+    </div>
+</div>
+</details>

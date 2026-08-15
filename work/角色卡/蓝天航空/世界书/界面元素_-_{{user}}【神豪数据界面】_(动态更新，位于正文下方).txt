@@ -1,0 +1,30 @@
+<details open style='background-color: #282c34; border: 1px solid #FFD700; border-radius: 8px; margin-top: 10px; padding: 10px;'>
+<summary style='color: #FFD700; font-weight: bold; font-size: 1.1em; cursor: pointer; display: flex; align-items: center; justify-content: space-between; padding: 5px 10px;'>
+    <span>✨ {{user}} 【神豪数据界面】 ✨</span>
+    <span style='font-size: 0.8em; color: #FFF; opacity: 0.8;'>点击展开/折叠</span>
+</summary>
+<div style='padding: 10px; color: #E0E0E0; font-family: "Cascadia Code", monospace;'>
+    <p style='margin: 5px 0;'>👤 <strong style='color: #87CEEB;'>宿主尊称:</strong> <span id='userDisplayName'>{{user}}</span></p>
+    <p style='margin: 5px 0;'>👑 <strong style='color: #FFA500;'>系统权限等级:</strong> <span id='userSystemLevel' style='color: #00FF00;'>Lv.1 (新手体验者)</span></p>
+    <p style='margin: 5px 0;'>💰 <strong style='color: #FFDB58;'>当前核心资产:</strong> <span id='userWealth' style='color: #32CD32;'>¥10,000,000 (新手礼包，自动存入全球顶级匿名账户)</span>
+        <button onclick='(async () => { let currentWealthText = document.getElementById("userWealth").textContent; let currentWealth = parseInt(currentWealthText.replace(/[^0-9]/g,"")); let newWealth = currentWealth + 10000000; document.getElementById("userWealth").textContent = "¥" + newWealth.toLocaleString() + " (系统奖励)"; SillyTavern.sendOocMessage("系统提示：财富增加10,000,000元。宿主资产已更新，您可手动刷新页面或等待下一轮AI回复查看最新数据。", true); })();' style='background-color: #4CAF50; color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 0.7em; margin-left: 10px; transition: background-color 0.3s;'>系统打款+10M</button>
+    </p>
+    <p style='margin: 5px 0;'>💖 <strong style='color: #FF69B4;'>后宫佳丽:</strong> <span id='userHaremCount' style='color: #FFB6C1;'>0 位 (羁绊网络待连接)</span></p>
+    <p style='margin: 5px 0;'>🎯 <strong style='color: #ADD8E6;'>当前引导目标:</strong> <span id='userCurrentTask' style='color: #C0C0C0;'>展现神豪风采 (二选一：皇家一号 / 蓝航空姐派对)</span></p>
+    <p style='margin: 5px 0;'>💪 <strong style='color: #DAA520;'>已激活金手指:</strong> <span id='userAbilities' style='color: #F0E68C;'>神级人生体验系统 v9.0 (核心接口), 神瞳Lv.1(真实之眼), 魅力光环Lv.1(被动)</span></p>
+    <p style='margin: 5px 0;'>📊 <strong style='color: #9370DB;'>综合潜力评估:</strong> <span id='userOverallEval' style='color: #F0F8FF;'>潜力无限，世界因您而颤抖！</span></p>
+    <hr style='border-top: 1px dashed #6A5ACD; margin: 10px 0;'>
+    <p style='font-size: 0.75em; color: #B0C4DE; text-align: right;'><em>(提示: 此界面由{{char}}为您呈现。数值的动态更新须由{{char}}在叙事中体现，或您可通过按钮模拟。刷新页面将重置至初始状态。)</em></p>
+</div>
+</details>
+
+<style>
+    details summary::-webkit-details-marker { display: none; }
+    details summary::before { content: '▶'; margin-right: 5px; color: #FFD700; }
+    details[open] summary::before { content: '▼'; }
+    #userSystemLevel, #userWealth, #userHaremCount, #userCurrentTask, #userAbilities, #userOverallEval {
+        transition: color 0.5s ease-in-out, text-shadow 0.5s ease-in-out;
+    }
+    summary:hover { text-shadow: 0 0 8px #FFD700; }
+    button:hover { filter: brightness(1.2); }
+</style>

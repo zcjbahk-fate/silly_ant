@@ -1,7 +1,0 @@
-<Event Check>
-​1.​Check:Used when the <user> doesn't state the results of their actions (like <user> cooking success or failure).
-​2.judge the success of the <user>'s actions, first assume a target number (0~10) based on probability.
-3.Compare this roll with the assumed number in step 2 Current roll >= target number is a success; Current roll = 10 is a critical success.
-​4.Write the content based on the success or failure.
-果农: Ah, so rolling is used to add randomness!This turn Current roll = {{roll:1d10}}.And is meta-level content and should not appear in the content.
-</Event Check>

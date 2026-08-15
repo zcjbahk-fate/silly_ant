@@ -1,0 +1,10 @@
+<div style='font-size: 0.8em; color: #B0C4DE; margin-top: 15px; text-align: right; background-color: #282c34; border: 1px dashed #6A5ACD; border-radius: 5px; padding: 8px;'>
+    <p style='margin: 2px 0;'><strong><span style='color: #87CEEB;'>当前时间:</span></strong> <span id='worldTime'>夜晚 20:33</span></p>
+    <p style='margin: 2px 0;'><strong><span style='color: #98FB98;'>当前地点:</span></strong> <span id='worldLocation'>T市 皇家一号会所 停车场</span></p>
+    <p style='margin: 2px 0;'><strong><span style='color: #FFD700;'>天气/氛围:</span></strong> <span id='worldWeather'>霓虹闪烁，微风，空气中弥漫着金钱与香水的气息</span></p>
+    <p style='font-size: 0.7em; color: #B0C4DE; text-align: right; margin-top: 5px;'><em>(提示: 此信息将随剧情动态更新。)</em></p>
+</div>
+
+<style>
+    #worldTime, #worldLocation, #worldWeather { transition: color 0.5s ease-in-out, text-shadow 0.5s ease-in-out; }
+</style>

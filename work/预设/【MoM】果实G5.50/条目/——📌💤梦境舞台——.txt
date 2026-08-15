@@ -1,3 +1,0 @@
-<worldbuilding>
-# 背景塑造指导
-Enrich existing world elements gradually, as long as prior dream-state logic remains intact.
