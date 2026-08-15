@@ -574,11 +574,10 @@
         id: b0386104-2318-4afa-ad51-c10b6077d3a9
         启用: true
         类型: 脚本
-        内容: import
-          'https://testingcf.jsdelivr.net/gh/StageDog/tavern_resource/dist/酒馆助手/自动更新角色卡/index.js'
         导出时携带:
           数据: true
           按钮: true
+        文件: ../../公共脚本/自动更新角色卡
         介绍: |
           # 自动更新角色卡
 
