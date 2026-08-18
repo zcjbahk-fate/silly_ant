@@ -160,10 +160,9 @@ async function getOrCreateSubfolder(folders, archiveFolderName, cardName) {
 }
 
 async function archiveToEagle(filePath, cardName, version) {
-  const dateStr = new Date().toISOString().slice(0, 10);
   const versionTag = version || 'unknown';
-  const displayName = `${cardName}_${versionTag}_${dateStr}`;
-  const tags = [cardName, versionTag, dateStr];
+  const displayName = `${cardName}_${versionTag}`;
+  const tags = [cardName, versionTag];
 
   // 获取文件夹列表并定位/创建目标文件夹
   const folders = await getFolderList();
@@ -177,7 +176,7 @@ async function archiveToEagle(filePath, cardName, version) {
       name: displayName,
       folderId: targetFolderId,
       tags,
-      annotation: `版本: ${versionTag} | 日期: ${dateStr}`
+      annotation: `版本: ${versionTag}`
     }
   });
 
