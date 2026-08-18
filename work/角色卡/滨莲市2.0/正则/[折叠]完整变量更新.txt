@@ -1,0 +1,6 @@
+
+
+<details>
+<summary>变量更新情况</summary>
+$2
+</details>

@@ -1,0 +1,1448 @@
+```html
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <style>
+    :root {
+      /* 暗蓝深渊配色系统 */
+      --bg-color: #06080d;
+      --panel-bg: linear-gradient(135deg, #0a0d14 0%, #0e131c 100%);
+      --accent-blue: #4a6fa5;
+      --accent-silver: #9ab0c2;
+      --text-main: #dce4ec;
+      --text-sub: #7a8c9e;
+      --item-bg: rgba(74, 111, 165, 0.08);
+      --border-color: rgba(74, 111, 165, 0.35);
+      --border-silver: rgba(154, 176, 194, 0.15);
+      --glow-shadow: 0 0 8px rgba(74, 111, 165, 0.4);
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .container {
+      padding: 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .section {
+      background: var(--panel-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 6px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.6), inset 0 0 10px rgba(74, 111, 165, 0.05);
+    }
+
+    .section-title {
+      font-size: 12px;
+      color: var(--accent-silver);
+      border-bottom: 1px solid var(--border-silver);
+      padding-bottom: 3px;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: bold;
+      text-shadow: 0 0 4px rgba(154, 176, 194, 0.3);
+    }
+
+    .section-title-collapsible {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .section-title-collapsible::after {
+      content: '▼';
+      font-size: 9px;
+      color: var(--accent-blue);
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .section-title-collapsible.collapsed::after {
+      transform: rotate(-90deg);
+    }
+
+    .global-collapsible-content {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .global-collapsible-content.collapsed {
+      display: none;
+    }
+
+    .kv-list {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .kv-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--item-bg);
+      padding: 3px 6px;
+      border-radius: 4px;
+      border: 1px solid rgba(74, 111, 165, 0.1);
+      transition: background 0.2s;
+    }
+
+    .kv-row:hover {
+      background: rgba(74, 111, 165, 0.15);
+    }
+
+    .kv-key {
+      color: var(--accent-blue);
+      font-size: 11px;
+      white-space: nowrap;
+      text-shadow: 0 0 2px rgba(74, 111, 165, 0.5);
+    }
+
+    .kv-val {
+      color: var(--text-main);
+      text-align: right;
+      font-weight: 500;
+      word-break: break-all;
+      font-size: 12px;
+    }
+
+    /* ========== 手机消息区块样式 ========== */
+    .phone-section {
+      background: linear-gradient(145deg, #1a1a2e 0%, #16213e 100%);
+      border: 2px solid #2d3a4f;
+      border-radius: 16px;
+      padding: 6px 8px;
+      box-shadow:
+        0 4px 20px rgba(0,0,0,0.5),
+        inset 0 1px 0 rgba(255,255,255,0.05),
+        0 0 0 1px rgba(45, 58, 79, 0.5);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .phone-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 4px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+      border-radius: 0 0 4px 4px;
+    }
+
+    .phone-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 4px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      margin-bottom: 4px;
+    }
+
+    .phone-title {
+      font-size: 10px;
+      color: #7dd3fc;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .phone-title::before {
+      content: '📱';
+      font-size: 12px;
+    }
+
+    .phone-messages {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .phone-msg-item {
+      display: flex;
+      flex-direction: column;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 8px;
+      padding: 4px 6px;
+      border-left: 2px solid #38bdf8;
+    }
+
+    .phone-msg-source {
+      font-size: 10px;
+      font-weight: 600;
+      color: #38bdf8;
+      margin-bottom: 1px;
+      flex-shrink: 0;
+    }
+
+    .phone-msg-content {
+      font-size: 10px;
+      color: #e2e8f0;
+      line-height: 1.35;
+      word-break: break-all;
+    }
+
+    .phone-empty {
+      text-align: center;
+      color: #64748b;
+      font-size: 11px;
+      padding: 6px 0;
+      font-style: italic;
+    }
+
+    /* 手机消息编辑态 */
+    .phone-edit-item {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 8px;
+      padding: 5px 6px;
+      border-left: 2px solid #38bdf8;
+      margin-bottom: 4px;
+    }
+
+    .phone-edit-row {
+      display: flex;
+      gap: 4px;
+      align-items: flex-start;
+    }
+
+    .phone-edit-source {
+      width: 80px;
+      flex-shrink: 0;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid #2d3a4f;
+      color: #38bdf8;
+      font-size: 11px;
+      padding: 3px 5px;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+
+    .phone-edit-content {
+      flex-grow: 1;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid #2d3a4f;
+      color: #e2e8f0;
+      font-size: 11px;
+      padding: 3px 5px;
+      border-radius: 4px;
+      min-height: 20px;
+      resize: none;
+      overflow: hidden;
+      line-height: 1.35;
+      font-family: inherit;
+    }
+
+    .phone-edit-source:focus, .phone-edit-content:focus {
+      outline: none;
+      border-color: #38bdf8;
+      box-shadow: 0 0 4px rgba(56, 189, 248, 0.3);
+    }
+
+    .phone-del-btn {
+      padding: 3px 6px;
+      background: rgba(138, 58, 58, 0.5);
+      border: 1px solid #8a3a3a;
+      color: #ffcccc;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 10px;
+      flex-shrink: 0;
+      transition: all 0.2s;
+    }
+
+    .phone-del-btn:hover {
+      background: rgba(180, 50, 50, 0.6);
+      border-color: #ff6b6b;
+    }
+
+    .phone-add-btn {
+      width: 100%;
+      padding: 4px;
+      background: transparent;
+      border: 1px dashed #38bdf8;
+      color: #7dd3fc;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 11px;
+      transition: all 0.2s;
+      margin-top: 2px;
+    }
+
+    .phone-add-btn:hover {
+      background: rgba(56, 189, 248, 0.1);
+    }
+
+    /* ========== 原有样式继续 ========== */
+    .char-card {
+      background: rgba(6, 8, 13, 0.6);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      margin-bottom: 6px;
+      overflow: hidden;
+      padding: 6px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: inset 0 0 15px rgba(74, 111, 165, 0.05);
+    }
+
+    .char-top-layout {
+      display: flex;
+      gap: 6px;
+      align-items: flex-start;
+      margin-bottom: 6px;
+    }
+
+    .char-profile {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 66px;
+      flex-shrink: 0;
+    }
+
+    .char-avatar {
+      width: 62px;
+      height: 62px;
+      border-radius: 4px;
+      background: rgba(74, 111, 165, 0.1);
+      border: 1px solid var(--accent-blue);
+      padding: 1px;
+      display: block;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .char-avatar:hover {
+      border-color: var(--accent-silver);
+      box-shadow: var(--glow-shadow);
+    }
+
+    .char-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      border-radius: 3px;
+      display: block;
+    }
+
+    .char-name {
+      margin-top: 4px;
+      font-size: 14px;
+      font-weight: bold;
+      color: var(--accent-silver);
+      text-align: center;
+      width: 100%;
+      word-break: break-all;
+      line-height: 1.2;
+      text-shadow: 0 0 6px rgba(154, 176, 194, 0.5);
+    }
+
+    .char-identity {
+      margin-top: 2px;
+      font-size: 11px;
+      color: var(--text-sub);
+      text-align: center;
+      width: 100%;
+      line-height: 1.2;
+    }
+
+    .char-info-summary {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .collapsible-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px;
+      margin-bottom: 4px;
+    }
+
+    .collapsible {
+      border: 1px solid var(--border-silver);
+      border-radius: 4px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      background: rgba(74, 111, 165, 0.05);
+      transition: all 0.2s;
+    }
+
+    .collapsible:hover {
+      background: rgba(74, 111, 165, 0.15);
+      border-color: var(--accent-blue);
+    }
+
+    .collapsible-header {
+      padding: 4px;
+      font-size: 11px;
+      color: var(--accent-silver);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+    }
+
+    .collapsible-header::after {
+      content: '▼';
+      font-size: 9px;
+      color: var(--accent-blue);
+      transition: transform 0.3s;
+    }
+
+    .collapsible.active .collapsible-header::after {
+      transform: rotate(180deg);
+    }
+
+    .collapsible-body {
+        display: none;
+        padding: 4px;
+        background: rgba(6, 8, 13, 0.8);
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        margin-top: -2px;
+        margin-bottom: 4px;
+        box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+    }
+
+    .collapsible-body.active {
+        display: block;
+    }
+
+    .text-block {
+      background: var(--item-bg);
+      padding: 4px;
+      border-radius: 4px;
+      margin-bottom: 3px;
+      font-size: 12px;
+      color: var(--text-main);
+      border: 1px solid rgba(74, 111, 165, 0.1);
+    }
+    .text-block-title {
+      color: var(--accent-blue);
+      font-weight: bold;
+      margin-bottom: 2px;
+      text-shadow: 0 0 2px rgba(74, 111, 165, 0.3);
+    }
+
+    .avatar-detail-body {
+      margin-bottom: 6px;
+      margin-top: 0;
+      border-radius: 4px;
+      overflow: hidden;
+      border-color: var(--accent-blue);
+    }
+
+    .gallery-container {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      min-height: 200px;
+      background: rgba(4, 5, 10, 0.9);
+      border-radius: 4px;
+    }
+
+    .gallery-img {
+      max-width: 100%;
+      max-height: 450px;
+      object-fit: contain;
+      display: block;
+      box-shadow: 0 0 15px rgba(0,0,0,0.8);
+    }
+
+    .gallery-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(74, 111, 165, 0.5);
+      color: white;
+      border: 1px solid var(--accent-blue);
+      width: 32px;
+      height: 48px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      border-radius: 4px;
+      z-index: 10;
+      font-size: 16px;
+      transition: all 0.2s;
+      box-shadow: var(--glow-shadow);
+    }
+
+    .gallery-btn:hover {
+      background: rgba(154, 176, 194, 0.8);
+      border-color: var(--accent-silver);
+    }
+
+    .gallery-prev { left: 8px; }
+    .gallery-next { right: 8px; }
+
+    .pagination {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 4px 0;
+    }
+
+    .btn {
+      background: rgba(74, 111, 165, 0.2);
+      color: var(--accent-silver);
+      border: 1px solid var(--accent-blue);
+      padding: 4px 12px;
+      border-radius: 4px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn:hover:not(:disabled) {
+      background: rgba(74, 111, 165, 0.6);
+      color: #fff;
+      box-shadow: var(--glow-shadow);
+    }
+
+    .btn:disabled {
+      background: rgba(14, 19, 28, 0.5);
+      border-color: rgba(74, 111, 165, 0.2);
+      color: #555;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    .reroll-avatar-btn {
+      vertical-align: middle;
+    }
+
+    /* ==== 编辑态通用样式 ==== */
+    .edit-single-input:focus, .edit-short-input:focus, .edit-coord-input:focus, .edit-auth-input:focus, .record-key-input:focus, .record-val-input:focus {
+      outline: none;
+      border-color: var(--accent-silver) !important;
+      box-shadow: 0 0 6px rgba(154, 176, 194, 0.5);
+    }
+    .del-record-btn:hover {
+      background: #8a3a3a !important;
+      border-color: #ff6b6b !important;
+    }
+
+    textarea.auto-resize {
+      font-family: inherit;
+    }
+
+    input, textarea {
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+  </style>
+  <style id="mvu-global-styles">
+    #mvu-floating-bg {
+      position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      width: 100vw; height: 100vh; z-index: -1; pointer-events: none;
+      display: none; justify-content: center; align-items: center;
+      background-color: transparent; opacity: 0.5; overflow: hidden;
+    }
+    #mvu-floating-img {
+      width: 110vw; height: 110vh; object-fit: contain; display: block;
+    }
+  </style>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <script type="module">
+    /* --- SafeStorage 安全壳 --- */
+    const SafeStorage = {
+      getItem: function(key) {
+        try { return window.localStorage.getItem(key); }
+        catch (e) { console.warn('SafeStorage: getItem failed for key', key, e); return null; }
+      },
+      setItem: function(key, value) {
+        try { window.localStorage.setItem(key, value); }
+        catch (e) { console.warn('SafeStorage: setItem failed for key', key, e); }
+      },
+      removeItem: function(key) {
+        try { window.localStorage.removeItem(key); }
+        catch (e) { console.warn('SafeStorage: removeItem failed for key', key, e); }
+      }
+    };
+
+    let storedPage = parseInt(SafeStorage.getItem('mvu_char_page'), 10);
+    let currentPage = isNaN(storedPage) ? 1 : storedPage;
+    const itemsPerPage = 3;
+    let charactersList = [];
+    let onlineAvatarConfig = null;
+
+    window.isEditMode = false;
+    let charImgCache = JSON.parse(SafeStorage.getItem('mvu_char_img_cache') || '{}');
+
+    function triggerAutoResize() {
+      $('textarea.auto-resize').each(function() {
+        this.style.height = 'auto';
+        if (this.scrollHeight > 0) {
+            this.style.height = (this.scrollHeight) + 'px';
+        }
+      });
+    }
+
+    function safeSetObjPath(obj, path, value) {
+      const keys = path.split('.');
+      let curr = obj;
+      for (let i = 0; i < keys.length - 1; i++) {
+        if (!curr[keys[i]] || typeof curr[keys[i]] !== 'object') curr[keys[i]] = {};
+        curr = curr[keys[i]];
+      }
+      curr[keys[keys.length - 1]] = value;
+    }
+
+    function broadcastFloatingBg(action, src) {
+      window.top.mvuCurrentFloatingBg = (action === 'show') ? src : '';
+      const event = new CustomEvent('MvuFloatingBgRequest', { detail: { action: action, src: src } });
+      try { window.top.dispatchEvent(event); } catch(e) { window.parent.postMessage({ type: 'MvuFloatingBgRequest', detail: { action, src } }, '*'); }
+    }
+
+    async function fetchAvatarConfig() {
+      try {
+        const url = 'https://cdn.jsdelivr.net/gh/ll11292631-droid/i-am-daddy@main/%E6%BB%A8%E8%8E%B2.json?t=' + new Date().getTime();
+        const res = await fetch(url, { cache: 'no-store' });
+        if (res.ok) onlineAvatarConfig = await res.json();
+      } catch (e) { console.error('图床配置拉取失败', e); }
+    }
+
+    function getCharImages(name, data, deferSave = false) {
+      let cachedImg = charImgCache[name];
+      let avatarImg = cachedImg || '';
+      let galleryImgs = [];
+      let conditionKey = '';
+      let canReroll = false;
+      let isUpdated = false;
+
+      if (!onlineAvatarConfig) return { avatar: avatarImg, gallery: cachedImg ? [cachedImg] : [], canReroll: false, conditionKey: '', cacheUpdated: false };
+
+      if (onlineAvatarConfig["精确匹配"] && onlineAvatarConfig["精确匹配"][name]) {
+        let imgs = onlineAvatarConfig["精确匹配"][name];
+        galleryImgs = Array.isArray(imgs) ? imgs : [imgs];
+        canReroll = galleryImgs.length > 1;
+        conditionKey = name;
+
+        if (!avatarImg || !galleryImgs.includes(avatarImg)) {
+           avatarImg = galleryImgs[0];
+           charImgCache[name] = avatarImg;
+           isUpdated = true;
+           if (!deferSave) SafeStorage.setItem('mvu_char_img_cache', JSON.stringify(charImgCache));
+        }
+        return { avatar: avatarImg, gallery: galleryImgs, canReroll: canReroll, conditionKey: conditionKey, type: 'exact', cacheUpdated: isUpdated };
+      }
+
+      let cupStr = (data.罩杯 || '').toLowerCase();
+      let cupSize = '中';
+      if (/[a]/.test(cupStr) || /小/.test(cupStr)) cupSize = '小';
+      else if (/[b-c]/.test(cupStr)) cupSize = '中';
+      else if (/[d-z]/.test(cupStr) || /大|巨/.test(cupStr)) cupSize = '大';
+
+      let hairStr = data.发型 || '';
+      let hairType = '低马尾';
+      const hairPriorities = ['低双马尾', '盘发', '麻花辫', '低马尾', '卷发', '侧马尾', '双马尾', '长发', '短发', '马尾'];
+      for (let h of hairPriorities) {
+        if (hairStr.includes(h)) { hairType = h; break; }
+      }
+
+      conditionKey = `${cupSize}, ${hairType}`;
+      let fallbackPool = onlineAvatarConfig[conditionKey] || onlineAvatarConfig?.["条件匹配"]?.[conditionKey] || onlineAvatarConfig?.["无匹配"];
+
+      if (fallbackPool && Array.isArray(fallbackPool) && fallbackPool.length > 0) {
+        galleryImgs = fallbackPool;
+        canReroll = galleryImgs.length > 1;
+        if (!avatarImg || !galleryImgs.includes(avatarImg)) {
+          avatarImg = galleryImgs[Math.floor(Math.random() * galleryImgs.length)];
+          charImgCache[name] = avatarImg;
+          isUpdated = true;
+          if (!deferSave) SafeStorage.setItem('mvu_char_img_cache', JSON.stringify(charImgCache));
+        }
+      } else if (typeof fallbackPool === 'string') {
+        galleryImgs = [fallbackPool];
+        canReroll = false;
+        if (!avatarImg || avatarImg !== fallbackPool) {
+          avatarImg = fallbackPool;
+          charImgCache[name] = avatarImg;
+          isUpdated = true;
+          if (!deferSave) SafeStorage.setItem('mvu_char_img_cache', JSON.stringify(charImgCache));
+        }
+      } else {
+        if (cachedImg) galleryImgs = [cachedImg];
+      }
+
+      return { avatar: avatarImg, gallery: galleryImgs, canReroll: canReroll, conditionKey: conditionKey, type: 'fuzzy', cacheUpdated: isUpdated };
+    }
+
+    function renderRow(key, val) { return `<div class="kv-row"><span class="kv-key">${key}</span><span class="kv-val">${val}</span></div>`; }
+
+    function renderEditShortRow(cName, subPath, title, val, extraClass = 'edit-short-input') {
+      return `<div class="kv-row"><span class="kv-key">${title}</span><input type="text" class="${extraClass}" data-charname="${cName}" data-subpath="${subPath}" value="${(val||'').toString().replace(/"/g, '"')}" style="width:65%; background:rgba(6, 8, 13, 0.8); border:1px solid var(--border-color); color:var(--text-main); font-size:12px; padding:2px 4px; border-radius:3px;" placeholder="${title}"></div>`;
+    }
+
+    function renderEditDoubleShortRow(cName, subPath1, subPath2, title, val1, val2) {
+      return `<div class="kv-row" style="padding-top:4px; padding-bottom:4px;"><span class="kv-key">${title}</span>
+        <div style="display:flex; gap:4px; width:65%;">
+          <input type="text" class="edit-short-input" data-charname="${cName}" data-subpath="${subPath1}" value="${(val1||'').toString().replace(/"/g, '"')}" style="width:50%; background:rgba(6, 8, 13, 0.8); border:1px solid var(--border-color); color:var(--text-main); font-size:11px; padding:2px 4px; border-radius:3px;" placeholder="${subPath1}">
+          <input type="text" class="edit-short-input" data-charname="${cName}" data-subpath="${subPath2}" value="${(val2||'').toString().replace(/"/g, '"')}" style="width:50%; background:rgba(6, 8, 13, 0.8); border:1px solid var(--border-color); color:var(--text-main); font-size:11px; padding:2px 4px; border-radius:3px;" placeholder="${subPath2}">
+        </div>
+      </div>`;
+    }
+
+    function renderEditFlexRow(cName, subPath, title, val) {
+      return `<div class="kv-row" style="align-items: flex-start; padding-top:4px; padding-bottom:4px;"><span class="kv-key" style="margin-top:2px;">${title}</span><textarea class="edit-short-input auto-resize" data-charname="${cName}" data-subpath="${subPath}" style="width:65%; box-sizing:border-box; background:rgba(6, 8, 13, 0.8); border:1px solid var(--border-color); color:var(--text-main); font-size:12px; padding:2px 4px; border-radius:3px; min-height:24px; resize:none; overflow:hidden; line-height:1.4;" placeholder="${title}">${(val||'')}</textarea></div>`;
+    }
+
+    function renderEditDoubleFlexRow(cName, subPath1, subPath2, title, val1, val2) {
+      return `<div class="kv-row" style="align-items: flex-start; padding-top:4px; padding-bottom:4px;"><span class="kv-key" style="margin-top:2px;">${title}</span>
+        <div style="display:flex; gap:4px; width:65%;">
+          <textarea class="edit-short-input auto-resize" data-charname="${cName}" data-subpath="${subPath1}" style="width:50%; box-sizing:border-box; background:rgba(6, 8, 13, 0.8); border:1px solid var(--border-color); color:var(--text-main); font-size:11px; padding:2px 4px; border-radius:3px; min-height:24px; resize:none; overflow:hidden; line-height:1.4;" placeholder="${subPath1}">${(val1||'')}</textarea>
+          <textarea class="edit-short-input auto-resize" data-charname="${cName}" data-subpath="${subPath2}" style="width:50%; box-sizing:border-box; background:rgba(6, 8, 13, 0.8); border:1px solid var(--border-color); color:var(--text-main); font-size:11px; padding:2px 4px; border-radius:3px; min-height:24px; resize:none; overflow:hidden; line-height:1.4;" placeholder="${subPath2}">${(val2||'')}</textarea>
+        </div>
+      </div>`;
+    }
+    function renderObjToText(obj) {
+      if (!obj || typeof obj !== 'object') return '';
+      return Object.entries(obj).map(([k, v]) => `<div class="text-block"><div class="text-block-title">${k}</div>${v}</div>`).join('');
+    }
+
+    function renderEditRecord(cName, subPath, obj) {
+      let html = `<div class="record-group" data-charname="${cName}" data-subpath="${subPath}">`;
+      if (obj && typeof obj === 'object') {
+        Object.entries(obj).forEach(([k, v]) => {
+          let valStr = (typeof v === 'string') ? v : JSON.stringify(v);
+          html += `
+            <div class="record-item" style="display:flex; gap:4px; margin-bottom:6px; align-items:flex-start; background:rgba(0,0,0,0.4); padding:4px; border-radius:4px; border:1px solid rgba(74, 111, 165, 0.2);">
+              <div style="display:flex; flex-direction:column; gap:4px; flex-grow:1;">
+                <input type="text" class="record-key-input" value="${k.replace(/"/g, '"')}" placeholder="记录名称/时间" style="background:rgba(6, 8, 13, 0.8); border:1px solid var(--border-color); color:var(--text-main); font-size:11px; padding:4px; border-radius:3px;">
+                <textarea class="record-val-input auto-resize" style="background:rgba(6, 8, 13, 0.8); border:1px solid var(--border-color); color:var(--text-main); font-size:11px; padding:4px; border-radius:3px; min-height:24px; resize:none; overflow:hidden; line-height:1.4;" placeholder="内容描述">${valStr}</textarea>
+              </div>
+              <button class="btn del-record-btn" style="padding:4px 6px; background:rgba(138, 58, 58, 0.6); border-color:#8a3a3a; margin-top:2px;" title="删除此记录">🗑️</button>
+            </div>
+          `;
+        });
+      }
+      html += `<button class="btn add-record-btn" style="width:100%; margin-top:2px; font-size:12px; padding:4px; border:1px dashed var(--accent-blue); background:transparent; color:var(--accent-silver);">➕ 新增一条记录</button>`;
+      html += `</div>`;
+      return html;
+    }
+
+    function renderEditSingle(cName, subPath, title, val) {
+      return `
+        <div class="text-block" style="padding:4px; background:rgba(0,0,0,0.2);">
+          <div class="text-block-title">${title}</div>
+          <textarea class="edit-single-input auto-resize" data-charname="${cName}" data-subpath="${subPath}" style="width:100%; box-sizing:border-box; background:rgba(6, 8, 13, 0.8); border:1px solid var(--border-color); color:var(--text-main); font-size:12px; padding:4px; border-radius:3px; min-height:24px; resize:none; overflow:hidden; line-height:1.4;">${val}</textarea>
+        </div>
+      `;
+    }
+
+    /* ========== 手机消息渲染函数 ========== */
+    function renderPhoneMessages(messages) {
+      if (!messages || Object.keys(messages).length === 0) {
+        return '<div class="phone-empty">暂无新消息</div>';
+      }
+      let html = '';
+      Object.entries(messages).forEach(([source, content]) => {
+        html += `
+          <div class="phone-msg-item">
+            <span class="phone-msg-source">${source}</span>
+            <span class="phone-msg-content">${content}</span>
+          </div>
+        `;
+      });
+      return html;
+    }
+
+    function renderPhoneMessagesEdit(messages) {
+      let html = '';
+      if (messages && typeof messages === 'object') {
+        Object.entries(messages).forEach(([source, content]) => {
+          html += `
+            <div class="phone-edit-item">
+              <div class="phone-edit-row">
+                <input type="text" class="phone-edit-source" value="${source.replace(/"/g, '&quot;')}" placeholder="来源">
+                <textarea class="phone-edit-content auto-resize" placeholder="消息内容">${content}</textarea>
+                <button class="phone-del-btn" title="删除">🗑️</button>
+              </div>
+            </div>
+          `;
+        });
+      }
+      html += `<button class="phone-add-btn">➕ 新增消息</button>`;
+      return html;
+    }
+
+    function populateCharacterData() {
+      let all_variables = {};
+      try { all_variables = typeof getAllVariables === 'function' ? getAllVariables() : {}; } catch(e) {}
+
+      const stat = all_variables.stat_data || {};
+      const coord = stat.坐标 || {};
+      const protag = stat.主角 || {};
+      const equips = stat.装备 || {};
+      const phoneMsg = stat.手机消息 || {};
+
+      /* ========== 手机消息区块渲染 ========== */
+      if (window.isEditMode) {
+        $('#phone-messages-container').html(renderPhoneMessagesEdit(phoneMsg));
+        /* 绑定编辑态事件 */
+        $('#phone-messages-container .phone-del-btn').off('click').on('click', function(e) {
+          e.stopPropagation();
+          $(this).closest('.phone-edit-item').remove();
+        });
+        $('#phone-messages-container .phone-add-btn').off('click').on('click', function(e) {
+          e.stopPropagation();
+          const tpl = `
+            <div class="phone-edit-item">
+              <div class="phone-edit-row">
+                <input type="text" class="phone-edit-source" value="新来源" placeholder="来源">
+                <textarea class="phone-edit-content auto-resize" placeholder="消息内容"></textarea>
+                <button class="phone-del-btn" title="删除">🗑️</button>
+              </div>
+            </div>
+          `;
+          $(this).before(tpl);
+          $(this).prev().find('.phone-del-btn').off('click').on('click', function(evt) {
+            evt.stopPropagation();
+            $(this).closest('.phone-edit-item').remove();
+          });
+          setTimeout(triggerAutoResize, 10);
+        });
+        setTimeout(triggerAutoResize, 50);
+      } else {
+        $('#phone-messages-container').html(renderPhoneMessages(phoneMsg));
+      }
+
+      /* ========== 坐标区块渲染 ========== */
+      if (window.isEditMode) {
+        $('#coord-container').html(`
+          ${renderEditShortRow('', '时间', '时间', coord.时间, 'edit-coord-input')}
+          ${renderEditShortRow('', '当前位置.区域', '区域', coord.当前位置?.区域, 'edit-coord-input')}
+          ${renderEditShortRow('', '当前位置.具体设施', '具体设施', coord.当前位置?.具体设施, 'edit-coord-input')}
+        `);
+      } else {
+        $('#coord-container').html(`
+          ${renderRow('时间', coord.时间 || '待初始化')}
+          ${renderRow('区域', coord.当前位置?.区域 || '待初始化')}
+          ${renderRow('具体设施', coord.当前位置?.具体设施 || '待初始化')}
+        `);
+      }
+
+      let equipStr = Object.entries(equips).map(([k, v]) => `${k} x${v.数量}`).join(' | ');
+      if (!equipStr) equipStr = '空无一物';
+
+      if (window.isEditMode) {
+        $('#auth-content').html(`
+          ${renderEditShortRow('', '姓名', '姓名', protag.姓名, 'edit-auth-input')}
+          ${renderEditShortRow('', '年龄', '年龄', protag.年龄, 'edit-auth-input')}
+          ${renderEditShortRow('', '现金', '现金', protag.现金, 'edit-auth-input')}
+          ${renderEditShortRow('', '黑市信誉', '黑市信誉', protag.黑市信誉, 'edit-auth-input')}
+          ${renderEditShortRow('', '限量库存.S病毒', 'S病毒存量', protag.限量库存?.S病毒, 'edit-auth-input')}
+          ${renderEditShortRow('', '限量库存.智械组件', '智械组件', protag.限量库存?.智械组件, 'edit-auth-input')}
+          ${renderEditShortRow('', '限量库存.灵异注入材料', '灵异材料', protag.限量库存?.灵异注入材料, 'edit-auth-input')}
+          <div class="text-block" style="margin-top:4px;"><div class="text-block-title">随身装备 (需通过交互获取)</div>${equipStr}</div>
+        `);
+      } else {
+        $('#auth-content').html(`
+          ${renderRow('姓名/年龄', `${protag.姓名 || '?'} / ${protag.年龄 || '?'}`)}
+          ${renderRow('现金', protag.现金 || 0)}
+          ${renderRow('黑市信誉', protag.黑市信誉 || 0)}
+          ${renderRow('限量库存', `S病毒:${protag.限量库存?.S病毒||0} | 智械:${protag.限量库存?.智械组件||0} | 灵异:${protag.限量库存?.灵异注入材料||0}`)}
+          <div class="text-block" style="margin-top:4px;"><div class="text-block-title">随身装备</div>${equipStr}</div>
+        `);
+      }
+
+      const charsObj = stat.角色列表 || {};
+      charactersList = Object.entries(charsObj);
+
+      if (charactersList.length > 0) {
+        let needsCacheSave = false;
+        charactersList.forEach(([name, data]) => {
+          let imgData = getCharImages(name, data, true);
+          if (imgData.cacheUpdated) {
+            needsCacheSave = true;
+          }
+          if (imgData.avatar) {
+            const preloader = document.createElement('img');
+            preloader.src = imgData.avatar;
+          }
+        });
+
+        if (needsCacheSave) {
+          SafeStorage.setItem('mvu_char_img_cache', JSON.stringify(charImgCache));
+        }
+      }
+
+      renderCharacterPage();
+    }
+
+    function renderCharacterPage() {
+      const container = $('#characters-container');
+      container.empty();
+
+      if (charactersList.length === 0) {
+        container.html('<div style="text-align:center; padding:10px; color:var(--text-sub);">快乐，啪！没有啦</div>');
+        $('#page-info').text('0 / 0');
+        $('#btn-prev').prop('disabled', true); $('#btn-next').prop('disabled', true); return;
+      }
+
+      const totalPages = Math.ceil(charactersList.length / itemsPerPage);
+      if (currentPage > totalPages) currentPage = totalPages;
+      if (currentPage < 1) currentPage = 1;
+      SafeStorage.setItem('mvu_char_page', currentPage);
+
+      if (window.isEditMode) {
+        $('#page-info').html(`<span style="font-size:10px; color:var(--text-sub); font-style:italic;">赫赫，权蛆</span>`);
+        $('#btn-prev').prop('disabled', true); $('#btn-next').prop('disabled', true);
+      } else {
+        $('#page-info').text(`${currentPage} / ${totalPages}`);
+        $('#btn-prev').prop('disabled', currentPage === 1); $('#btn-next').prop('disabled', currentPage === totalPages);
+      }
+
+      const start = (currentPage - 1) * itemsPerPage;
+      const end = start + itemsPerPage;
+      const pageItems = charactersList.slice(start, end);
+
+      const modFields = ['血管填充', '内脏', '骨骼', '肌肉', '皮肤', '气味', '声带', '脑部', '颈部', '眼部', '口部', '胸部', '小穴', '宫颈', '后庭', '四肢', '伤口', '整体', '外观', '限量改造'];
+
+      pageItems.forEach(([name, data], idx) => {
+        const row1 = window.isEditMode ? renderEditDoubleShortRow(name, '年龄', '性别', '年龄/性别', data.年龄, data.性别) : renderRow('年龄/性别', `${data.年龄 || '?'} / ${data.性别 || '?'}`);
+        const row2 = window.isEditMode ? renderEditDoubleShortRow(name, '生命阶段', '当前位置', '阶段/位置', data.生命阶段, data.当前位置) : renderRow('阶段/位置', `${data.生命阶段 || '?'} / ${data.当前位置 || '?'}`);
+        /* 修改点1：想法改成种族 */
+        const row3 = window.isEditMode ? renderEditFlexRow(name, '种族', '种族', data.种族) : renderRow('种族', `${data.种族 || '人类'}`);
+
+        let detailHTML = ''; let modHTML = ''; let nsfwHTML = ''; let expHTML = '';
+
+        if (window.isEditMode) {
+          detailHTML = `
+            <div class="kv-list">
+              ${renderEditFlexRow(name, '当前身份', '当前身份', data.当前身份)}
+              ${renderEditFlexRow(name, '背景身份', '背景', data.背景身份)}
+              ${renderEditDoubleFlexRow(name, '发色', '发型', '发型(色/型)', data.发色, data.发型)}
+              ${renderEditFlexRow(name, '瞳色', '瞳色', data.瞳色)}
+              ${renderEditFlexRow(name, '容貌', '容貌', data.容貌)}
+              ${renderEditDoubleFlexRow(name, '身高', '身材', '体型(高/形)', data.身高, data.身材)}
+              ${renderEditFlexRow(name, '罩杯', '罩杯', data.罩杯)}
+              ${renderEditFlexRow(name, '服装', '服装', data.服装)}
+              ${renderEditSingle(name, '性格', '性格', data.性格 || '')}
+            </div>
+          `;
+
+          let modEditRows = modFields.map(m => {
+            return renderEditShortRow(name, `部位.${m}`, m, data.部位?.[m] || '无');
+          }).join('');
+
+          modHTML = `
+            <div class="kv-list">
+              <div class="text-block-title" style="margin-bottom:2px;">躯体状况</div>
+              ${modEditRows}
+            </div>
+          `;
+
+          nsfwHTML = `
+            <div class="kv-list">
+              ${renderEditSingle(name, '名器特点', '名器特点', data.名器特点 || '')}
+              <div class="text-block-title" style="margin-top:6px; margin-bottom:2px;">性交经历</div>
+              ${renderEditRecord(name, '性交经历', data.性交经历)}
+              <div class="text-block-title" style="margin-top:6px; margin-bottom:2px;">孕期状况</div>
+              ${renderEditRecord(name, '孕期.过往怀孕经历', data.孕期?.过往怀孕经历)}
+              ${renderEditSingle(name, '孕期.当前孕期', '当前孕期', data.孕期?.当前孕期 || '无')}
+            </div>
+          `;
+          expHTML = `
+            <div class="kv-list">
+              <div class="text-block-title" style="margin-bottom:2px;">过往</div>
+              ${renderEditRecord(name, '经历.过往', data.经历?.过往)}
+              <div class="text-block-title" style="margin-top:6px; margin-bottom:2px;">初见</div>
+              ${renderEditRecord(name, '经历.初见', data.经历?.初见)}
+              <div class="text-block-title" style="margin-top:6px; margin-bottom:2px;">新历</div>
+              ${renderEditRecord(name, '经历.新历', data.经历?.新历)}
+            </div>
+          `;
+        } else {
+          detailHTML = `
+            <div class="kv-list">
+              ${renderRow('背景', data.背景身份 || '?')}
+              ${renderRow('当前身份', data.当前身份 || '?')}
+              ${renderRow('发型', (data.发色||'') + ' ' + (data.发型||''))}
+              ${renderRow('瞳色', data.瞳色 || '?')}
+              ${renderRow('容貌', data.容貌 || '?')}
+              ${renderRow('身材', (data.身高||'') + ' ' + (data.身材||''))}
+              ${renderRow('罩杯', data.罩杯 || '?')}
+              ${renderRow('服装', data.服装 || '?')}
+              ${renderRow('性格', data.性格 || '?')}
+            </div>
+          `;
+
+          let modRows = modFields.map(m => {
+            let val = data.部位?.[m];
+            if (val && val !== '无' && val !== '待初始化') return renderRow(m, val);
+            return '';
+          }).join('');
+
+          modHTML = `<div class="kv-list">${modRows || '<div class="text-block">无</div>'}</div>`;
+
+          let sexExpStr = renderObjToText(data.性交经历);
+          if(!sexExpStr) sexExpStr = '<div class="text-block">无记录</div>';
+          let pregStr = renderObjToText(data.孕期?.过往怀孕经历);
+          pregStr += `<div class="text-block"><div class="text-block-title">当前孕期</div>${data.孕期?.当前孕期 || '无'}</div>`;
+
+          nsfwHTML = `
+            <div class="kv-list">
+              <div class="text-block"><div class="text-block-title">名器特点</div>${data.名器特点 || '未知'}</div>
+              <div class="text-block-title" style="margin-top:4px;">性交经历</div>
+              ${sexExpStr}
+              <div class="text-block-title" style="margin-top:4px;">孕期状况</div>
+              ${pregStr}
+            </div>
+          `;
+          if(data.经历) {
+            expHTML += `<div class="text-block-title">过往</div>${renderObjToText(data.经历.过往)}`;
+            expHTML += `<div class="text-block-title">初见</div>${renderObjToText(data.经历.初见)}`;
+            expHTML += `<div class="text-block-title">新历</div>${renderObjToText(data.经历.新历)}`;
+          }
+        }
+
+        const detailId = `detail-${idx}`, nsfwId = `nsfw-${idx}`, modId = `mod-${idx}`, expId = `exp-${idx}`, avatarDetailId = `avatar-detail-${idx}`;
+        let imgData = getCharImages(name, data);
+
+        let galleryFirstSrc = imgData.avatar || (imgData.gallery.length > 0 ? imgData.gallery[0] : '');
+        let startIdx = imgData.gallery.indexOf(galleryFirstSrc);
+        if (startIdx === -1) startIdx = 0;
+
+        let imgArrayStr = imgData.gallery.length > 0 ? encodeURIComponent(JSON.stringify(imgData.gallery)) : '[]';
+
+        let galleryHTML = `<div class="gallery-container">`;
+        if (imgData.gallery.length > 1) galleryHTML += `<button class="gallery-btn gallery-prev" data-idx="${idx}"><</button>`;
+
+        if (imgData.gallery.length > 0) {
+            galleryHTML += `<img class="gallery-img" id="gallery-img-${idx}" data-lazysrc="${galleryFirstSrc}" data-images="${imgArrayStr}" data-current="${startIdx}" style="visibility: hidden;">`;
+        } else {
+            galleryHTML += `<div style="color:var(--text-sub);">无可用身体图片</div>`;
+        }
+
+        if (imgData.gallery.length > 1) galleryHTML += `<button class="gallery-btn gallery-next" data-idx="${idx}">></button>`;
+        galleryHTML += `</div>`;
+
+        let isCurrentBg = false;
+        try { isCurrentBg = (window.top.mvuCurrentFloatingBg === galleryFirstSrc); } catch(e) {}
+        if (imgData.gallery.length > 0) {
+           galleryHTML += `
+           <div class="gallery-controls" style="text-align: center; margin-bottom: 2px;">
+             <button class="btn set-bg-btn" data-idx="${idx}">${isCurrentBg ? '取消悬浮背景' : '设为悬浮背景'}</button>
+             ${imgData.canReroll ? `<button class="btn reroll-avatar-btn" data-name="${name}" data-key="${imgData.conditionKey}" data-type="${imgData.type}" style="font-size: 14px; padding: 2px 8px; margin-left: 6px;" title="切换身体形态">🔄</button>` : ''}
+           </div>`;
+        }
+
+        const card = `
+          <div class="char-card" id="char-card-${idx}">
+            <div class="collapsible-body avatar-detail-body" id="${avatarDetailId}">${galleryHTML}</div>
+            <div class="char-top-layout">
+              <div class="char-profile">
+                <div class="char-avatar" data-target="${avatarDetailId}" title="点击查看肉体大图">
+                  ${imgData.avatar ? `<img src="${imgData.avatar}" alt="头像">` : ''}
+                </div>
+<div class="char-name">${name}</div>
+${!window.isEditMode
+  ? `<div class="char-identity">${data.当前身份 || '未知身份'}</div>`
+  : `<button class="btn delete-char-btn" data-charname="${name}" style="
+      margin-top:4px;
+      width:100%;
+      padding:3px 0;
+      font-size:10px;
+      background:rgba(138, 58, 58, 0.3);
+      border:1px solid rgba(138, 58, 58, 0.6);
+      color:#cc8888;
+      border-radius:3px;
+      cursor:pointer;
+      transition: all 0.2s;
+    ">🗑️ 删除角色</button>`
+}
+              </div>
+              <div class="char-info-summary">
+                ${row1}${row2}${row3}
+              </div>
+            </div>
+            <div class="collapsible-grid">
+              <div class="collapsible" data-target="${detailId}"><div class="collapsible-header">细致信息</div></div>
+              <div class="collapsible" data-target="${nsfwId}"><div class="collapsible-header">NSFW记录</div></div>
+              <div class="collapsible" data-target="${modId}"><div class="collapsible-header">部位</div></div>
+              <div class="collapsible" data-target="${expId}"><div class="collapsible-header">经历记事</div></div>
+            </div>
+            <div class="collapsible-body" id="${detailId}">${detailHTML}</div>
+            <div class="collapsible-body" id="${nsfwId}">${nsfwHTML}</div>
+            <div class="collapsible-body" id="${modId}">${modHTML}</div>
+            <div class="collapsible-body" id="${expId}">${expHTML}</div>
+          </div>
+        `;
+        container.append(card);
+      });
+      if (window.isEditMode) {
+        $('.del-record-btn').off('click').on('click', function(e) {
+          e.stopPropagation(); $(this).closest('.record-item').remove();
+        });
+        $('.add-record-btn').off('click').on('click', function(e) {
+          e.stopPropagation();
+          const tpl = `
+            <div class="record-item" style="display:flex; gap:4px; margin-bottom:6px; align-items:flex-start; background:rgba(0,0,0,0.4); padding:4px; border-radius:4px; border:1px solid rgba(74, 111, 165, 0.2);">
+              <div style="display:flex; flex-direction:column; gap:4px; flex-grow:1;">
+                <input type="text" class="record-key-input" value="新增记录" placeholder="记录名称/时间" style="background:rgba(6, 8, 13, 0.8); border:1px solid var(--border-color); color:var(--text-main); font-size:11px; padding:4px; border-radius:3px;">
+                <textarea class="record-val-input auto-resize" style="background:rgba(6, 8, 13, 0.8); border:1px solid var(--border-color); color:var(--text-main); font-size:11px; padding:4px; border-radius:3px; min-height:24px; resize:none; overflow:hidden; line-height:1.4;" placeholder="内容描述"></textarea>
+              </div>
+              <button class="btn del-record-btn" style="padding:4px 6px; background:rgba(138, 58, 58, 0.6); border-color:#8a3a3a; margin-top:2px;">🗑️</button>
+            </div>
+          `;
+          $(this).before(tpl);
+          $(this).prev().find('.del-record-btn').off('click').on('click', function(evt) {
+            evt.stopPropagation(); $(this).closest('.record-item').remove();
+          });
+          setTimeout(triggerAutoResize, 10);
+        });
+
+        setTimeout(triggerAutoResize, 50);
+      }
+
+      $('.reroll-avatar-btn').off('click').on('click', function(e) {
+          e.stopPropagation();
+          const charName = $(this).data('name');
+          const conditionKey = $(this).data('key');
+          const matchType = $(this).data('type');
+
+          let fallbackPool = [];
+          if (matchType === 'exact') {
+             fallbackPool = onlineAvatarConfig?.["精确匹配"]?.[charName];
+          } else {
+             fallbackPool = onlineAvatarConfig?.[conditionKey] || onlineAvatarConfig?.["条件匹配"]?.[conditionKey] || onlineAvatarConfig?.["无匹配"];
+          }
+
+          if (fallbackPool && Array.isArray(fallbackPool) && fallbackPool.length > 0) {
+              const currentImg = charImgCache[charName] || '';
+              let currentIdx = fallbackPool.indexOf(currentImg);
+              let nextIdx = (currentIdx + 1) % fallbackPool.length;
+              charImgCache[charName] = fallbackPool[nextIdx];
+              SafeStorage.setItem('mvu_char_img_cache', JSON.stringify(charImgCache));
+          }
+          const cardIdx = $(this).closest('.char-card').attr('id').split('-').pop();
+          renderCharacterPage();
+          $(`#char-card-${cardIdx} .char-avatar`).click();
+      });
+
+      $('.char-avatar').off('click').on('click', function() {
+        const targetId = $(this).data('target'), targetBody = $('#' + targetId), isActive = $(this).hasClass('active');
+
+        $('#characters-container .collapsible').removeClass('active');
+        $('#characters-container .char-avatar').removeClass('active');
+        $('#characters-container .collapsible-body').removeClass('active');
+
+        if (!isActive) {
+          $(this).addClass('active');
+          targetBody.addClass('active');
+
+          const $img = targetBody.find('.gallery-img');
+          if ($img.length > 0 && !$img.attr('src')) {
+            $img.attr('src', $img.data('lazysrc'));
+            $img.css('visibility', 'visible');
+          }
+        }
+      });
+
+      $('.collapsible').off('click').on('click', function() {
+        const targetId = $(this).data('target'), targetBody = $('#' + targetId), isActive = $(this).hasClass('active');
+        $('#characters-container .collapsible').removeClass('active'); $('#characters-container .char-avatar').removeClass('active'); $('#characters-container .collapsible-body').removeClass('active');
+        if (!isActive) {
+          $(this).addClass('active'); targetBody.addClass('active');
+          setTimeout(triggerAutoResize, 10);
+        }
+      });
+
+      $('.gallery-prev').off('click').on('click', function() {
+        const idxEl = $(this), idx = idxEl.data('idx'), imgEl = $(`#gallery-img-${idx}`), imgs = JSON.parse(decodeURIComponent(imgEl.attr('data-images')));
+        let curr = (parseInt(imgEl.attr('data-current')) - 1 + imgs.length) % imgs.length;
+        imgEl.attr('data-current', curr).attr('src', imgs[curr]);
+        if (idxEl.closest('.avatar-detail-body').find('.set-bg-btn').text() === '取消悬浮背景') broadcastFloatingBg('show', imgs[curr]);
+      });
+      $('.gallery-next').off('click').on('click', function() {
+        const idxEl = $(this), idx = idxEl.data('idx'), imgEl = $(`#gallery-img-${idx}`), imgs = JSON.parse(decodeURIComponent(imgEl.attr('data-images')));
+        let curr = (parseInt(imgEl.attr('data-current')) + 1) % imgs.length;
+        imgEl.attr('data-current', curr).attr('src', imgs[curr]);
+        if (idxEl.closest('.avatar-detail-body').find('.set-bg-btn').text() === '取消悬浮背景') broadcastFloatingBg('show', imgs[curr]);
+      });
+
+      $('.delete-char-btn').off('click').on('click', async function(e) {
+        e.stopPropagation();
+        const $btn = $(this);
+        const charName = $btn.data('charname');
+
+        if (!$btn.data('confirming')) {
+          $btn.data('confirming', true);
+          $btn.text('⚠️ 确认删除 ' + charName + '？');
+          $btn.css({
+            'background': 'rgba(180, 50, 50, 0.6)',
+            'border-color': '#ff6b6b',
+            'color': '#ffcccc'
+          });
+
+          const timer = setTimeout(() => {
+            $btn.data('confirming', false);
+            $btn.text('🗑️ 删除角色');
+            $btn.css({
+              'background': 'rgba(138, 58, 58, 0.3)',
+              'border-color': 'rgba(138, 58, 58, 0.6)',
+              'color': '#cc8888'
+            });
+          }, 3000);
+          $btn.data('reset-timer', timer);
+          return;
+        }
+
+        clearTimeout($btn.data('reset-timer'));
+        $btn.text('⏳ 删除中...').prop('disabled', true);
+
+        try {
+          let currentMsgId = -1;
+          try { currentMsgId = typeof getCurrentMessageId === 'function' ? getCurrentMessageId() : -1; } catch(ex){}
+
+          const oldData = Mvu.getMvuData({ type: 'message', message_id: currentMsgId }) || {};
+          let newData = JSON.parse(JSON.stringify(oldData));
+
+          if (newData.stat_data && newData.stat_data.角色列表 && newData.stat_data.角色列表[charName]) {
+            delete newData.stat_data.角色列表[charName];
+            await Mvu.replaceMvuData(newData, { type: 'message', message_id: currentMsgId });
+
+            if (typeof eventEmit === 'function') {
+              eventEmit(Mvu.events.VARIABLE_UPDATE_ENDED, newData, oldData);
+            }
+
+            let imgCache = JSON.parse(SafeStorage.getItem('mvu_char_img_cache') || '{}');
+            delete imgCache[charName];
+            SafeStorage.setItem('mvu_char_img_cache', JSON.stringify(imgCache));
+          }
+
+          populateCharacterData();
+
+        } catch (err) {
+          console.error('[删除角色失败]', err);
+          alert('删除失败：' + err.message);
+          $btn.text('🗑️ 删除角色').prop('disabled', false);
+          $btn.data('confirming', false);
+          $btn.css({
+            'background': 'rgba(138, 58, 58, 0.3)',
+            'border-color': 'rgba(138, 58, 58, 0.6)',
+            'color': '#cc8888'
+          });
+        }
+      });
+
+      $('.set-bg-btn').off('click').on('click', function() {
+        const src = $(`#gallery-img-${$(this).data('idx')}`).attr('src');
+        if ($(this).text() === '取消悬浮背景') { $(this).text('设为悬浮背景'); broadcastFloatingBg('hide', ''); }
+        else { $('.set-bg-btn').text('设为悬浮背景'); $(this).text('取消悬浮背景'); broadcastFloatingBg('show', src); }
+      });
+    }
+
+    async function init() {
+      if ($('#mvu-global-style-injector').length === 0) {
+        $('head').append(`
+          <style id="mvu-global-style-injector">
+            #mvu-floating-bg { position: fixed !important; top: 50% !important; left: 50% !important; transform: translate(-50%, -50%) !important; width: 100vw !important; height: 100vh !important; z-index: 0 !important; pointer-events: none !important; display: none; justify-content: center; align-items: center; background-color: transparent !important; opacity: 0.5 !important; overflow: hidden !important; }
+            #mvu-floating-img { width: 110vw !important; height: 110vh !important; object-fit: contain !important; display: block !important; }
+          </style>
+        `);
+      }
+      if ($('body > #mvu-floating-bg').length === 0) $('body').prepend(`<div id="mvu-floating-bg"><img id="mvu-floating-img" src="" alt="floating bg"></div>`);
+
+      await fetchAvatarConfig();
+      await waitGlobalInitialized('Mvu');
+
+      $(document).on('input', 'textarea.auto-resize', function() {
+          this.style.height = 'auto';
+          this.style.height = (this.scrollHeight) + 'px';
+      });
+
+      if (SafeStorage.getItem('mvu_auth_collapsed') === 'true') { $('#auth-header').addClass('collapsed'); $('#auth-content').addClass('collapsed'); }
+
+      $('#auth-header').on('click', function() {
+        const $this = $(this), $content = $('#auth-content');
+        if ($this.hasClass('collapsed')) { $this.removeClass('collapsed'); $content.removeClass('collapsed'); SafeStorage.setItem('mvu_auth_collapsed', 'false'); }
+        else { $this.addClass('collapsed'); $content.addClass('collapsed'); SafeStorage.setItem('mvu_auth_collapsed', 'true'); }
+      });
+
+      $('#cancel-edit-btn').on('click', function() {
+        window.isEditMode = false;
+        $(this).hide();
+        $('#toggle-edit-btn').text('✏️ 编辑模式').css('background', '').prop('disabled', false);
+        populateCharacterData();
+      });
+
+      $('#toggle-edit-btn').on('click', async function() {
+        const $btn = $(this);
+        if (!window.isEditMode) {
+          window.isEditMode = true;
+          $btn.text('💾 保存刻印').css({'background': 'rgba(74, 124, 89, 0.4)', 'border-color': '#4a7c59', 'color': '#dce4ec'});
+          $('#cancel-edit-btn').show();
+          populateCharacterData();
+        } else {
+          $btn.text('⏳ 正在刻印...').prop('disabled', true);
+          $('#cancel-edit-btn').hide();
+
+          try {
+            let currentMsgId = -1;
+            try { currentMsgId = typeof getCurrentMessageId === 'function' ? getCurrentMessageId() : -1; } catch(e){}
+
+            const oldData = Mvu.getMvuData({ type: 'message', message_id: currentMsgId }) || {};
+            let newData = JSON.parse(JSON.stringify(oldData));
+
+            /* ========== 保存手机消息 ========== */
+            let newPhoneMsg = {};
+            $('#phone-messages-container .phone-edit-item').each(function() {
+              const src = $(this).find('.phone-edit-source').val().trim();
+              const content = $(this).find('.phone-edit-content').val().trim();
+              if (src) {
+                newPhoneMsg[src] = content;
+              }
+            });
+            if (!newData.stat_data) newData.stat_data = {};
+            newData.stat_data.手机消息 = newPhoneMsg;
+
+            if (!newData.stat_data.坐标) newData.stat_data.坐标 = {};
+            $('.edit-coord-input').each(function() {
+              safeSetObjPath(newData.stat_data.坐标, $(this).data('subpath'), $(this).val().trim());
+            });
+
+            if (!newData.stat_data.主角) newData.stat_data.主角 = {};
+            $('.edit-auth-input').each(function() {
+              let v = $(this).val().trim();
+              let path = $(this).data('subpath');
+              if (['年龄', '现金', '黑市信誉', '限量库存.S病毒', '限量库存.智械组件', '限量库存.灵异注入材料'].includes(path)) {
+                let num = Number(v);
+                if (!isNaN(num) && v !== '') v = num;
+              }
+              safeSetObjPath(newData.stat_data.主角, path, v);
+            });
+
+            if (!newData.stat_data) newData.stat_data = {};
+            let charList = newData.stat_data.角色列表 || {};
+
+            $('.edit-single-input, .edit-short-input').each(function() {
+              const cName = $(this).data('charname'), subPath = $(this).data('subpath'), val = $(this).val().trim();
+              if(!cName) return; /* 跳过非角色的输入框 */
+              if(!charList[cName]) charList[cName] = {};
+
+              if(subPath === '年龄') {
+                let num = Number(val);
+                safeSetObjPath(charList[cName], subPath, (!isNaN(num) && val !== '') ? num : val);
+              } else {
+                safeSetObjPath(charList[cName], subPath, val);
+              }
+            });
+
+            $('.record-group').each(function() {
+              const cName = $(this).data('charname'), subPath = $(this).data('subpath');
+              let newObj = {};
+              $(this).find('.record-item').each(function() {
+                const k = $(this).find('.record-key-input').val().trim(), v = $(this).find('.record-val-input').val().trim();
+                if (k) newObj[k] = v;
+              });
+              if(!charList[cName]) charList[cName] = {};
+              safeSetObjPath(charList[cName], subPath, newObj);
+            });
+
+            newData.stat_data.角色列表 = charList;
+
+            await Mvu.replaceMvuData(newData, { type: 'message', message_id: currentMsgId });
+
+            if (typeof eventEmit === 'function') {
+                eventEmit(Mvu.events.VARIABLE_UPDATE_ENDED, newData, oldData);
+            }
+
+          } catch (e) {
+            console.error('[刻印报错]', e);
+            alert("呜……写入失败了！请看控制台：\n" + e.message);
+          } finally {
+            setTimeout(() => {
+              window.isEditMode = false;
+              $btn.text('✏️ 编辑模式').css({'background': '', 'border-color': '', 'color': ''}).prop('disabled', false);
+              populateCharacterData();
+            }, 300);
+          }
+        }
+      });
+
+      $('#btn-prev').on('click', () => { if(currentPage > 1 && !window.isEditMode) { currentPage--; SafeStorage.setItem('mvu_char_page', currentPage); renderCharacterPage(); }});
+      $('#btn-next').on('click', () => { const total = Math.ceil(charactersList.length / itemsPerPage); if(currentPage < total && !window.isEditMode) { currentPage++; SafeStorage.setItem('mvu_char_page', currentPage); renderCharacterPage(); }});
+
+      populateCharacterData();
+
+      eventOn(Mvu.events.VARIABLE_UPDATE_ENDED, () => { if (!window.isEditMode) populateCharacterData(); });
+    }
+
+    $(errorCatched(init));
+  </script>
+</head>
+<body>
+  <div class="container">
+    <!-- ========== 新增：手机消息区块 ========== -->
+    <div class="phone-section">
+      <div class="phone-header">
+        <span class="phone-title">消息</span>
+      </div>
+      <div class="phone-messages" id="phone-messages-container">
+        <!-- 动态渲染 -->
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title" style="display:flex; justify-content:space-between; align-items:center;">
+        <span>COORDINATE | 坐标</span>
+        <div style="display:flex; gap:4px; align-items:center;">
+          <button id="cancel-edit-btn" class="btn" style="display:none; padding:2px 8px; font-size:11px; background:rgba(138, 58, 58, 0.4); border-color:#8a3a3a; transition: all 0.2s;">❌ 取消</button>
+          <button id="toggle-edit-btn" class="btn" style="padding:2px 8px; font-size:11px; transition: all 0.2s;">✏️ 编辑模式</button>
+        </div>
+      </div>
+      <div class="kv-list" id="coord-container">
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-title section-title-collapsible" id="auth-header" title="点击折叠/展开">PROTAGONIST | 主角</div>
+      <div class="global-collapsible-content" id="auth-content">
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-title">COLLECTION | 收藏</div>
+      <div id="characters-container"></div>
+      <div class="pagination" style="text-align:center;">
+        <button class="btn" id="btn-prev">上一页</button>
+        <span class="page-info" id="page-info" style="flex-grow:1; color:var(--text-sub);">1 / 1</span>
+        <button class="btn" id="btn-next">下一页</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+```

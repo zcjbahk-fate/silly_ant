@@ -1,4 +1,5 @@
-// 角色卡自动更新脚本 (纯本地运行，无外部 CDN 依赖)
+// 角色卡自动更新脚本 (本地优先 + GitHub 回退，无外部 CDN 依赖)
+// ─── 版本比对 ──────────────────────────────────────────
 function hasNewerVersion(localVer, remoteVer) {
   if (!remoteVer) return false;
   if (!localVer || localVer === '0.0.0' || localVer === '0' || localVer === '') return true;
@@ -24,6 +25,60 @@ function hasNewerVersion(localVer, remoteVer) {
   return localVer.trim() !== remoteVer.trim();
 }
 
+// ─── 双源获取：本地优先 → GitHub 回退 ─────────────────────
+function toLocalUrl(url) {
+  // 将 GitHub Raw URL 转换为本地文件服务器 URL
+  // https://raw.githubusercontent.com/.../resource/xxx → http://localhost:8787/xxx
+  const idx = url.indexOf('/resource/');
+  if (idx === -1) return null;
+  const relativePath = url.substring(idx + '/resource/'.length);
+  return 'http://localhost:8787/' + relativePath;
+}
+
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+async function fetchResource(url, type) {
+  // ① 尝试本地文件服务器（1 秒超时，本机瞬间返回）
+  const localUrl = toLocalUrl(url);
+  if (localUrl) {
+    try {
+      const res = await fetch(localUrl, { cache: 'no-store', signal: AbortSignal.timeout(1000) });
+      if (res.ok) {
+        console.log('[自动更新] ✅ 本地获取成功:', localUrl);
+        return type === 'text' ? res.text() : res.blob();
+      }
+    } catch (e) {
+      console.log('[自动更新] 本地服务器未响应，回退到 GitHub');
+    }
+  }
+
+  // ② 回退到 GitHub Raw（带缓存破坏 + 3 次重试）
+  for (let retry = 0; retry < 3; retry++) {
+    try {
+      const sep = url.includes('?') ? '&' : '?';
+      const noCacheUrl = `${url}${sep}_t=${Date.now()}`;
+      const res = await fetch(noCacheUrl, { cache: 'no-store' });
+      if (res.ok) {
+        console.log(`[自动更新] ✅ GitHub 获取成功 (第${retry + 1}次)`);
+        return type === 'text' ? res.text() : res.blob();
+      }
+    } catch (e) {
+      console.warn(`[自动更新] GitHub 请求失败 (第${retry + 1}次):`, e.message);
+    }
+    if (retry < 2) await sleep(1000 * (retry + 1));
+  }
+
+  // ③ 最终回退：不带缓存破坏的原始请求
+  try {
+    const res = await fetch(url);
+    if (res.ok) return type === 'text' ? res.text() : res.blob();
+  } catch (e) {}
+
+  console.warn('[自动更新] ⚠️ 所有获取方式均失败:', url);
+  return null;
+}
+
+// ─── Zod 变量 Schema ────────────────────────────────────
 const n = (typeof z !== 'undefined') ? z : window.z;
 const r = n ? n.z.object({
   角色卡名称: n.z.string().default('未填写'),
@@ -31,6 +86,7 @@ const r = n ? n.z.object({
   更新日志链接: n.z.string().default('未填写')
 }).prefault({}) : null;
 
+// ─── 按钮：更新角色卡 ───────────────────────────────────
 function createUpdateCardAction(cardInfo) {
   const versionDisplay = cardInfo.version ? ` (${cardInfo.version})` : '';
   return {
@@ -74,15 +130,14 @@ function createUpdateCardAction(cardInfo) {
   };
 }
 
+// ─── 按钮：更新日志 ─────────────────────────────────────
 function createChangelogAction(cardInfo) {
   return {
     name: '更新日志',
     function: () => {
       const renderMd = (md) => {
         if (typeof marked !== 'undefined' && marked.parse) {
-          try {
-            return marked.parse(md, { breaks: true });
-          } catch (e) {}
+          try { return marked.parse(md, { breaks: true }); } catch (e) {}
         }
         return md.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br/>');
       };
@@ -97,21 +152,7 @@ function createChangelogAction(cardInfo) {
   };
 }
 
-async function fetchResource(url, type) {
-  // 添加时间戳以绕过 GitHub Raw 的 5 分钟 CDN 缓存
-  const sep = url.includes('?') ? '&' : '?';
-  const noCacheUrl = `${url}${sep}_t=${Date.now()}`;
-  try {
-    const res = await fetch(noCacheUrl, { cache: 'no-store' });
-    if (res.ok) return type === 'text' ? res.text() : res.blob();
-  } catch (e) {
-    console.warn(`[自动更新] 带时间戳请求失败，尝试原始链接: ${url}`, e);
-  }
-  const fallbackRes = await fetch(url);
-  if (fallbackRes.ok) return type === 'text' ? fallbackRes.text() : fallbackRes.blob();
-  throw new Error(`(${fallbackRes.status}) ${await fallbackRes.text()}`);
-}
-
+// ─── 主逻辑 ─────────────────────────────────────────────
 $(errorCatched(async () => {
   let vars = getVariables({ type: 'script' }) || {};
   if (r) {
@@ -122,22 +163,21 @@ $(errorCatched(async () => {
     return;
   }
 
+  // 获取远程更新日志 & 版本号
   let changelogText = '';
   let remoteVersion = '';
   if (vars.更新日志链接 && vars.更新日志链接 !== '未填写') {
-    try {
-      changelogText = await fetchResource(vars.更新日志链接, 'text');
+    const result = await fetchResource(vars.更新日志链接, 'text');
+    if (result) {
+      changelogText = result;
       remoteVersion = changelogText.match(/^##\s*(.*)\s*$/m)?.[1]?.trim() ?? '';
-    } catch (e) {
-      console.warn('[自动更新] 获取更新日志失败:', e);
     }
   }
 
-  let cardBlob = null;
-  try {
-    cardBlob = await fetchResource(vars.角色卡链接, 'blob');
-  } catch (e) {
-    console.warn('[自动更新] 获取远程角色卡文件失败:', e);
+  // 获取远程角色卡文件
+  const cardBlob = await fetchResource(vars.角色卡链接, 'blob');
+  if (!cardBlob) {
+    console.warn('[自动更新] 无法获取远程角色卡，跳过更新检测');
     return;
   }
 
@@ -148,10 +188,11 @@ $(errorCatched(async () => {
     changelog: changelogText || '暂无更新日志'
   };
 
+  // 版本比对
   const localVersion = await getCharacter(cardData.name).then(c => c?.version?.trim() || '0.0.0').catch(() => '0.0.0');
   const hasUpdate = hasNewerVersion(localVersion, cardData.version);
 
-  console.log(`[自动更新] ${cardData.name} 本地版本: [${localVersion}], 远程版本: [${cardData.version}], 是否需要更新: ${hasUpdate}`);
+  console.log(`[自动更新] ${cardData.name} | 本地: [${localVersion}] | 远程: [${cardData.version}] | 需要更新: ${hasUpdate}`);
 
   const isUpdateRelatedBtn = (btnName) => btnName.startsWith('更新角色卡') || btnName === '更新日志';
 
@@ -161,20 +202,17 @@ $(errorCatched(async () => {
       actions.push(createChangelogAction(cardData));
     }
 
-    // 绑定事件
     actions.forEach(action => {
       eventClearEvent(getButtonEvent(action.name));
       eventOn(getButtonEvent(action.name), action.function);
     });
 
-    // 清理旧的更新按钮并添加新按钮
     const remainingButtons = _(getScriptButtons()).filter(btn => !isUpdateRelatedBtn(btn.name)).value();
     const newButtons = actions.map(act => ({ name: act.name, visible: true }));
     replaceScriptButtons(remainingButtons.concat(newButtons));
 
     toastr.info(`检测到角色卡【${cardData.name}】有新版本: ${cardData.version || '最新版'}`, '角色卡更新提示');
   } else {
-    // 无更新时，清除更新按钮
     const remainingButtons = _(getScriptButtons()).filter(btn => !isUpdateRelatedBtn(btn.name)).value();
     replaceScriptButtons(remainingButtons);
   }

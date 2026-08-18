@@ -1,0 +1,186 @@
+```html
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body { margin: 0; padding: 0; overflow: hidden; }
+
+    /* 基础样式保持不变 */
+    .nb-wrapper {
+      width: 100%;
+      font-family: 'Courier New', Courier, monospace, sans-serif;
+      position: relative;
+    }
+    .nb-toggle-btn {
+      width: 100%; padding: 10px 0;
+      background-image: linear-gradient(180deg, #5a3c2a 0%, #3e2618 100%);
+      border: 1px solid #2b1a10; border-radius: 4px;
+      box-shadow: inset 0 0 5px rgba(255,255,255,0.1), 0 2px 4px rgba(0,0,0,0.5);
+      cursor: pointer; display: flex; justify-content: center; align-items: center;
+      transition: background 0.2s;
+    }
+    .nb-toggle-btn:hover { background-image: linear-gradient(180deg, #6b4733 0%, #4a3020 100%); }
+    .nb-toggle-btn::after {
+      content: '📝 前任法医的操作笔记 (点击翻阅)';
+      font-size: 14px; color: #e6d8c3; font-weight: bold; text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+    }
+    .nb-toggle-btn.active { border-radius: 4px 4px 0 0; border-bottom: 1px dashed #2b1a10; }
+    .nb-content {
+      display: none; width: 100%; background: #f4ecd8;
+      border: 1px solid #2b1a10; border-top: none; border-radius: 0 0 4px 4px;
+      box-shadow: inset 5px 0 10px rgba(0,0,0,0.05), 0 4px 8px rgba(0,0,0,0.3);
+      border-left: 6px solid #2b2b2b;
+    }
+    .nb-content.active { display: block; }
+    .nb-tabs { display: flex; background: rgba(0,0,0,0.05); border-bottom: 1px solid rgba(0,0,0,0.1); }
+    .nb-tab-label {
+      flex: 1; text-align: center; padding: 8px 2px; font-size: 12px;
+      color: #555; cursor: pointer; border-right: 1px solid rgba(0,0,0,0.1); font-weight: bold;
+    }
+    .nb-tab-label:last-child { border-right: none; }
+    .nb-tab-label.active { background: #f4ecd8; color: #8b0000; border-bottom: 2px solid #8b0000; }
+    .nb-content-area { padding: 15px; position: relative; max-height: 450px; overflow-y: auto; }
+    .nb-content-area::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+      background-image: linear-gradient(rgba(0,0,0,0.1) 1px, transparent 1px);
+      background-size: 100% 28px; pointer-events: none; z-index: 0;
+    }
+    .nb-page { display: none; position: relative; z-index: 1; color: #2c2c2c; line-height: 24px; font-size: 13px; }
+    .nb-page.active { display: block; }
+    .nb-page h3 { margin: 5px 0 8px 0; font-size: 15px; color: #8b0000; border-bottom: 1px dashed #8b0000; display: inline-block; }
+    .nb-page ul { margin: 0 0 15px 0; padding-left: 20px; }
+    .nb-page li { margin-bottom: 6px; }
+    .nb-highlight { color: #8b0000; font-weight: bold; }
+    .nb-note-text { font-size: 12px; color: #8b0000; font-style: italic; background: rgba(0,0,0,0.03); padding: 5px; border-left: 3px solid #8b0000; margin-bottom: 10px; }
+    .nb-content-area::-webkit-scrollbar { width: 4px; }
+    .nb-content-area::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.2); border-radius: 2px; }
+  </style>
+
+  <script type="module">
+    // 关键修改：从父页面(酒馆主页面)借用所有需要的全局变量
+    const parentWindow = window.parent;
+    const parent$ = parentWindow.$;
+
+    // 通知父页面的 iframe 调整高度的函数
+    function updateIframeHeight() {
+      if (parentWindow && parentWindow !== window) {
+        const bodyHeight = document.body.scrollHeight;
+        parentWindow.postMessage({ type: 'resizeIframe', height: bodyHeight }, '*');
+      }
+    }
+
+    // 纯原生 JS 实现点击切换，摆脱对主页面 jQuery 的高度依赖，避免跨域 DOM 操作报错
+    document.addEventListener('DOMContentLoaded', () => {
+      const toggleBtn = document.querySelector('.nb-toggle-btn');
+      const content = document.querySelector('.nb-content');
+      const tabs = document.querySelectorAll('.nb-tab-label');
+      const pages = document.querySelectorAll('.nb-page');
+
+      // 展开/收起逻辑
+      toggleBtn.addEventListener('click', () => {
+        toggleBtn.classList.toggle('active');
+        content.classList.toggle('active');
+        // 动画延迟后通知父 iframe 调整高度
+        setTimeout(updateIframeHeight, 50);
+      });
+
+      // 标签页切换逻辑
+      tabs.forEach(tab => {
+        tab.addEventListener('click', (e) => {
+          const idx = e.target.getAttribute('data-tab');
+
+          tabs.forEach(t => t.classList.remove('active'));
+          pages.forEach(p => p.classList.remove('active'));
+
+          e.target.classList.add('active');
+          pages[idx].classList.add('active');
+
+          setTimeout(updateIframeHeight, 50);
+        });
+      });
+
+      // 初始化时汇报一次高度
+      setTimeout(updateIframeHeight, 100);
+    });
+  </script>
+</head>
+<body>
+  <div class="nb-wrapper">
+    <div class="nb-toggle-btn"></div>
+    <div class="nb-content">
+      <div class="nb-tabs">
+        <div class="nb-tab-label active" data-tab="0">流程</div>
+        <div class="nb-tab-label" data-tab="1">整体处理</div>
+        <div class="nb-tab-label" data-tab="2">小穴改造</div>
+        <div class="nb-tab-label" data-tab="3">后庭改造</div>
+        <div class="nb-tab-label" data-tab="4">口部/头部</div>
+      </div>
+      <div class="nb-content-area">
+        <div class="nb-page active">
+          <h3>操作流程（严格按顺序）</h3>
+          <ul>
+            <li><span class="nb-highlight">1. 开工指令：</span>喊"开始改造"，挂载状态界面。</li>
+            <li><span class="nb-highlight">2. 整体处理（必须先做）：</span>除臭、防腐、软化。或者直接用"懒人套餐"一键搞定。不做这步尸体没法用。</li>
+            <li><span class="nb-highlight">3. 开膛植入（核心）：</span>内脏摘取填充，各种穴道定制植入。这步要切开肉，所以必须在缝合前做！</li>
+            <li><span class="nb-highlight">4. 缝合与外观（收尾）：</span>伤口缝合、皮肤涂层、发色美瞳等。</li>
+            <li><span class="nb-highlight">5. 完工指令：</span>喊"改造完成"，脱离操作界面。</li>
+          </ul>
+          <p class="nb-note-text">"别他妈这改一点那改一点，按顺序来。部位挑3-5个重点就够，堆太多写起来像产品说明书。"</p>
+          <p class="nb-note-text">有想卖的就直接说想卖，会有买家联系，有的要送货，有的上门验货</p>
+        </div>
+        <div class="nb-page">
+          <h3>基础质感</h3>
+          <ul>
+            <li><span class="nb-highlight">血管（红/白/青色药剂）：</span>恢复活人红润血色 / 赋予冷白瓷器质感 / 浮现皮下血管呈异质感。</li>
+            <li><span class="nb-highlight">半塑化（肌肉）：</span>消除组织回弹力，受压或使用后长期保留凹陷与变形痕迹。</li>
+            <li><span class="nb-highlight">全身软骨替换（骨骼）：</span>剔除硬骨结构，替换为柔性支撑，躯体可任意折叠盘绕。</li>
+          </ul>
+          <h3>形体与机制</h3>
+          <ul>
+            <li><span class="nb-highlight">灭活：</span>彻底抹除生前病原体与残余反应（与S病毒物理互斥）。</li>
+            <li><span class="nb-highlight">家具化：</span>将躯干或肢体固定，与日常家具（如座椅、灯具）进行物理嵌合。</li>
+            <li><span class="nb-highlight">精液背包：</span>将四肢与躯干进行极限折叠固化，体积缩减至可装入常规箱包。</li>
+          </ul>
+        </div>
+        <div class="nb-page">
+          <p class="nb-note-text">"通用组件注：生物电、触手等形态改造组件，同样适用于后庭与口腔深处。"</p>
+          <h3>通用腔道组件</h3>
+          <ul>
+            <li><span class="nb-highlight">生物电单元：</span>促使肉壁产生自主节律性蠕动与挤压。</li>
+            <li><span class="nb-highlight">触手：</span>内壁覆有硅胶触须，物理探入时主动缠绕。</li>
+            <li><span class="nb-highlight">龟头契合沟：</span>内壁预设凹槽，顶端深入时精确卡入冠状沟锁定。</li>
+          </ul>
+          <h3>宫颈与子宫</h3>
+          <ul>
+            <li><span class="nb-highlight">开放（宫颈）：</span>移除宫颈屏障，建立直达子宫的无阻力通道。</li>
+            <li><span class="nb-highlight">马眼肉针（宫颈）：</span>细长柔韧硅胶刺，顶端接触时精确刺入尿道。</li>
+            <li><span class="nb-highlight">孕肚（子宫）：</span>强制柔性填充子宫，使腹部呈现流畅的孕期隆起。</li>
+          </ul>
+        </div>
+        <div class="nb-page">
+          <h3>肠道机制</h3>
+          <ul>
+            <li><span class="nb-highlight">人造排泄：</span>肠道预置胶状物，受外部物理推挤时自菊口排出。</li>
+            <li><span class="nb-highlight">人造肛颈：</span>于直肠深处植入仿宫颈的环状狭窄结构，提供撞击阻力反馈。</li>
+            <li><span class="nb-highlight">肛阴造瘘：</span>穿透直肠与阴道之间的组织壁，形成可同时贯穿两穴的通道。</li>
+          </ul>
+        </div>
+        <div class="nb-page">
+          <h3>头部重度改造</h3>
+          <ul>
+            <li><span class="nb-highlight">脑姦改造：</span>脑组织凝胶化处理，于颅骨开孔建立可探入的通道。</li>
+            <li><span class="nb-highlight">眼交改造：</span>摘除眼球并以覆膜构建腔道，闭眼时外观维持原状。</li>
+          </ul>
+          <h3>神经与发声</h3>
+          <ul>
+            <li><span class="nb-highlight">应激低智能：</span>刺激残余神经，受限时自动产生翻白眼与流涎等低级反射。</li>
+            <li><span class="nb-highlight">被动触发声带：</span>受物理挤压驱动的发声组件，音量与力度正相关。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+```

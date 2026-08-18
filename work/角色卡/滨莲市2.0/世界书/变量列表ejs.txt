@@ -1,0 +1,108 @@
+
+<%_
+// 1. 安全获取基础数据，使用内置常量防报错
+var uMsg = typeof lastUserMessage !== 'undefined' ? lastUserMessage : '';
+var cMsg = typeof lastCharMessage !== 'undefined' ? lastCharMessage : '';
+
+var presentEntities = getvar('stat_data.在场角色列表', { defaults: {} });
+var allCharacters = getvar('stat_data.角色列表', { defaults: {} });
+
+// 2. 建立别名映射字典表（根据现有角色设定）
+var aliasMap = {
+  // 核心功能角色/尸体
+  '海莲娜': '海莲娜·柯尔特',
+  '柯尔特': '海莲娜·柯尔特',
+  '结衣': '星野结衣',
+  '星野': '星野结衣',
+
+  // 富人区/特定支线角色
+  '奈绪': '神宫寺奈绪',
+  '神宫寺': '神宫寺奈绪',
+  '星棠': '沈星棠',
+  '星澜': '沈星澜',
+  '初颜': '许初颜',
+  '苏柚': '苏柚',
+  '柚子': '苏柚',
+  '小音': '泠音',
+  '小弦': '泠弦',
+  '江老大': '江潮',
+  '江总': '江潮',
+  '穗穗': '青穗',
+  '漫姐': '秦漫',
+  '秦老板': '秦漫',
+  '沈队长': '沈劫',
+  '文静': '周文静',
+  '周医生': '周文静',
+  '陈教授': '陈若芸',
+  '苏护士': '苏蔓',
+  '何总': '何姗',
+  '小曼': '赵小曼',
+  '瑶瑶': '许瑶',
+  '念念': '钟念'
+};
+
+// 3. 安全收集当前真正在场的实体名
+var presentString = '';
+if (presentEntities && typeof presentEntities === 'object') {
+  var activeNames = [];
+  for (var key in presentEntities) {
+    if (presentEntities[key] === true) {
+      activeNames.push(key);
+    }
+  }
+  presentString = activeNames.join(' ');
+}
+
+// 用普通对象替代容易报错的 Set
+var detectedCharacters = {};
+
+// 4. 遍历角色列表里的每一个本名，判断是否需要发送完整数据
+if (allCharacters && typeof allCharacters === 'object') {
+  for (var charName in allCharacters) {
+    var triggerWords = [charName];
+
+    // 将别名加入触发词列表
+    for (var alias in aliasMap) {
+      if (aliasMap[alias] === charName) {
+        triggerWords.push(alias);
+      }
+    }
+
+    // 检查是否命中（在场、最后用户消息、最后AI消息）
+    var isTriggered = false;
+    for (var i = 0; i < triggerWords.length; i++) {
+      var word = triggerWords[i];
+      if (presentString.includes(word) || uMsg.includes(word) || cMsg.includes(word)) {
+        isTriggered = true;
+        break;
+      }
+    }
+
+    if (isTriggered) {
+      detectedCharacters[charName] = true;
+    }
+  }
+}
+
+// 5. 提取并准备输出：只包含被触发的角色
+var finalCharData = {};
+var hasAnyChar = false;
+
+if (allCharacters && typeof allCharacters === 'object') {
+  for (var detectedName in allCharacters) {
+    if (detectedCharacters[detectedName]) {
+      // 只有触发了，才发送完整数据
+      finalCharData[detectedName] = allCharacters[detectedName];
+      hasAnyChar = true;
+    }
+  }
+}
+
+// 6. 转换成YAML格式并输出给AI
+if (hasAnyChar) {
+  var outputObj = { "角色列表": finalCharData };
+  print('\n' + YAML.stringify(outputObj, { blockQuote: 'literal' }));
+}
+_%>
+
+</status_current_variables>

@@ -1,0 +1,325 @@
+```html
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>滨莲市 - 开场白控制台</title>
+<style>
+  :root {
+    --bg: rgba(20, 22, 28, .82);
+    --bd: rgba(255,255,255,.14);
+    --fg: rgba(255,255,255,.92);
+    --muted: rgba(255,255,255,.62);
+    --ok: #3ddc97;
+    --bad: #ff6b6b;
+    --warn: #f9c74f;
+    font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+  }
+  body {
+    margin: 0; padding: 0; background: transparent;
+  }
+  .th-opui-container {
+    width: 100%; box-sizing: border-box;
+  }
+  .th-opui-container .card {
+    background: var(--bg); border: 1px solid var(--bd); border-radius: 8px; padding: 6px; margin: 4px 0; backdrop-filter: blur(6px); color: var(--fg);
+  }
+  .th-opui-container .row { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 4px; }
+  .th-opui-container textarea {
+    flex: 1; color: var(--fg); background: rgba(0,0,0,.25); border: 1px solid var(--bd); border-radius: 6px;
+    padding: 4px 6px; outline: none; resize: vertical; min-height: 28px; font-size: 12px; line-height: 1.3;
+  }
+  .th-opui-container textarea:focus { border-color: rgba(124,92,255,.65); box-shadow: 0 0 0 2px rgba(124,92,255,.22); }
+  .th-opui-container button { border: 1px solid var(--bd); background: rgba(0,0,0,.22); color: var(--fg); border-radius: 6px; padding: 4px 8px; cursor: pointer; font-size: 12px; white-space: nowrap; transition: all 0.2s; }
+  .th-opui-container button.primary { border-color: rgba(61,220,151,.35); background: rgba(61,220,151,.14); }
+  .th-opui-container button.primary:hover { background: rgba(61,220,151,.20); }
+  .th-opui-container button:hover { background: rgba(255,255,255,.06); }
+
+  .th-opui-container .inline-group { flex: 1 1 45%; display: flex; align-items: center; justify-content: space-between; padding: 4px 6px; border: 1px dashed rgba(255,255,255,.15); border-radius: 6px; background: rgba(0,0,0,.15); gap: 6px; }
+  .th-opui-container .label { color: var(--muted); font-size: 11px; white-space: nowrap; }
+  .th-opui-container .tabs { display: flex; gap: 2px; flex: 1; justify-content: flex-end; }
+  .th-opui-container .tab { padding: 2px 6px; font-size: 11px; border-radius: 4px; border: 1px solid var(--bd); background: rgba(0,0,0,.18); text-align: center; cursor: pointer; user-select: none; white-space: nowrap; }
+  .th-opui-container .tab[data-selected="1"] { border-color: rgba(124,92,255,.55); background: rgba(124,92,255,.18); }
+
+  .th-opui-container .foot { font-size: 10px; color: var(--muted); display: flex; justify-content: space-between; align-items: center; margin-top: 6px; }
+  .th-opui-container .status-indicator { display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin-right: 4px; background: rgba(255,255,255,.3); }
+  .th-opui-container [data-state="ok"] .status-indicator { background: var(--ok); }
+  .th-opui-container [data-state="err"] .status-indicator { background: var(--bad); }
+  .th-opui-container [data-state="sync"] .status-indicator { background: var(--warn); }
+</style>
+</head>
+<body>
+<div class="th-opui-container">
+  <div class="card">
+    <div class="row" style="display:flex;">
+      <textarea data-th-opui-input placeholder="输入主角设定..."></textarea>
+      <button class="primary" data-th-opui-confirm>开始</button>
+    </div>
+
+    <div style="font-size:11px; color:var(--warn); padding:4px 0;">按你使用的开场白来切换，切换错误混乱概不负责</div>
+
+    <div class="row">
+      <div class="inline-group">
+        <div class="label">开局选择</div>
+        <div class="tabs">
+          <div class="tab" data-th-opui-choice="opening" data-value="1" data-selected="1">开局1</div>
+          <div class="tab" data-th-opui-choice="opening" data-value="2" data-selected="0">开局2</div>
+          <div class="tab" data-th-opui-choice="opening" data-value="3" data-selected="0">开局3</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="inline-group">
+        <div class="label">尸体生成</div>
+        <div class="tabs">
+          <div class="tab" data-th-opui-choice="corpse" data-value="normal" data-selected="1">普通尸体</div>
+          <div class="tab" data-th-opui-choice="corpse" data-value="pure" data-selected="0">纯净尸体</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="inline-group">
+        <div class="label">改造风格</div>
+        <div class="tabs">
+          <div class="tab" data-th-opui-choice="modify" data-value="normal" data-selected="1">普通改造</div>
+          <div class="tab" data-th-opui-choice="modify" data-value="gore" data-selected="0">血腥改造</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="foot">
+      <span data-th-opui-status data-state="sync"><span class="status-indicator"></span><span data-th-opui-status-text>正在加载...</span></span>
+      <span><b>滨莲市</b></span>
+    </div>
+  </div>
+</div>
+
+<script>
+(() => {
+  const TARGET_WORLDBOOK_NAME = '滨莲市2.0';
+
+  const ST = window.parent && typeof window.parent.getWorldbookNames === 'function' ? window.parent : window;
+  const ST_getWorldbookNames = ST.getWorldbookNames;
+  const ST_updateWorldbookWith = ST.updateWorldbookWith;
+  const ST_substitudeMacros = ST.substitudeMacros;
+
+  const PARENT_DOC = window.parent && window.parent.document ? window.parent.document : document;
+  const $ = window.parent && window.parent.$ ? window.parent.$ : window.$;
+
+  if (!$) {
+    console.error('[开场白面板] 缺少 jQuery 环境，无法初始化');
+    return;
+  }
+
+  function htmlEscape(text) {
+    return String(text)
+      .replace(/&/g, '\x26amp;')
+      .replace(/</g, '\x26lt;')
+      .replace(/>/g, '\x26gt;')
+      .replace(/"/g, '\x26quot;')
+      .replace(/'/g, '\x26#39;');
+  }
+
+  function toastSuccess(msg) {
+    try {
+      const t = window.parent && window.parent.toastr ? window.parent.toastr : window.toastr;
+      if (t && typeof t.success === 'function') return t.success(msg);
+    } catch (e) {}
+  }
+  function toastError(msg) {
+    try {
+      const t = window.parent && window.parent.toastr ? window.parent.toastr : window.toastr;
+      if (t && typeof t.error === 'function') return t.error(msg);
+    } catch (e) {}
+  }
+  function toastInfo(msg) {
+    try {
+      const t = window.parent && window.parent.toastr ? window.parent.toastr : window.toastr;
+      if (t && typeof t.info === 'function') return t.info(msg);
+    } catch (e) {}
+  }
+
+  const currentScript = document.currentScript;
+  const $root = currentScript ? $(currentScript).prev('.th-opui-container') : $('.th-opui-container').last();
+
+  function setStatus(state, text) {
+    $root.find('[data-th-opui-status]').attr('data-state', state);
+    $root.find('[data-th-opui-status-text]').text(text);
+  }
+
+  function getSelected(group) {
+    return $root.find('[data-th-opui-choice="' + group + '"][data-selected="1"]').first().attr('data-value') || '';
+  }
+
+  function setSelected(group, value) {
+    $root.find('[data-th-opui-choice="' + group + '"]').attr('data-selected', '0');
+    $root.find('[data-th-opui-choice="' + group + '"][data-value="' + value + '"]').attr('data-selected', '1');
+  }
+
+  /* 全量同步所有条目开关状态 */
+  async function syncAllTogglesAtomic() {
+    if (!ST_updateWorldbookWith) return;
+
+    const openingVal = getSelected('opening');
+    const corpseVal = getSelected('corpse');
+    const modifyVal = getSelected('modify');
+
+    setStatus('sync', '正在同步...');
+
+    try {
+      await ST_updateWorldbookWith(TARGET_WORLDBOOK_NAME, wb => {
+        let arr = Array.isArray(wb) ? wb : [];
+
+        arr.forEach(e => {
+          if (!e || !e.name) return;
+
+          /* 开局条目：三选一 */
+          if (e.name === '开局1') e.enabled = (openingVal === '1');
+          if (e.name === '开局2') e.enabled = (openingVal === '2');
+          if (e.name === '开局3') e.enabled = (openingVal === '3');
+
+          /* 过往角色速览：开局1和开局2时激活 */
+          if (e.name === '过往角色速览') e.enabled = (openingVal === '1' || openingVal === '2');
+
+          /* 过往角色速览2：开局3时激活 */
+          if (e.name === '过往角色速览2') e.enabled = (openingVal === '3');
+
+          /* 尸体生成条目：二选一 */
+          if (e.name === '尸体生成指导') e.enabled = (corpseVal === 'normal');
+          if (e.name === '尸体生成指导(净)') e.enabled = (corpseVal === 'pure');
+
+          /* 改造风格条目：二选一 */
+          if (e.name === '改造剧情指导(推荐)') e.enabled = (modifyVal === 'normal');
+          if (e.name === '改造剧情指导(血腥)') e.enabled = (modifyVal === 'gore');
+        });
+
+        return arr;
+      }, { render: 'debounced' });
+
+      setStatus('ok', '已实时同步');
+    } catch (e) {
+      console.error('同步开关失败', e);
+      setStatus('err', '同步失败');
+    }
+  }
+
+  /* 初始化时读取世界书状态 */
+  async function initData() {
+    const names = ST_getWorldbookNames ? ST_getWorldbookNames() : [];
+    if (!names || !names.includes(TARGET_WORLDBOOK_NAME)) {
+      setStatus('err', '未找到世界书');
+      return;
+    }
+
+    let openingVal = '1';
+    let corpseVal = 'normal';
+    let modifyVal = 'normal';
+
+    if (ST_updateWorldbookWith) {
+      await ST_updateWorldbookWith(TARGET_WORLDBOOK_NAME, wb => {
+        const arr = Array.isArray(wb) ? wb : [];
+
+        arr.forEach(e => {
+          if (!e || !e.name) return;
+
+          /* 检测开局状态 */
+          if (e.name === '开局2' && e.enabled) openingVal = '2';
+          if (e.name === '开局3' && e.enabled) openingVal = '3';
+
+          /* 检测尸体生成状态 */
+          if (e.name === '尸体生成指导(净)' && e.enabled) corpseVal = 'pure';
+
+          /* 检测改造风格状态 */
+          if (e.name === '改造剧情指导(血腥)' && e.enabled) modifyVal = 'gore';
+        });
+
+        return arr;
+      });
+    }
+
+    setSelected('opening', openingVal);
+    setSelected('corpse', corpseVal);
+    setSelected('modify', modifyVal);
+
+    setStatus('ok', '准备就绪');
+  }
+
+  /* 选项卡点击事件 */
+  $root.on('click', '[data-th-opui-choice]', function(ev) {
+    const $btn = $(ev.currentTarget);
+    const group = $btn.attr('data-th-opui-choice');
+    const val = $btn.attr('data-value');
+    setSelected(group, val);
+    syncAllTogglesAtomic();
+  });
+
+  /* 开始按钮逻辑 */
+  $root.on('click', '[data-th-opui-confirm]', async function(ev) {
+    const rawText = String($root.find('[data-th-opui-input]').val() || '').trim();
+    if (!rawText) {
+      toastInfo('哥哥，请先输入主角设定哦~');
+      return setStatus('err', '设定为空');
+    }
+
+    setStatus('sync', '正在写入...');
+    try {
+      await syncAllTogglesAtomic();
+
+      await ST_updateWorldbookWith(TARGET_WORLDBOOK_NAME, wb => {
+        let arr = Array.isArray(wb) ? wb : [];
+        const userEntryName = ST_substitudeMacros ? ST_substitudeMacros('User倾向') : 'User倾向';
+        const wrappedText = '<这是主角设定>\n' + rawText + '\n</这是主角设定>';
+        const userIdx = arr.findIndex(e => e && e.name === userEntryName);
+
+        const userEntry = {
+          name: userEntryName,
+          enabled: true,
+          strategy: { type: 'constant', keys: [], keys_secondary: { logic: 'and_any', keys: [] }, scan_depth: 'same_as_global' },
+          position: { type: 'after_character_definition', order: 0 },
+          content: wrappedText,
+          probability: 100,
+          recursion: { prevent_incoming: true, prevent_outgoing: true, delay_until: null },
+        };
+
+        if (userIdx === -1) arr.push(userEntry);
+        else arr[userIdx] = Object.assign({}, arr[userIdx], userEntry);
+
+        return arr;
+      }, { render: 'debounced' });
+
+      const promptText = rawText + '\n\n以上是User的人设, 仅将User姓名转述为剧情中的玩家信息录入, 并开始后续剧情。';
+
+      const $sendTextarea = $('#send_textarea', PARENT_DOC);
+      if ($sendTextarea.length) {
+        $sendTextarea.val(promptText).trigger('input');
+
+        const $sendBtn = $('#send_but', PARENT_DOC);
+        if ($sendBtn.length) {
+            $sendBtn.trigger('click');
+            toastSuccess('写入成功并已自动发送！');
+            setStatus('ok', '已发送');
+        } else {
+            toastSuccess('写入成功！请手动点击发送。');
+            setStatus('ok', '请发送');
+        }
+      } else {
+        toastInfo('写入成功，请手动发送。');
+        setStatus('ok', '需手动发');
+      }
+    } catch (e) {
+      console.error('写入失败', e);
+      toastError('写入失败了，请检查控制台。');
+      setStatus('err', '写入失败');
+    }
+  });
+
+  /* 启动初始化 */
+  initData();
+})();
+</script>
+</body>
+</html>
+```

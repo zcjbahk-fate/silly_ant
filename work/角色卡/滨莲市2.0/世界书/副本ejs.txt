@@ -1,0 +1,50 @@
+@@preprocessing
+<%_
+// 1. 获取当前状态栏的地点变量
+if (typeof currentLocStr === 'undefined') {
+  var fac = getvar('stat_data.坐标.当前位置.具体设施', { defaults: '' });
+  var area = getvar('stat_data.坐标.当前位置.区域', { defaults: '' });
+  var currentLocStr = fac + ' ' + area;
+}
+
+// 2. 匹配与去重逻辑
+if (typeof locationsToLoad === 'undefined') {
+  var locationsToLoad = new Set();
+
+  var locationMap = {
+    '黄泥湾七号站': ['黄泥湾七号站', '七号站'],
+    '8号出口': ['8号出口', '八号出口'],
+    '14路末班车': ['14路末班车', '末班车'],
+    '圣心仁爱医院': ['圣心仁爱医院', '废弃月子中心'],
+    '青龙陵景区': ['青龙陵景区', '青龙陵', '唐代郡王陵墓'],
+    '地下商业街': ['地下商业街', '商业街地下', '烂尾商业综合体'],
+    '废弃温室群': ['废弃温室群', '植物园']
+  };
+
+  for (var entryName in locationMap) {
+    if (locationMap.hasOwnProperty(entryName)) {
+      var keywords = locationMap[entryName];
+
+      // A: 检查变量中是否包含关键词
+      var matchedVar = false;
+      for (var k = 0; k < keywords.length; k++) {
+        if (currentLocStr.includes(keywords[k])) {
+          matchedVar = true;
+          break;
+        }
+      }
+
+      // B: 使用原生的 matchChatMessages 检查正文（传入数组，任意匹配即返回 true）
+      if (matchedVar || matchChatMessages(keywords)) {
+        locationsToLoad.add(entryName);
+      }
+    }
+  }
+  locationsToLoad = Array.from(locationsToLoad);
+}
+
+// 3. 加载对应的地点世界书条目
+for (var j = 0; j < locationsToLoad.length; j++) {
+  print(await getwi(locationsToLoad[j]) || '');
+}
+_%>

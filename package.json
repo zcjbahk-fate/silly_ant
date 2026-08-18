@@ -1,0 +1,11 @@
+{
+  "name": "silly_ant",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "serve": "node scripts/serve.mjs",
+    "deploy": "node scripts/deploy.mjs",
+    "bundle": "node tavern_sync.mjs bundle",
+    "bundle:all": "node scripts/deploy.mjs --bundle-only"
+  }
+}

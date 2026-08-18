@@ -1,0 +1,12 @@
+---
+<status_current_variables>
+手机消息:
+  {{format_message_variable::stat_data.手机消息}}
+坐标:
+  {{format_message_variable::stat_data.坐标}}
+主角:
+  {{format_message_variable::stat_data.主角}}
+装备:
+  {{format_message_variable::stat_data.装备}}
+在场角色列表:
+  {{format_message_variable::stat_data.在场角色列表}}

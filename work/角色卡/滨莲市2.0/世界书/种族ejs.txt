@@ -1,0 +1,76 @@
+@@preprocessing
+<%_
+// 1. 获取角色列表变量
+if (typeof characterList === 'undefined') {
+  var characterList = getvar('stat_data.角色列表', { defaults: {} });
+}
+
+// 2. 匹配与去重逻辑
+if (typeof racesToLoad === 'undefined') {
+  var racesToLoad = new Set();
+
+  var raceMap = {
+    '僵尸': ['僵尸', '符纸封印僵尸'],
+    '寄生体': ['寄生体'],
+    '哭泣天使': ['哭泣天使'],
+    '孕尸': ['孕尸'],
+    '公车艳尸': ['公车艳尸', '过劳死女尸'],
+    '异常体': ['异常体', '类人实体'],
+    '尸变体': ['尸变体']
+  };
+
+  // 路径A：直接使用原生的 matchChatMessages 扫描正文关键词
+  for (var entryName in raceMap) {
+    if (raceMap.hasOwnProperty(entryName)) {
+      var keywords = raceMap[entryName];
+      if (matchChatMessages(keywords)) {
+        racesToLoad.add(entryName);
+      }
+    }
+  }
+
+  // 路径B：使用 matchChatMessages 扫描正文是否提到角色名，读取变量关联激活
+  if (characterList && typeof characterList === 'object') {
+    for (var charName in characterList) {
+      if (characterList.hasOwnProperty(charName)) {
+        // 可靠地检测正文是否提到该角色
+        if (matchChatMessages([charName])) {
+          var charData = characterList[charName];
+          if (charData && charData.种族 && typeof charData.种族 === 'string') {
+            var race = charData.种族.trim();
+
+            if (race !== '' && race !== '人类' && race !== '待初始化') {
+              var matchedDict = false;
+              for (var eName in raceMap) {
+                if (raceMap.hasOwnProperty(eName)) {
+                  var raceKws = raceMap[eName];
+                  // 检查变量中的种族值是否与字典双向兼容
+                  for (var r = 0; r < raceKws.length; r++) {
+                    if (race.includes(raceKws[r]) || raceKws[r].includes(race)) {
+                      racesToLoad.add(eName);
+                      matchedDict = true;
+                      break;
+                    }
+                  }
+                  if (matchedDict) break;
+                }
+              }
+              // 如果是一个全新的种族（不在字典里），直接把它当做条目名加载
+              if (!matchedDict) {
+                racesToLoad.add(race);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  racesToLoad = Array.from(racesToLoad);
+}
+
+// 3. 加载对应的种族世界书条目
+for (var j = 0; j < racesToLoad.length; j++) {
+  print(await getwi(racesToLoad[j]) || '');
+}
+_%>
