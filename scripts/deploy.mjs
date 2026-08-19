@@ -296,8 +296,18 @@ async function main() {
       }
     }
 
-    execSync('git push', { cwd: ROOT, stdio: 'pipe' });
-    console.log('    ✅ push 完成');
+    try {
+      execSync('git push', { cwd: ROOT, stdio: 'pipe' });
+      console.log('    ✅ push 完成');
+    } catch (pushErr) {
+      // 若因本地代理配置端口未开启导致失败，尝试使用直连 push
+      try {
+        execSync('git -c http.proxy="" -c https.proxy="" push', { cwd: ROOT, stdio: 'pipe' });
+        console.log('    ✅ push 完成 (直连)');
+      } catch (fallbackErr) {
+        throw pushErr;
+      }
+    }
   } catch (e) {
     console.error(`    ❌ Git 操作失败: ${e.message}`);
   }
