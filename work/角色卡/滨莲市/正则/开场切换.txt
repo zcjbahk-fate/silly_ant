@@ -99,12 +99,48 @@
 
 <script>
 (() => {
-  const TARGET_WORLDBOOK_NAME = '滨莲市2.0';
-
   const ST = window.parent && typeof window.parent.getWorldbookNames === 'function' ? window.parent : window;
   const ST_getWorldbookNames = ST.getWorldbookNames;
   const ST_updateWorldbookWith = ST.updateWorldbookWith;
   const ST_substitudeMacros = ST.substitudeMacros;
+
+  function getTargetWorldbookName() {
+    // 1. 优先获取当前角色的主绑定世界书
+    try {
+      if (typeof ST.getCharWorldbookNames === 'function') {
+        const wbNames = ST.getCharWorldbookNames('current') || (ST.this_chid !== undefined ? ST.getCharWorldbookNames(ST.this_chid) : null);
+        if (wbNames && wbNames.primary) return wbNames.primary;
+      }
+    } catch (e) {}
+
+    // 2. 尝试获取当前角色名称 (因为角色卡默认世界书与角色同名)
+    try {
+      if (typeof ST.getCharacter === 'function') {
+        const char = ST.getCharacter();
+        if (char && char.name) return char.name;
+      }
+    } catch (e) {}
+    try {
+      if (typeof ST.characters === 'object' && ST.this_chid !== undefined && ST.characters[ST.this_chid]?.name) {
+        return ST.characters[ST.this_chid].name;
+      }
+    } catch (e) {}
+    try {
+      if (typeof ST_substitudeMacros === 'function') {
+        const charName = ST_substitudeMacros('{{char}}');
+        if (charName && charName !== '{{char}}') return charName;
+      }
+    } catch (e) {}
+
+    // 3. 从已有的世界书列表中动态匹配
+    const names = ST_getWorldbookNames ? ST_getWorldbookNames() : [];
+    if (names.includes('滨莲市')) return '滨莲市';
+    if (names.includes('滨莲市2.0')) return '滨莲市2.0';
+    const found = names.find(n => typeof n === 'string' && n.startsWith('滨莲市'));
+    if (found) return found;
+
+    return '滨莲市';
+  }
 
   const PARENT_DOC = window.parent && window.parent.document ? window.parent.document : document;
   const $ = window.parent && window.parent.$ ? window.parent.$ : window.$;
@@ -163,6 +199,7 @@
   async function syncAllTogglesAtomic() {
     if (!ST_updateWorldbookWith) return;
 
+    const targetWb = getTargetWorldbookName();
     const openingVal = getSelected('opening');
     const corpseVal = getSelected('corpse');
     const modifyVal = getSelected('modify');
@@ -170,7 +207,7 @@
     setStatus('sync', '正在同步...');
 
     try {
-      await ST_updateWorldbookWith(TARGET_WORLDBOOK_NAME, wb => {
+      await ST_updateWorldbookWith(targetWb, wb => {
         let arr = Array.isArray(wb) ? wb : [];
 
         arr.forEach(e => {
@@ -208,8 +245,9 @@
 
   /* 初始化时读取世界书状态 */
   async function initData() {
+    const targetWb = getTargetWorldbookName();
     const names = ST_getWorldbookNames ? ST_getWorldbookNames() : [];
-    if (!names || !names.includes(TARGET_WORLDBOOK_NAME)) {
+    if (!names || !names.includes(targetWb)) {
       setStatus('err', '未找到世界书');
       return;
     }
@@ -219,7 +257,7 @@
     let modifyVal = 'normal';
 
     if (ST_updateWorldbookWith) {
-      await ST_updateWorldbookWith(TARGET_WORLDBOOK_NAME, wb => {
+      await ST_updateWorldbookWith(targetWb, wb => {
         const arr = Array.isArray(wb) ? wb : [];
 
         arr.forEach(e => {
@@ -268,7 +306,8 @@
     try {
       await syncAllTogglesAtomic();
 
-      await ST_updateWorldbookWith(TARGET_WORLDBOOK_NAME, wb => {
+      const targetWb = getTargetWorldbookName();
+      await ST_updateWorldbookWith(targetWb, wb => {
         let arr = Array.isArray(wb) ? wb : [];
         const userEntryName = ST_substitudeMacros ? ST_substitudeMacros('User倾向') : 'User倾向';
         const wrappedText = '<这是主角设定>\n' + rawText + '\n</这是主角设定>';
