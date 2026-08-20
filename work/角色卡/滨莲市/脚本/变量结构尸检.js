@@ -37,6 +37,11 @@ export const Schema = z.object({
     })
   ).transform(data => _.pickBy(data, ({ 数量 }) => 数量 > 0)).catch({}).prefault({}),
 
+  在场角色列表: z.record(
+    z.string().describe('实体标识名'),
+    z.boolean()
+  ).catch({}).prefault({}),
+
   角色列表: z.record(
     z.string().describe('角色姓名'),
     z.intersection(
@@ -82,6 +87,7 @@ export const Schema = z.object({
           口部: z.string().or(z.literal('无')).catch('无').prefault('无'),
           胸部: z.string().or(z.literal('无')).catch('无').prefault('无'),
           小穴: z.string().or(z.literal('无')).catch('无').prefault('无'),
+          淫纹: z.string().or(z.literal('无')).catch('无').prefault('无'),
           宫颈: z.string().or(z.literal('无')).catch('无').prefault('无'),
           后庭: z.string().or(z.literal('无')).catch('无').prefault('无'),
           四肢: z.string().or(z.literal('无')).catch('无').prefault('无'),
