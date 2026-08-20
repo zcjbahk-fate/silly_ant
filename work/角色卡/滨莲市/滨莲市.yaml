@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://testingcf.jsdelivr.net/gh/StageDog/tavern_sync/dist/schema/character.zh.json
 头像: 头像
-版本: ""
+版本: "1.02"
 作者: ""
 备注: ""
 
@@ -1004,5 +1004,25 @@
           数据: true
           按钮: true
         文件: 脚本\尸检面板1.2
+
+      - 名称: 自动更新角色卡
+        id: b0386104-2318-4afa-ad51-c10b6077d3a9
+        启用: true
+        类型: 脚本
+        导出时携带:
+          数据: true
+          按钮: true
+        文件: ../../公共脚本/自动更新角色卡
+        按钮:
+          启用: true
+          按钮列表:
+            - 名称: "更新角色卡: 滨莲市"
+              可见: true
+            - 名称: 更新日志
+              可见: true
+        数据:
+          角色卡名称: 滨莲市
+          角色卡链接: https://raw.githubusercontent.com/zcjbahk-fate/silly_ant/refs/heads/main/resource/角色卡/滨莲市/滨莲市.png
+          更新日志链接: https://raw.githubusercontent.com/zcjbahk-fate/silly_ant/refs/heads/main/resource/角色卡/滨莲市/更新日志.md
 
     变量: {}
