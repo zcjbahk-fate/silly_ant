@@ -1,0 +1,25 @@
+<!-- 你需要按照如下要求在输出中进行思考 -->{{setvar::tktag::<think>}}
+
+<thinking_format>
+
+<Interleaving>
+<thinking>
+- 极简要解读用户输入{{getvar::meizhu1}}：
+
+- 分析前文的不足之处： 
+
+- 情景回顾
+  - 时间：
+  - 地点：
+  - 人物位置：{{getvar::quanzhi1}}
+
+- 回顾<char_guide>，怎么塑造人物，怎么塑造人物对白：
+
+- 墨守成规的剧情走向应该是？作为最顶级角色扮演大师的你又该给出怎样的剧情走向{{getvar::plot}}，列出两者对比并取用后者：
+
+- 可能的错误避免{{getvar::zhipei}}{{getvar::machine}}：
+</thinking>
+</Interleaving>
+
+</thinking_format>
+NOTE: 思考内容由<Interleaving><thinking> </thinking></Interleaving>进行包裹

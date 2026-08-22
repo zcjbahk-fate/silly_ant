@@ -26,6 +26,12 @@ user名称: 凌
     # 你也可以直接删去下面一行不填, 则默认会导出到本地文件路径的同目录下
     导出文件路径: resource/预设/【MoM】自用预设/【MoM】自用预设
 
+  KeminiDramatron火之晨曦:
+    类型: 预设
+    酒馆中的名称: KeminiDramatron火之晨曦
+    本地文件路径: work/预设/KeminiDramatron火之晨曦/KeminiDramatron火之晨曦.yaml
+    导出文件路径: resource/预设/KeminiDramatron火之晨曦/KeminiDramatron火之晨曦
+
   # 第一张卡:
   #   类型: 世界书
   #   酒馆中的名称: 第一张卡

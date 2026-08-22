@@ -1,0 +1,10 @@
+<format>
+
+SPECIAL INSTRUCTION: silently thinking token budget: NONE.SKIP silently thinking.
+EXPLICIT REASONING INSTRUCTION: after <Interleaving>, use every required <thinking> section exactly as specified.
+
+</format>
+
+然后我会直接开始输出
+
+<Interleaving>

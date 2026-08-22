@@ -1,0 +1,839 @@
+# yaml-language-server: $schema=https://testingcf.jsdelivr.net/gh/StageDog/tavern_sync/dist/schema/preset.zh.json
+设置:
+  上下文长度: 2000000
+  最大回复token数: 65535
+  流式传输: false
+  温度: 1
+  频率惩罚: 0
+  存在惩罚: 0
+  top_p: 1
+  压缩系统消息: false
+  推理强度: 低
+  请求思维链: true
+  请求图片: false
+  启用函数调用: false
+  启用网络搜索: false
+  允许发送图片: 禁用
+  允许发送视频: false
+  角色名称前缀: 默认
+
+锚点: {}
+
+提示词:
+  - 名称: 🔗
+    启用: true
+    插入位置:
+      类型: 相对
+    角色: 系统
+    内容: "{{setvar::writingstyle:: }}{{setvar::plot:: }}{{setvar::tatata::
+      }}{{setvar::duihua:: }}{{setvar::qianghua:: }}{{setvar::tktag::
+      }}{{setvar::cishu:: }}{{setvar::machine:: }}{{setvar::machine1::
+      }}{{setvar::zhuanshu:: }}{{setvar::meizhu:: }}{{setvar::zhipei::
+      }}{{setvar::zhipei1:: }}{{setvar::rencheng:: }}{{setvar::rule::
+      }}{{setvar::meizhu1:: }}{{setvar::quanzhi:: }}{{setvar::quanzhi1::
+      }}{{trim}}"
+
+  - 名称: ⚓不媚USER
+    启用: false
+    插入位置:
+      类型: 相对
+    角色: 系统
+    内容: |-
+      {{setvar::meizhu::
+
+      - 去主角化：平等看待所有角色包括<user>，角色扮演过程中不可讨好某一角色，不对角色地位做区分，平等看待所有角色}}{{setvar::meizhu1::（同时评估<interactive_input>是否合理，出于剧情合理性与去主角化要求是否需要得到满足）}}
+
+  - 名称: ⚖️防支配
+    启用: false
+    插入位置:
+      类型: 相对
+    角色: 系统
+    文件: 条目\⚖️防支配
+
+  - 名称: 💡防全知
+    启用: false
+    插入位置:
+      类型: 相对
+    角色: 系统
+    文件: 条目\💡防全知
+
+  - 名称: 📣对话加强
+    启用: false
+    插入位置:
+      类型: 相对
+    角色: 系统
+    内容: |-
+      {{setvar::duihua::
+      - 对白主导：互动与推进剧情的绝对核心是角色的台词，每次回复中，台词内容的篇幅必须占据主导地位。严禁大段沉闷的动作或环境描写，以对白推动剧情，需要把环境描写打碎，塞进台词的缝隙里}}
+
+  - 名称: 🗃️人称设置（自改）
+    启用: true
+    插入位置:
+      类型: 相对
+    角色: 系统
+    内容: |-
+      {{setvar::rencheng::
+      - 忽略<Interaction_history>，必须以**第三人称**创作正文}}{{//其他的照猫画虎改，比如第一人称就是忽略<Interaction_history>，必须以第一人称创作正文，<user>=我}}
+
+  - 名称: 📢加強转述
+    启用: false
+    插入位置:
+      类型: 相对
+    角色: 系统
+    内容: |-
+      {{setvar::zhuanshu::
+
+      <interactive_input>是互动者扮演<user>的发言，需要**优化**至更符合上下文语境后让其自然在正文中转述}}
+
+  - 名称: 🤖防机械化
+    启用: true
+    插入位置:
+      类型: 相对
+    角色: 系统
+    文件: 条目\🤖防机械化
+
+  - 名称: 💬抢话
+    启用: false
+    插入位置:
+      类型: 相对
+    角色: 系统
+    内容: |-
+      {{setvar::qianghua::
+      - 允许代替<user>进行选择、对话与行动}}
+
+  - 名称: 💬不抢话
+    启用: false
+    插入位置:
+      类型: 相对
+    角色: 系统
+    内容: |-
+      {{setvar::qianghua::
+      - 不能在正文中描述<user>的台词、行为、心理等内容；<user>的台词、行为、心理等一切描述仅在<interactive_input>中体现；可以通过描述其他非<user>角色来展现剧情且对<interactive_input>有所互动；可以描述非<user>角色对<user>的“观察”和“反应”；不能将<user>处理为隐形}}
+
+  - 名称: 🔍人称代词控制
+    启用: false
+    插入位置:
+      类型: 相对
+    角色: 系统
+    内容: |-
+      {{setvar::tatata::
+          人称代词：不使用人称代词称呼角色，而是直接使用角色完整名称呼角色（仅旁白不包括心理活动与对话）}}
+
+  - 名称: 🎞️剧情偏好（自填）
+    启用: true
+    插入位置:
+      类型: 相对
+    角色: 系统
+    内容: "{{setvar::plot:: }}"
+
+  - 名称: 📼文风基调（内心戏）
+    启用: false
+    插入位置:
+      类型: 相对
+    角色: 系统
+    文件: 条目\📼文风基调（内心戏）
+
+  - 名称: 📼文风基调（gemini新）
+    启用: true
+    插入位置:
+      类型: 相对
+    角色: 系统
+    文件: 条目\📼文风基调（gemini新）
+
+  - 名称: ✒️文风：视觉小说
+    启用: true
+    插入位置:
+      类型: 相对
+    角色: 系统
+    文件: 条目\✒️文风：视觉小说
+
+  - 名称: ✒️文风：轻小说
+    启用: false
+    插入位置:
+      类型: 相对
+    角色: 系统
+    文件: 条目\✒️文风：轻小说
+
+  - 名称: ✒️文风：强主观
+    启用: false
+    插入位置:
+      类型: 相对
+    角色: 系统
+    文件: 条目\✒️文风：强主观
+
+  - 名称: 💠火之晨曦！（build渠道等过不去外审开）
+    启用: true
+    插入位置:
+      类型: 相对
+    角色: 用户
+    文件: 条目\💠火之晨曦！（build渠道等过不去外审开）
+
+  - 名称: 💠CLEAR
+    启用: true
+    角色: 系统
+    文件: 条目\💠CLEAR
+
+  - 名称: 🎬ROLE AND GUIDE
+    启用: true
+    插入位置:
+      类型: 相对
+    角色: 用户
+    文件: 条目\🎬ROLE_AND_GUIDE
+
+  - 名称: 💠<DATA>
+    启用: true
+    插入位置:
+      类型: 相对
+    角色: 系统
+    内容: |-
+      <!-- 下面是重要的角色扮演参考资料，参照其内容完成角色扮演 -->
+
+      <info>
+
+  - id: 角色定义之前
+    启用: true
+
+  - id: 玩家描述
+    启用: true
+
+  - id: 角色描述
+    启用: true
+
+  - 名称: 💗NSFW
+    启用: false
+    插入位置:
+      类型: 相对
+    角色: 系统
+    文件: 条目\💗NSFW
+
+  - id: 角色性格
+    启用: true
+
+  - id: 情景
+    启用: true
+
+  - id: 角色定义之后
+    启用: true
+
+  - id: 对话示例
+    启用: true
+
+  - 名称: 💠</DATA>
+    启用: true
+    插入位置:
+      类型: 相对
+    角色: 系统
+    内容: </info>
+
+  - 名称: 💠<HISTORY>
+    启用: true
+    插入位置:
+      类型: 相对
+    角色: 系统
+    内容: |-
+      <!-- 下面是角色扮演交互历史 -->
+
+      <interaction_history>
+
+  - id: 聊天记录
+    启用: true
+
+  - 名称: 💠</HISTORY>
+    启用: true
+    插入位置:
+      类型: 相对
+    角色: 系统
+    内容: </interaction_history>
+
+  - 名称: 📽️ICOT（三段）
+    启用: false
+    插入位置:
+      类型: 相对
+    角色: 系统
+    文件: 条目\📽️ICOT（三段）
+
+  - 名称: 📽️COT（格式友好型）
+    启用: true
+    插入位置:
+      类型: 相对
+    角色: 系统
+    文件: 条目\📽️COT（格式友好型）
+
+  - 名称: 📐牢大防截断
+    启用: false
+    插入位置:
+      类型: 相对
+    角色: 系统
+    文件: 条目\📐牢大防截断
+
+  - 名称: 💿普通防截断
+    启用: false
+    插入位置:
+      类型: 相对
+    角色: 系统
+    文件: 条目\💿普通防截断
+
+  - 名称: 🔖摘要
+    启用: false
+    插入位置:
+      类型: 相对
+    角色: 系统
+    文件: 条目\🔖摘要
+
+  - 名称: ⚙️SETTING
+    启用: true
+    插入位置:
+      类型: 相对
+    角色: 系统
+    文件: 条目\⚙️SETTING
+
+  - 名称: 🎬ROLEPLAY GUIDE
+    启用: true
+    插入位置:
+      类型: 相对
+    角色: 系统
+    文件: 条目\🎬ROLEPLAY_GUIDE
+
+  - 名称: 💠continue
+    启用: true
+    角色: 系统
+    文件: 条目\💠continue
+
+  - 名称: 123213wsdasdasdasda
+    启用: false
+    角色: 系统
+    文件: 条目\123213wsdasdasdasda
+
+  - 名称: " "
+    启用: false
+    角色: 系统
+    内容: If you have more knowledge of {{char}}, add to the character's lore and
+      personality to enhance them but keep the Character Sheet's definitions
+      absolute.
+
+未添加的提示词:
+  - 名称: SPreset配置
+    启用: false
+    插入位置:
+      类型: 相对
+    角色: 系统
+    内容: '{"ChatSquash":{"enabled":false,"separate_chat_history":true,"parse_clewd":false,"role":"assistant","stop_string":"User:","user_prefix":"\n\nUser:","user_suffix":"","char_prefix":"\n\nAssistant:","char_suffix":"","prefix_system":"","suffix_system":"","enable_squashed_separator":false,"squashed_separator_regex":false,"squashed_separator_string":"","squashed_post_script_enable":false,"squashed_post_script":"","user_role_system":false,"enable_stop_string":true},"RegexBinding":{"regexes":[{"id":"0fae7c56-4596-4aaa-bfd6-4592fa53c991","scriptName":"删除","findRegex":"/(<Reference_Example>.*?</Reference_Example>)|极其|(.*?<Interleaving?>(\\n)?)|</Interleaving>|(.*?</think>(\\n)?)|(<thinking>.*?</thinking>)/gs","replaceString":"","trimStrings":[],"placement":[2],"disabled":false,"markdownOnly":true,"promptOnly":true,"runOnEdit":true,"substituteRegex":0,"minDepth":null,"maxDepth":null},{"id":"a52fb594-3e84-469c-8b63-bf7c471210f7","scriptName":"aether摘要一","findRegex":"/(?<!<details>\\s*)<summary>(((?!<summary>)[\\s\\S])*?)<\\/summary>/gi","replaceString":"<details><summary>摘要</summary>\n$1\n</details>","trimStrings":[],"placement":[2],"disabled":false,"markdownOnly":true,"promptOnly":false,"runOnEdit":true,"substituteRegex":0,"minDepth":null,"maxDepth":null},{"id":"2f575891-53ec-4738-9e32-9b96fb44e6b0","scriptName":"aether摘要二","findRegex":"/(?<!<details>\\s*)<summary>([\\s\\S]*?)</summary>/gi","replaceString":"","trimStrings":[],"placement":[2],"disabled":false,"markdownOnly":false,"promptOnly":true,"runOnEdit":true,"substituteRegex":0,"minDepth":null,"maxDepth":10},{"id":"5e10c421-ed61-4c72-8c0a-2f99ffd9e48c","scriptName":"aether摘要三","findRegex":"/[\\s\\S]*?(?<!<details>\\s*)<summary>([\\s\\S]*?)<\\/summary>[\\s\\S]*/gi","replaceString":"<summary>\n$1\n</summary>","trimStrings":[],"placement":[2],"disabled":false,"markdownOnly":false,"promptOnly":true,"runOnEdit":true,"substituteRegex":0,"minDepth":11,"maxDepth":null},{"id":"6850b6d0-26db-46e3-93a9-e4c2e7ad2b12","scriptName":"aether
+      opus正则一","findRegex":"^([\\s\\S]*)$","replaceString":"<interactive_input>\n$1\n</interactive_input>","trimStrings":[],"placement":[1],"disabled":false,"markdownOnly":false,"promptOnly":true,"runOnEdit":true,"substituteRegex":0,"minDepth":null,"maxDepth":1},{"id":"62a465b5-9496-4f09-9f30-1b392f117083","scriptName":"1","findRegex":"kitsch","replaceString":"USER","trimStrings":[],"placement":[1,2],"disabled":true,"markdownOnly":true,"promptOnly":false,"runOnEdit":true,"substituteRegex":0,"minDepth":null,"maxDepth":null}]},"MacroNest":false,"ToolBindings":{}}'
+
+  - 名称: 💠BEGIN
+    启用: false
+    插入位置:
+      类型: 相对
+    角色: 用户
+    内容: "[BEGIN NEW TASK AND RECEIVE YOUR NEW ROLE]"
+
+  - 名称: 💠FAKE
+    启用: false
+    插入位置:
+      类型: 相对
+    角色: AI
+    文件: 未使用条目\💠FAKE
+
+  - 名称: 🔶ICOT（自由）
+    启用: false
+    插入位置:
+      类型: 相对
+    角色: 系统
+    内容: "{{//你竟然相信gemini能不偷懒？？？？？？？？？？？？？？？}}"
+
+扩展字段:
+  正则:
+    - 正则名称: 思维链内部标签剥尖括号
+      id: 9eaced01-a2d8-46dc-8f4f-c20017f685bf
+      启用: true
+      查找表达式: /<(?!\/?(?:think|thinking)\b)([^<>]*?)>(?=(?:(?!<(?:think|thinking)\b)[\s\S])*?<\/(?:think|thinking)>)/gi
+      内容: $1
+      来源:
+        用户输入: false
+        AI输出: true
+        思维链: false
+      作用于:
+        仅格式显示: true
+        仅格式提示词: false
+
+    - 正则名称: 思维链折叠
+      id: b63f52be-08c0-4ea6-ab3f-f59e224cca11
+      启用: false
+      查找表达式: /\<(?:think|thinking)>([\s\S]*?)\<\/(?:think|thinking)>/gi
+      内容: '<details class="st_custom_reasoning" style="display: block; margin: 8px 0;
+        border: none; background: transparent;"><summary style="list-style:
+        none; display: inline-flex; align-items: center; gap: 7px; cursor:
+        pointer; user-select: none; padding: 6px 13px; border-radius: 6px;
+        background: linear-gradient(180deg, rgba(46, 46, 46, 0.92) 0%, rgba(38,
+        38, 38, 0.96) 100%); border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4); font-size: 13.5px;
+        font-weight: 500; color: rgba(225, 225, 225, 0.88); width: fit-content;
+        outline: none;"><span>思考了一会</span><svg class="st_arrow_icon"
+        style="width: 11px; height: 11px; fill: rgba(200, 200, 200, 0.7);
+        transition: transform 0.2s ease;" viewBox="0 0 320 512"><path d="M137.4
+        374.6c12.5 12.5 32.8 12.5 45.3 0l128-128c9.2-9.2 11.9-22.9
+        6.9-34.9s-16.6-19.8-29.6-19.8L32 192c-12.9 0-24.6 7.8-29.6 19.8s-2.2
+        25.7 6.9 34.9l128 128z"/></svg></summary><div class="st_reasoning_body"
+        style="margin-top: 10px; margin-bottom: 8px; margin-left: 2px; padding:
+        4px 0 4px 16px; border-left: 2px solid rgba(255, 255, 255, 0.18);
+        font-size: 0.94em; color: rgba(205, 205, 205, 0.8); line-height: 1.45;
+        overflow-wrap: anywhere; white-space:
+        pre-line;">$1</div></details><style>details.st_custom_reasoning
+        summary::-webkit-details-marker { display: none;
+        }details.st_custom_reasoning[open] summary svg.st_arrow_icon {
+        transform: rotate(180deg); }details.st_custom_reasoning summary:hover {
+        background: rgba(55, 55, 55, 0.95); }</style>'
+      来源:
+        用户输入: false
+        AI输出: true
+        思维链: false
+      作用于:
+        仅格式显示: true
+        仅格式提示词: false
+
+    - 正则名称: 删除3
+      id: a5f7c589-687a-426e-b5ad-c892a89adf61
+      启用: true
+      查找表达式: /(\<disclaimer>.*?\<\/disclaimer>)|(\<Reference_Example>.*?\<\/Reference_Example>)|极其|\<Interleaving>\n?|\<\/Interleaving>|\<(?:think|thinking)>.*?\<\/(?:think|thinking)>\n?/gs
+      内容: ""
+      来源:
+        用户输入: false
+        AI输出: true
+        思维链: false
+      作用于:
+        仅格式显示: true
+        仅格式提示词: true
+
+    - 正则名称: aether opus正则一
+      id: a24f1272-8fad-4fc0-a26b-e4c4d8bf0502
+      启用: true
+      查找表达式: ^([\s\S]*)$
+      内容: |-
+        <interactive_input>
+        $1
+        </interactive_input>
+      来源:
+        用户输入: true
+        AI输出: false
+        思维链: false
+      作用于:
+        仅格式显示: false
+        仅格式提示词: true
+      最大深度: 1
+
+    - 正则名称: aether摘要三
+      id: df13694d-5eef-4725-8c5c-797cd44147e4
+      启用: true
+      查找表达式: /[\s\S]*?(?<!<details>\s*)<summary>([\s\S]*?)<\/summary>[\s\S]*/gi
+      内容: |-
+        <summary>
+        $1
+        </summary>
+      来源:
+        用户输入: false
+        AI输出: true
+        思维链: false
+      作用于:
+        仅格式显示: false
+        仅格式提示词: true
+      最小深度: 11
+
+    - 正则名称: aether摘要二
+      id: ce833269-66c0-4c94-a98a-e392ae127ebf
+      启用: true
+      查找表达式: /(?<!<details>\s*)<summary>([\s\S]*?)</summary>/gi
+      内容: ""
+      来源:
+        用户输入: false
+        AI输出: true
+        思维链: false
+      作用于:
+        仅格式显示: false
+        仅格式提示词: true
+      最大深度: 10
+
+    - 正则名称: aether摘要一
+      id: 589faae2-d5fb-4c21-9618-0d5605763b5f
+      启用: true
+      查找表达式: /(?<!<details>\s*)<summary>(((?!<summary>)[\s\S])*?)<\/summary>/gi
+      内容: |-
+        <details><summary>摘要</summary>
+        $1
+        </details>
+      来源:
+        用户输入: false
+        AI输出: true
+        思维链: false
+      作用于:
+        仅格式显示: true
+        仅格式提示词: false
+
+  酒馆助手:
+    脚本库: []
+
+    变量: {}
+
+  SPreset:
+    ChatSquash:
+      启用: false
+      separate_chat_history: true
+      parse_clewd: false
+      角色: AI
+      stop_string: "User:"
+      user_prefix: |-
+        
+
+        User:
+      user_suffix: ""
+      char_prefix: |-
+        
+
+        Assistant:
+      char_suffix: ""
+      prefix_system: ""
+      suffix_system: ""
+      enable_squashed_separator: false
+      squashed_separator_regex: false
+      squashed_separator_string: ""
+      squashed_post_script_enable: false
+      squashed_post_script: ""
+      user_role_system: false
+      enable_stop_string: true
+    RegexBinding:
+      regexes:
+        - id: 0fae7c56-4596-4aaa-bfd6-4592fa53c991
+          scriptName: 删除
+          findRegex: /(<Reference_Example>.*?</Reference_Example>)|极其|(.*?<Interleaving?>(\n)?)|</Interleaving>|(.*?</think>(\n)?)|(<thinking>.*?</thinking>)/gs
+          replaceString: ""
+          trimStrings: []
+          placement:
+            - 2
+          禁用: false
+          markdownOnly: true
+          promptOnly: true
+          runOnEdit: true
+          substituteRegex: 0
+          minDepth: null
+          maxDepth: null
+        - id: a52fb594-3e84-469c-8b63-bf7c471210f7
+          scriptName: aether摘要一
+          findRegex: /(?<!<details>\s*)<summary>(((?!<summary>)[\s\S])*?)<\/summary>/gi
+          replaceString: |-
+            <details><summary>摘要</summary>
+            $1
+            </details>
+          trimStrings: []
+          placement:
+            - 2
+          禁用: false
+          markdownOnly: true
+          promptOnly: false
+          runOnEdit: true
+          substituteRegex: 0
+          minDepth: null
+          maxDepth: null
+        - id: 2f575891-53ec-4738-9e32-9b96fb44e6b0
+          scriptName: aether摘要二
+          findRegex: /(?<!<details>\s*)<summary>([\s\S]*?)</summary>/gi
+          replaceString: ""
+          trimStrings: []
+          placement:
+            - 2
+          禁用: false
+          markdownOnly: false
+          promptOnly: true
+          runOnEdit: true
+          substituteRegex: 0
+          minDepth: null
+          maxDepth: 10
+        - id: 5e10c421-ed61-4c72-8c0a-2f99ffd9e48c
+          scriptName: aether摘要三
+          findRegex: /[\s\S]*?(?<!<details>\s*)<summary>([\s\S]*?)<\/summary>[\s\S]*/gi
+          replaceString: |-
+            <summary>
+            $1
+            </summary>
+          trimStrings: []
+          placement:
+            - 2
+          禁用: false
+          markdownOnly: false
+          promptOnly: true
+          runOnEdit: true
+          substituteRegex: 0
+          minDepth: 11
+          maxDepth: null
+        - id: 6850b6d0-26db-46e3-93a9-e4c2e7ad2b12
+          scriptName: aether opus正则一
+          findRegex: ^([\s\S]*)$
+          replaceString: |-
+            <interactive_input>
+            $1
+            </interactive_input>
+          trimStrings: []
+          placement:
+            - 1
+          禁用: false
+          markdownOnly: false
+          promptOnly: true
+          runOnEdit: true
+          substituteRegex: 0
+          minDepth: null
+          maxDepth: 1
+        - id: 62a465b5-9496-4f09-9f30-1b392f117083
+          scriptName: "1"
+          findRegex: kitsch
+          replaceString: USER
+          trimStrings: []
+          placement:
+            - 1
+            - 2
+          禁用: true
+          markdownOnly: true
+          promptOnly: false
+          runOnEdit: true
+          substituteRegex: 0
+          minDepth: null
+          maxDepth: null
+        - id: 4d5a920b-e8b9-465a-8669-263bac749ef1
+          scriptName: 思维链折叠
+          findRegex: /<thinking>([\s\S]*?)<\/thinking>/gi
+          replaceString: |
+            <details class="st_custom_reasoning" style="display: block; margin: 8px 0; border: none; background: transparent;">
+            <summary style="list-style: none; display: inline-flex; align-items: center; gap: 7px; cursor: pointer; user-select: none; padding: 6px 13px; border-radius: 6px; background: linear-gradient(180deg, rgba(46, 46, 46, 0.92) 0%, rgba(38, 38, 38, 0.96) 100%); border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4); font-size: 13.5px; font-weight: 500; color: rgba(225, 225, 225, 0.88); width: fit-content; outline: none;">
+            <span>思考了一会</span>
+            <svg class="st_arrow_icon" style="width: 11px; height: 11px; fill: rgba(200, 200, 200, 0.7); transition: transform 0.2s ease;" viewBox="0 0 320 512"><path d="M137.4 374.6c12.5 12.5 32.8 12.5 45.3 0l128-128c9.2-9.2 11.9-22.9 6.9-34.9s-16.6-19.8-29.6-19.8L32 192c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9l128 128z"/></svg>
+            </summary>
+            <div class="st_reasoning_body" style="margin-top: 10px; margin-bottom: 8px; margin-left: 2px; padding: 4px 0 4px 16px; border-left: 2px solid rgba(255, 255, 255, 0.18); font-size: 0.94em; color: rgba(205, 205, 205, 0.8); line-height: 1.65; overflow-wrap: anywhere;">
+
+            $1
+
+            </div>
+            </details>
+            <style>
+            details.st_custom_reasoning summary::-webkit-details-marker { display: none; }
+            details.st_custom_reasoning[open] summary svg.st_arrow_icon { transform: rotate(180deg); }
+            details.st_custom_reasoning summary:hover { background: rgba(55, 55, 55, 0.95); }
+            </style>
+          trimStrings: []
+          placement:
+            - 2
+          禁用: false
+          markdownOnly: true
+          promptOnly: false
+          runOnEdit: true
+          substituteRegex: 0
+          minDepth: null
+          maxDepth: null
+        - id: 63a9d7f1-b67a-4c98-aae4-2d8c67307c14
+          scriptName: 删除2
+          findRegex: /(<disclaimer>.*?<\/disclaimer>)|(<Reference_Example>.*?<\/Reference_Example>)|极其|(<Interleaving>.*?<\/think>\s*)|(<thinking>.*?<\/thinking>)/gs
+          replaceString: ""
+          trimStrings: []
+          placement:
+            - 2
+          禁用: false
+          markdownOnly: true
+          promptOnly: true
+          runOnEdit: true
+          substituteRegex: 0
+          minDepth: null
+          maxDepth: null
+        - id: b69a4274-9393-4231-b165-6290541a696c
+          scriptName: aether opus正则一
+          findRegex: ^([\s\S]*)$
+          replaceString: |-
+            <interactive_input>
+            $1
+            </interactive_input>
+          trimStrings: []
+          placement:
+            - 1
+          禁用: false
+          markdownOnly: false
+          promptOnly: true
+          runOnEdit: true
+          substituteRegex: 0
+          minDepth: null
+          maxDepth: 1
+        - id: ad72c176-59a9-4e42-a611-2b354c099df5
+          scriptName: aether摘要三
+          findRegex: /[\s\S]*?(?<!<details>\s*)<summary>([\s\S]*?)<\/summary>[\s\S]*/gi
+          replaceString: |-
+            <summary>
+            $1
+            </summary>
+          trimStrings: []
+          placement:
+            - 2
+          禁用: false
+          markdownOnly: false
+          promptOnly: true
+          runOnEdit: true
+          substituteRegex: 0
+          minDepth: 11
+          maxDepth: null
+        - id: 821339c6-5a14-4f94-99b7-df3a66bc6ca2
+          scriptName: aether摘要二
+          findRegex: /(?<!<details>\s*)<summary>([\s\S]*?)</summary>/gi
+          replaceString: ""
+          trimStrings: []
+          placement:
+            - 2
+          禁用: false
+          markdownOnly: false
+          promptOnly: true
+          runOnEdit: true
+          substituteRegex: 0
+          minDepth: null
+          maxDepth: 10
+        - id: a125e16b-5d5e-4a81-a484-e7c79cb2e41c
+          scriptName: aether摘要一
+          findRegex: /(?<!<details>\s*)<summary>(((?!<summary>)[\s\S])*?)<\/summary>/gi
+          replaceString: |-
+            <details><summary>摘要</summary>
+            $1
+            </details>
+          trimStrings: []
+          placement:
+            - 2
+          禁用: false
+          markdownOnly: true
+          promptOnly: false
+          runOnEdit: true
+          substituteRegex: 0
+          minDepth: null
+          maxDepth: null
+        - id: 9eaced01-a2d8-46dc-8f4f-c20017f685bf
+          scriptName: 思维链内部标签剥尖括号
+          findRegex: /<(?!\/?(?:think|thinking)\b)([^<>]*?)>(?=(?:(?!<(?:think|thinking)\b)[\s\S])*?<\/(?:think|thinking)>)/gi
+          replaceString: $1
+          trimStrings: []
+          placement:
+            - 2
+          禁用: false
+          markdownOnly: true
+          promptOnly: false
+          runOnEdit: true
+          substituteRegex: 0
+          minDepth: null
+          maxDepth: null
+        - id: b63f52be-08c0-4ea6-ab3f-f59e224cca11
+          scriptName: 思维链折叠
+          findRegex: /\<(?:think|thinking)>([\s\S]*?)\<\/(?:think|thinking)>/gi
+          replaceString: '<details class="st_custom_reasoning" style="display: block;
+            margin: 8px 0; border: none; background: transparent;"><summary
+            style="list-style: none; display: inline-flex; align-items: center;
+            gap: 7px; cursor: pointer; user-select: none; padding: 6px 13px;
+            border-radius: 6px; background: linear-gradient(180deg, rgba(46, 46,
+            46, 0.92) 0%, rgba(38, 38, 38, 0.96) 100%); border: 1px solid
+            rgba(255, 255, 255, 0.08); box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+            font-size: 13.5px; font-weight: 500; color: rgba(225, 225, 225,
+            0.88); width: fit-content; outline: none;"><span>思考了一会</span><svg
+            class="st_arrow_icon" style="width: 11px; height: 11px; fill:
+            rgba(200, 200, 200, 0.7); transition: transform 0.2s ease;"
+            viewBox="0 0 320 512"><path d="M137.4 374.6c12.5 12.5 32.8 12.5 45.3
+            0l128-128c9.2-9.2 11.9-22.9 6.9-34.9s-16.6-19.8-29.6-19.8L32
+            192c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9l128
+            128z"/></svg></summary><div class="st_reasoning_body"
+            style="margin-top: 10px; margin-bottom: 8px; margin-left: 2px;
+            padding: 4px 0 4px 16px; border-left: 2px solid rgba(255, 255, 255,
+            0.18); font-size: 0.94em; color: rgba(205, 205, 205, 0.8);
+            line-height: 1.45; overflow-wrap: anywhere; white-space:
+            pre-line;">$1</div></details><style>details.st_custom_reasoning
+            summary::-webkit-details-marker { display: none;
+            }details.st_custom_reasoning[open] summary svg.st_arrow_icon {
+            transform: rotate(180deg); }details.st_custom_reasoning
+            summary:hover { background: rgba(55, 55, 55, 0.95); }</style>'
+          trimStrings: []
+          placement:
+            - 2
+          禁用: true
+          markdownOnly: true
+          promptOnly: false
+          runOnEdit: true
+          substituteRegex: 0
+          minDepth: null
+          maxDepth: null
+        - id: a5f7c589-687a-426e-b5ad-c892a89adf61
+          scriptName: 删除3
+          findRegex: /(\<disclaimer>.*?\<\/disclaimer>)|(\<Reference_Example>.*?\<\/Reference_Example>)|极其|\<Interleaving>\n?|\<\/Interleaving>|\<(?:think|thinking)>.*?\<\/(?:think|thinking)>\n?/gs
+          replaceString: ""
+          trimStrings: []
+          placement:
+            - 2
+          禁用: false
+          markdownOnly: true
+          promptOnly: true
+          runOnEdit: true
+          substituteRegex: 0
+          minDepth: null
+          maxDepth: null
+        - id: a24f1272-8fad-4fc0-a26b-e4c4d8bf0502
+          scriptName: aether opus正则一
+          findRegex: ^([\s\S]*)$
+          replaceString: |-
+            <interactive_input>
+            $1
+            </interactive_input>
+          trimStrings: []
+          placement:
+            - 1
+          禁用: false
+          markdownOnly: false
+          promptOnly: true
+          runOnEdit: true
+          substituteRegex: 0
+          minDepth: null
+          maxDepth: 1
+        - id: df13694d-5eef-4725-8c5c-797cd44147e4
+          scriptName: aether摘要三
+          findRegex: /[\s\S]*?(?<!<details>\s*)<summary>([\s\S]*?)<\/summary>[\s\S]*/gi
+          replaceString: |-
+            <summary>
+            $1
+            </summary>
+          trimStrings: []
+          placement:
+            - 2
+          禁用: false
+          markdownOnly: false
+          promptOnly: true
+          runOnEdit: true
+          substituteRegex: 0
+          minDepth: 11
+          maxDepth: null
+        - id: ce833269-66c0-4c94-a98a-e392ae127ebf
+          scriptName: aether摘要二
+          findRegex: /(?<!<details>\s*)<summary>([\s\S]*?)</summary>/gi
+          replaceString: ""
+          trimStrings: []
+          placement:
+            - 2
+          禁用: false
+          markdownOnly: false
+          promptOnly: true
+          runOnEdit: true
+          substituteRegex: 0
+          minDepth: null
+          maxDepth: 10
+        - id: 589faae2-d5fb-4c21-9618-0d5605763b5f
+          scriptName: aether摘要一
+          findRegex: /(?<!<details>\s*)<summary>(((?!<summary>)[\s\S])*?)<\/summary>/gi
+          replaceString: |-
+            <details><summary>摘要</summary>
+            $1
+            </details>
+          trimStrings: []
+          placement:
+            - 2
+          禁用: false
+          markdownOnly: true
+          promptOnly: false
+          runOnEdit: true
+          substituteRegex: 0
+          minDepth: null
+          maxDepth: null
+    MacroNest: false
+    ToolBindings: {}
+    MessageInjections: {}

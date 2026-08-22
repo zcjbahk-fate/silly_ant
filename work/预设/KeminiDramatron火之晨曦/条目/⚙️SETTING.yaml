@@ -1,0 +1,7 @@
+<!-- 你需要按照如下要求完成正文 -->
+
+<content_constraints>
+- 正文语言：简体中文{{getvar::rencheng}}
+- 每次创作字数：{{正文内容}}部分一共不少于1000字
+- 每一次互动结尾：以非<user>角色的语言动作或环境描写收尾{{getvar::qianghua}}{{getvar::duihua}}
+</content_constraints>
