@@ -174,20 +174,40 @@
             var parsed=x(b.pure);
             if(!parsed) return;
             var ui=h(parsed, mid, b.hash);
-            var fl=firstLine(b.pure), ll=lastLine(b.pure);
             var did=false;
-            if(fl&&ll){
-                var re=new RegExp(escapeRe(fl)+'[\\s\\S]*?'+escapeRe(ll));
-                var idxAt=html.slice(cursor).search(re);
-                if(idxAt>=0){
-                    var head=html.slice(0,cursor);
-                    var tail=html.slice(cursor);
-                    html=head+tail.replace(re, ui);
-                    cursor=head.length+idxAt+ui.length;
-                    did=true; replacedAny=true;
+
+            // 策略 1 (最优先且最彻底)：精准匹配完整的 [[corpse_data]] 到 [[/corpse_data]] 标签块（含外层标签自身）
+            // 兼容可能存在的 HTML 实体转义 &#91;&#91; 或普通方括号 [[
+            var fullTagRe = /(?:\[\[|&#91;&#91;|\[\s*\[)\s*corpse_data\s*(?:\]\]|&#93;&#93;|\]\s*\])[\s\S]*?(?:\[\[|&#91;&#91;|\[\s*\[)\s*\/\s*corpse_data\s*(?:\]\]|&#93;&#93;|\]\s*\])/i;
+            var idxTag = html.slice(cursor).search(fullTagRe);
+            if(idxTag >= 0){
+                var head = html.slice(0, cursor);
+                var tail = html.slice(cursor);
+                html = head + tail.replace(fullTagRe, ui);
+                cursor = head.length + idxTag + ui.length;
+                did = true;
+                replacedAny = true;
+            } else {
+                // 策略 2 (兜底)：若首尾标签被 Markdown 拆散，从 firstLine 一路吞到闭合标签或段落边界
+                var fl = firstLine(b.pure);
+                if(fl){
+                    var fallbackRe = new RegExp(
+                        '(?:(?:\\[\\[|&#91;&#91;)\\s*corpse_data\\s*(?:\\]\\]|&#93;&#93;)[\\s\\S]*?)?' +
+                        escapeRe(fl) + '[\\s\\S]*?' +
+                        '(?:(?:\\[\\[|&#91;&#91;)\\s*\\/\\s*corpse_data\\s*(?:\\]\\]|&#93;&#93;)|(?=$|<div|<p))'
+                    );
+                    var idxAt = html.slice(cursor).search(fallbackRe);
+                    if(idxAt >= 0){
+                        var head = html.slice(0, cursor);
+                        var tail = html.slice(cursor);
+                        html = head + tail.replace(fallbackRe, ui);
+                        cursor = head.length + idxAt + ui.length;
+                        did = true;
+                        replacedAny = true;
+                    }
                 }
             }
-            if(!did){ appendHtml+=ui; }
+            if(!did){ appendHtml += ui; }
         });
 
         if(replacedAny){
