@@ -214,23 +214,23 @@
           if (!e || !e.name) return;
 
           /* 开局条目：三选一 */
-          if (e.name === '开局1') e.enabled = (openingVal === '1');
-          if (e.name === '开局2') e.enabled = (openingVal === '2');
-          if (e.name === '开局3') e.enabled = (openingVal === '3');
+          if (e.name === '[开局]开局1' || e.name === '开局1') e.enabled = (openingVal === '1');
+          if (e.name === '[开局]开局2' || e.name === '开局2') e.enabled = (openingVal === '2');
+          if (e.name === '[开局]开局3' || e.name === '开局3') e.enabled = (openingVal === '3');
 
           /* 过往角色速览：开局1和开局2时激活 */
-          if (e.name === '过往角色速览') e.enabled = (openingVal === '1' || openingVal === '2');
+          if (e.name === '[NPC]过往角色速览' || e.name === '过往角色速览') e.enabled = (openingVal === '1' || openingVal === '2');
 
           /* 过往角色速览2：开局3时激活 */
-          if (e.name === '过往角色速览2') e.enabled = (openingVal === '3');
+          if (e.name === '[NPC]过往角色速览2' || e.name === '过往角色速览2') e.enabled = (openingVal === '3');
 
           /* 尸体生成条目：二选一 */
-          if (e.name === '尸体生成指导') e.enabled = (corpseVal === 'normal');
-          if (e.name === '尸体生成指导(净)') e.enabled = (corpseVal === 'pure');
+          if (e.name === '[指导]尸体生成指导' || e.name === '尸体生成指导') e.enabled = (corpseVal === 'normal');
+          if (e.name === '[指导]尸体生成指导(净)' || e.name === '尸体生成指导(净)') e.enabled = (corpseVal === 'pure');
 
           /* 改造风格条目：二选一 */
-          if (e.name === '改造剧情指导(推荐)') e.enabled = (modifyVal === 'normal');
-          if (e.name === '改造剧情指导(血腥)') e.enabled = (modifyVal === 'gore');
+          if (e.name === '[指导]改造剧情指导(推荐)' || e.name === '改造剧情指导(推荐)') e.enabled = (modifyVal === 'normal');
+          if (e.name === '[指导]改造剧情指导(血腥)' || e.name === '改造剧情指导(血腥)') e.enabled = (modifyVal === 'gore');
         });
 
         return arr;
@@ -264,14 +264,14 @@
           if (!e || !e.name) return;
 
           /* 检测开局状态 */
-          if (e.name === '开局2' && e.enabled) openingVal = '2';
-          if (e.name === '开局3' && e.enabled) openingVal = '3';
+          if ((e.name === '[开局]开局2' || e.name === '开局2') && e.enabled) openingVal = '2';
+          if ((e.name === '[开局]开局3' || e.name === '开局3') && e.enabled) openingVal = '3';
 
           /* 检测尸体生成状态 */
-          if (e.name === '尸体生成指导(净)' && e.enabled) corpseVal = 'pure';
+          if ((e.name === '[指导]尸体生成指导(净)' || e.name === '尸体生成指导(净)') && e.enabled) corpseVal = 'pure';
 
           /* 检测改造风格状态 */
-          if (e.name === '改造剧情指导(血腥)' && e.enabled) modifyVal = 'gore';
+          if ((e.name === '[指导]改造剧情指导(血腥)' || e.name === '改造剧情指导(血腥)') && e.enabled) modifyVal = 'gore';
         });
 
         return arr;
@@ -309,9 +309,9 @@
       const targetWb = getTargetWorldbookName();
       await ST_updateWorldbookWith(targetWb, wb => {
         let arr = Array.isArray(wb) ? wb : [];
-        const userEntryName = ST_substitudeMacros ? ST_substitudeMacros('User倾向') : 'User倾向';
+        const userEntryName = '[系统]User倾向';
         const wrappedText = '<这是主角设定>\n' + rawText + '\n</这是主角设定>';
-        const userIdx = arr.findIndex(e => e && e.name === userEntryName);
+        const userIdx = arr.findIndex(e => e && (e.name === userEntryName || e.name === 'User倾向'));
 
         const userEntry = {
           name: userEntryName,
