@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://testingcf.jsdelivr.net/gh/StageDog/tavern_sync/dist/schema/character.zh.json
 头像: 头像
-版本: "1.12"
+版本: "1.13"
 作者: ""
 备注: ""
 
@@ -990,6 +990,22 @@
       不可被其他条目激活: true
       不可激活其他条目: true
     文件: 世界书\[NPC]海莲娜
+
+  - 名称: "[NPC]江青穗"
+    启用: true
+    激活策略:
+      类型: 绿灯
+      关键字:
+        - 江青穗
+        - 青穗
+    插入位置:
+      类型: 角色定义之后
+      顺序: 100
+    激活概率: 100
+    递归:
+      不可被其他条目激活: true
+      不可激活其他条目: true
+    文件: 世界书\[NPC]江青穗
 
   - 名称: "[系统]User倾向"
     启用: true
