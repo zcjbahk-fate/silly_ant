@@ -1,0 +1,17 @@
+---
+<变量输出格式强调>
+变量输出格式强调:
+  rule: The following must be inserted to the end of reply, and cannot be omitted under any circumstances.
+  format: |-
+    <UpdateVariable>
+    <Analysis>
+    - calculate time passed and location
+    - analyze variables change and deltas
+    </Analysis>
+    <JSONPatch>
+    [
+      ...
+    ]
+    </JSONPatch>
+    </UpdateVariable>
+</变量输出格式强调>

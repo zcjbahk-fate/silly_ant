@@ -19,12 +19,12 @@
     </Analysis>
     <JSONPatch>
     [
-      { "op": "replace", "path": "/stat_data/时间", "value": "2025年6月1日 08:30" },
-      { "op": "replace", "path": "/stat_data/地点", "value": "欲都公寓 201室" },
-      { "op": "replace", "path": "/stat_data/正在交互角色", "value": "许嘉霓" },
-      { "op": "delta", "path": "/stat_data/房东状态/资金总额", "value": -2000 },
-      { "op": "delta", "path": "/stat_data/房客状态/许嘉霓/榨精次数", "value": 1 },
-      { "op": "replace", "path": "/stat_data/房客状态/许嘉霓/现在在做", "value": "坐在床头穿着吊带渔网袜抽烟数钱" }
+      { "op": "replace", "path": "/时间", "value": "2025年6月1日 08:30" },
+      { "op": "replace", "path": "/地点", "value": "欲都公寓 201室" },
+      { "op": "replace", "path": "/正在交互角色", "value": "许嘉霓" },
+      { "op": "delta", "path": "/房东状态/资金总额", "value": -2000 },
+      { "op": "delta", "path": "/房客状态/许嘉霓/榨精次数", "value": 1 },
+      { "op": "replace", "path": "/房客状态/许嘉霓/现在在做", "value": "坐在床头穿着吊带渔网袜抽烟数钱" }
     ]
     </JSONPatch>
     </UpdateVariable>
