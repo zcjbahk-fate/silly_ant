@@ -19,7 +19,7 @@ function hasNewerVersion(localVer, remoteVer) {
       if (num1 < num2) return true;
       if (num1 > num2) return false;
     }
-    return localVer.trim() !== remoteVer.trim();
+    return false;
   }
 
   return localVer.trim() !== remoteVer.trim();

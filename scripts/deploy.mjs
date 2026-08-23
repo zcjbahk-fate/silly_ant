@@ -78,6 +78,17 @@ function extractVersion(changelogPath) {
   return match ? match[1].trim() : null;
 }
 
+function syncCardVersionInYaml(yamlPath, version) {
+  if (!existsSync(yamlPath)) return;
+  let content = readFileSync(yamlPath, 'utf-8');
+  if (/^版本:\s*.*$/m.test(content)) {
+    content = content.replace(/^版本:\s*.*$/m, `版本: "${version}"`);
+  } else {
+    content = `版本: "${version}"\n` + content;
+  }
+  writeFileSync(yamlPath, content, 'utf-8');
+}
+
 function syncPresetVersionInYaml(yamlPath, version) {
   if (!existsSync(yamlPath)) return;
   let content = readFileSync(yamlPath, 'utf-8');
@@ -254,6 +265,12 @@ async function main() {
         const basePath = resolve(ROOT, config.exportPath);
         const changelogPath = resolve(dirname(basePath), '更新日志.md');
         version = extractVersion(changelogPath);
+      }
+
+      // 若为角色卡且有版本号，打包前自动同步 YAML 中的版本字段
+      if (config.type === '角色卡' && version && config.localPath) {
+        const localYamlPath = resolve(ROOT, config.localPath);
+        syncCardVersionInYaml(localYamlPath, version);
       }
 
       // 若为预设且有版本号，打包前自动同步 YAML 中的当前版本字段
