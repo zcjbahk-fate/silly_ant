@@ -24,7 +24,7 @@ export const Schema = z.object({
     资金总额: z.coerce.number().prefault(10000),
     地下室收藏品: z.array(z.string()).prefault([
       "前租客谭婷婷用来抵债的原味粉色内裤",
-      "韦淑湛当生日礼物送给{{user}}的原味红底细跟高跟鞋",
+      "温知夏当生日礼物送给{{user}}的原味红底细跟高跟鞋",
     ]),
   }),
   房客状态: z

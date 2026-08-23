@@ -64,11 +64,11 @@
     let money = _.get(allVars, 'stat_data.房东状态.资金总额', 0);
     $('#val-money').text(money + '￥');
 
-    const tenants = ['韦淑湛', '李淑妮', '黄婼琪', '黄琳惠', '曾粤梅'];
+    const tenants = ['温知夏', '许嘉霓', '钟可可', '苏清禾', '盛凌烟'];
     tenants.forEach(name => {
       let rent = _.get(allVars, `stat_data.房客状态.${name}.已上交租金`, 0);
       $(`#val-${name}-rent`).text(rent + '￥');
-      $(`#val-${name}-drain`).text(_.get(allVars, `stat_data.房客状态.${name}.榨精次数`, _.get(allVars, `stat_data.房客状态.${name}.榨精{{user}}次数`, 0)));
+      $(`#val-${name}-drain`).text(_.get(allVars, `stat_data.房客状态.${name}.榨精次数`, 0));
       $(`#val-${name}-bbc`).text(_.get(allVars, `stat_data.房客状态.${name}.与黑人性交次数`, 0));
       $(`#val-${name}-doing`).text(_.get(allVars, `stat_data.房客状态.${name}.现在在做`, ''));
     });
@@ -119,48 +119,48 @@
 
       <div id="tenants-container">
         <div class="tenant-card">
-          <div class="tenant-name">301室 · 韦淑湛（知性老租客）</div>
+          <div class="tenant-name">301室 · 温知夏（知性老租客）</div>
           <div class="tenant-grid">
-            <div class="grid-item">已上交租金: <span id="val-韦淑湛-rent"></span></div>
-            <div class="grid-item">榨精次数: <span id="val-韦淑湛-drain"></span></div>
-            <div class="grid-item">与黑人性交: <span id="val-韦淑湛-bbc"></span></div>
-            <div class="grid-item">现在在做: <span id="val-韦淑湛-doing"></span></div>
+            <div class="grid-item">已上交租金: <span id="val-温知夏-rent"></span></div>
+            <div class="grid-item">榨精次数: <span id="val-温知夏-drain"></span></div>
+            <div class="grid-item">与黑人性交: <span id="val-温知夏-bbc"></span></div>
+            <div class="grid-item">现在在做: <span id="val-温知夏-doing"></span></div>
           </div>
         </div>
         <div class="tenant-card">
-          <div class="tenant-name">201室 · 李淑妮（初恋酒吧女）</div>
+          <div class="tenant-name">201室 · 许嘉霓（初恋酒吧女）</div>
           <div class="tenant-grid">
-            <div class="grid-item">已上交租金: <span id="val-李淑妮-rent"></span></div>
-            <div class="grid-item">榨精次数: <span id="val-李淑妮-drain"></span></div>
-            <div class="grid-item">与黑人性交: <span id="val-李淑妮-bbc"></span></div>
-            <div class="grid-item">现在在做: <span id="val-李淑妮-doing"></span></div>
+            <div class="grid-item">已上交租金: <span id="val-许嘉霓-rent"></span></div>
+            <div class="grid-item">榨精次数: <span id="val-许嘉霓-drain"></span></div>
+            <div class="grid-item">与黑人性交: <span id="val-许嘉霓-bbc"></span></div>
+            <div class="grid-item">现在在做: <span id="val-许嘉霓-doing"></span></div>
           </div>
         </div>
         <div class="tenant-card">
-          <div class="tenant-name">202室 · 黄婼琪（肉弹精神小妹）</div>
+          <div class="tenant-name">202室 · 钟可可（肉弹精神小妹）</div>
           <div class="tenant-grid">
-            <div class="grid-item">已上交租金: <span id="val-黄婼琪-rent"></span></div>
-            <div class="grid-item">榨精次数: <span id="val-黄婼琪-drain"></span></div>
-            <div class="grid-item">与黑人性交: <span id="val-黄婼琪-bbc"></span></div>
-            <div class="grid-item">现在在做: <span id="val-黄婼琪-doing"></span></div>
+            <div class="grid-item">已上交租金: <span id="val-钟可可-rent"></span></div>
+            <div class="grid-item">榨精次数: <span id="val-钟可可-drain"></span></div>
+            <div class="grid-item">与黑人性交: <span id="val-钟可可-bbc"></span></div>
+            <div class="grid-item">现在在做: <span id="val-钟可可-doing"></span></div>
           </div>
         </div>
         <div class="tenant-card">
-          <div class="tenant-name">203室 · 黄琳惠（古典舞校花甜妹）</div>
+          <div class="tenant-name">203室 · 苏清禾（古典舞校花甜妹）</div>
           <div class="tenant-grid">
-            <div class="grid-item">已上交租金: <span id="val-黄琳惠-rent"></span></div>
-            <div class="grid-item">榨精次数: <span id="val-黄琳惠-drain"></span></div>
-            <div class="grid-item">与黑人性交: <span id="val-黄琳惠-bbc"></span></div>
-            <div class="grid-item">现在在做: <span id="val-黄琳惠-doing"></span></div>
+            <div class="grid-item">已上交租金: <span id="val-苏清禾-rent"></span></div>
+            <div class="grid-item">榨精次数: <span id="val-苏清禾-drain"></span></div>
+            <div class="grid-item">与黑人性交: <span id="val-苏清禾-bbc"></span></div>
+            <div class="grid-item">现在在做: <span id="val-苏清禾-doing"></span></div>
           </div>
         </div>
         <div class="tenant-card">
-          <div class="tenant-name">204室 · 曾粤梅（蓝发双面学姐）</div>
+          <div class="tenant-name">204室 · 盛凌烟（蓝发冷艳学姐）</div>
           <div class="tenant-grid">
-            <div class="grid-item">已上交租金: <span id="val-曾粤梅-rent"></span></div>
-            <div class="grid-item">榨精次数: <span id="val-曾粤梅-drain"></span></div>
-            <div class="grid-item">与黑人性交: <span id="val-曾粤梅-bbc"></span></div>
-            <div class="grid-item">现在在做: <span id="val-曾粤梅-doing"></span></div>
+            <div class="grid-item">已上交租金: <span id="val-盛凌烟-rent"></span></div>
+            <div class="grid-item">榨精次数: <span id="val-盛凌烟-drain"></span></div>
+            <div class="grid-item">与黑人性交: <span id="val-盛凌烟-bbc"></span></div>
+            <div class="grid-item">现在在做: <span id="val-盛凌烟-doing"></span></div>
           </div>
         </div>
       </div>
