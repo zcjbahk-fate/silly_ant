@@ -83,17 +83,16 @@ const r = n ? n.z.object({
 }).prefault({}) : null;
 
 // ─── 按钮：更新预设 ─────────────────────────────────────
-function createUpdatePresetAction(presetData) {
-  const versionDisplay = presetData.version ? ` (${presetData.version})` : '';
+function createUpdatePresetAction(presetInfo) {
+  const versionDisplay = presetInfo.version ? ` (${presetInfo.version})` : '';
   return {
-    name: `更新预设: ${presetData.name}${versionDisplay}`,
+    name: `更新预设: ${presetInfo.name}${versionDisplay}`,
     function: async () => {
       try {
-        const ok = await importRawPreset(presetData.name, presetData.content);
+        const ok = await importRawPreset(presetInfo.name, presetInfo.content);
         if (ok) {
-          insertOrAssignVariables({ 当前版本: presetData.version }, { type: 'script' });
-          loadPreset(presetData.name);
-          toastr.success(`更新预设 '${presetData.name}' 成功! 请重新选择预设`);
+          loadPreset(presetInfo.name);
+          toastr.success(`更新预设 '${presetInfo.name}' 成功! 请重新选择预设`);
         } else {
           toastr.error('更新预设失败, 请刷新重试');
         }
@@ -106,7 +105,7 @@ function createUpdatePresetAction(presetData) {
 }
 
 // ─── 按钮：更新日志 ─────────────────────────────────────
-function createChangelogAction(presetData) {
+function createChangelogAction(presetInfo) {
   return {
     name: '更新日志',
     function: () => {
@@ -116,7 +115,7 @@ function createChangelogAction(presetData) {
         }
         return md.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br/>');
       };
-      Promise.resolve(renderMd(presetData.changelog)).then(html => {
+      Promise.resolve(renderMd(presetInfo.changelog)).then(html => {
         SillyTavern.callGenericPopup(html, SillyTavern.POPUP_TYPE.TEXT, '', {
           leftAlign: true,
           wider: true,
@@ -149,7 +148,7 @@ $(errorCatched(async () => {
     }
   }
 
-  // 获取远程预设 JSON
+  // 获取远程预设文件
   const presetContent = await fetchResource(vars.预设链接, 'text');
   if (!presetContent) {
     console.warn('[自动更新] 无法获取远程预设，跳过更新检测');
@@ -163,11 +162,11 @@ $(errorCatched(async () => {
     changelog: changelogText || '暂无更新日志'
   };
 
-  // 版本比对：读取当前版本
+  // 版本比对
   const localVersion = vars.当前版本 || '0.0.0';
   const hasUpdate = hasNewerVersion(localVersion, presetData.version);
 
-  console.log(`[自动更新] 预设: ${presetData.name} | 本地: [${localVersion}] | 远程: [${presetData.version}] | 需要更新: ${hasUpdate}`);
+  console.log(`[自动更新] ${presetData.name} | 本地: [${localVersion}] | 远程: [${presetData.version}] | 需要更新: ${hasUpdate}`);
 
   const isUpdateRelatedBtn = (btnName) => btnName.startsWith('更新预设') || btnName === '更新日志';
 

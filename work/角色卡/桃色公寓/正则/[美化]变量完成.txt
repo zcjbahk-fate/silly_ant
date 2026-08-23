@@ -1,0 +1,33 @@
+<div style="text-align:center;margin:10px 0;width:100%;max-width:680px">
+<div style="display:inline-block;width:100%;text-align:left">
+  <details class="status-notice" style="border:none;background:none;margin:0">
+    <summary style="list-style:none;cursor:pointer;display:flex;align-items:center;gap:0;padding:0;width:100%">
+      <span style="flex:1;display:flex;align-items:center;height:34px;padding:0 18px;background:linear-gradient(135deg,#f7fafd 0%,#eef3fb 100%);border:1px solid rgba(130,150,185,0.35);border-radius:14px;box-shadow:0 2px 8px rgba(130,155,190,0.12);position:relative;z-index:2">
+        <span style="flex:1;font-size:0.92em;font-weight:600;color:#2d3a52">变量完成</span>
+        <small style="font-size:0.78em;color:#556680;margin-left:10px"><span class="toggle-btn" data-close="展开 ▶" data-open="收起 ▼"></span></small>
+      </span>
+    </summary>
+    <!-- 内容面板：高对比浅灰蓝底+深灰字，确保括号/列表/JSON全部清晰 -->
+    <div style="width:100%;max-height:360px;overflow-y:auto;margin:7px 0 0 0;padding:12px 18px;color:#1f2937;line-height:1.78;white-space:pre-wrap;background:#f4f7fb;border:1px solid rgba(130,150,185,0.32);border-radius:12px;font-size:0.92em;box-shadow:0 2px 10px rgba(130,155,190,0.1)">
+    $1
+    </div>
+  </details>
+</div>
+</div>
+
+<style>
+  .status-notice summary::marker { display: none; }
+  .status-notice[open] > div { animation: slideUp 0.35s ease forwards; }
+  .status-notice[open] .toggle-btn::after { content: attr(data-open); }
+  .status-notice:not([open]) .toggle-btn::after { content: attr(data-close); }
+  /* 内容区嵌套元素增强：列表、括号、JSON代码块全部加强对比度 */
+  .status-notice ul, .status-notice ol { padding-left: 22px; color: #1f2937; }
+  .status-notice li { margin: 3px 0; color: #1f2937; }
+  .status-notice code, .status-notice pre { font-size: 0.88em; color: #111827; background: #e8eef7; border: 1px solid #c7d3e6; border-radius: 5px; padding: 2px 5px; }
+  .status-notice pre { padding: 8px 12px; overflow-x: auto; }
+  .status-notice strong, .status-notice b { color: #0f172a; }
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>

@@ -97,6 +97,8 @@ function syncPresetVersionInYaml(yamlPath, version) {
   } else if (/^(\s*更新日志链接:\s*.+)$/m.test(content)) {
     content = content.replace(/^(\s*更新日志链接:\s*.+)$/m, `$1\n          当前版本: ${version}`);
   }
+  // 清理按钮列表中残留的版本号后缀，如 "更新预设: 【MoM】自用预设v1.01" -> "更新预设: 【MoM】自用预设"
+  content = content.replace(/(\s*-\s*名称:\s*["']?更新预设:\s*[^"'\r\n]+?)(?:v\d+(?:\.\d+)*)?(["']?\s*)$/gm, '$1$2');
   writeFileSync(yamlPath, content, 'utf-8');
 }
 
