@@ -86,6 +86,8 @@ function syncCardVersionInYaml(yamlPath, version) {
   } else {
     content = `版本: "${version}"\n` + content;
   }
+  // 清理按钮列表中残留的历史硬编码尾缀，如 "更新角色卡: xxx更新内容" -> "更新角色卡: xxx"
+  content = content.replace(/(\s*-\s*名称:\s*["']?更新角色卡:\s*[^"'\r\n]+?)(?:更新内容|v\d+(?:\.\d+)*)?(["']?\s*)$/gm, '$1$2');
   writeFileSync(yamlPath, content, 'utf-8');
 }
 

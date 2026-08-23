@@ -25,7 +25,7 @@ function hasNewerVersion(localVer, remoteVer) {
   return localVer.trim() !== remoteVer.trim();
 }
 
-// ─── 双源获取：本地优先 → GitHub 回退 ─────────────────────
+// ─── 多源获取：本地优先 → CDN 加速 → GitHub 回退 ─────────
 function toLocalUrl(url) {
   // 将 GitHub Raw URL 转换为本地文件服务器 URL
   // https://raw.githubusercontent.com/.../resource/xxx → http://localhost:8787/xxx
@@ -33,6 +33,15 @@ function toLocalUrl(url) {
   if (idx === -1) return null;
   const relativePath = url.substring(idx + '/resource/'.length);
   return 'http://localhost:8787/' + relativePath;
+}
+
+function toCdnUrl(url) {
+  // 将 GitHub Raw 转换为 CDN 镜像加速地址（支持国内网络无代理直连）
+  const match = url.match(/raw\.githubusercontent\.com\/([^/]+)\/([^/]+)\/(?:refs\/heads\/)?([^/]+)\/(.+)/);
+  if (!match) return null;
+  const [, user, repo, branch, p] = match;
+  const encodedPath = p.split('/').map(encodeURIComponent).join('/');
+  return `https://testingcf.jsdelivr.net/gh/${user}/${repo}@${branch}/${encodedPath}`;
 }
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
@@ -48,16 +57,32 @@ async function fetchResource(url, type) {
         return type === 'text' ? res.text() : res.blob();
       }
     } catch (e) {
-      console.log('[自动更新] 本地服务器未响应，回退到 GitHub');
+      console.log('[自动更新] 本地服务器未响应，尝试 CDN / GitHub');
     }
   }
 
-  // ② 回退到 GitHub Raw（带缓存破坏 + 3 次重试）
+  // ② 尝试 CDN 镜像加速（3 秒超时，国内网络毫秒级直连）
+  const cdnUrl = toCdnUrl(url);
+  if (cdnUrl) {
+    try {
+      const sep = cdnUrl.includes('?') ? '&' : '?';
+      const noCacheUrl = `${cdnUrl}${sep}_t=${Date.now()}`;
+      const res = await fetch(noCacheUrl, { cache: 'no-store', signal: AbortSignal.timeout(3000) });
+      if (res.ok) {
+        console.log('[自动更新] ✅ CDN 镜像获取成功:', cdnUrl);
+        return type === 'text' ? res.text() : res.blob();
+      }
+    } catch (e) {
+      console.warn('[自动更新] CDN 镜像请求失败，回退到 GitHub Raw:', e.message);
+    }
+  }
+
+  // ③ 回退到 GitHub Raw（带缓存破坏 + 3 次重试，每次 3 秒超时）
   for (let retry = 0; retry < 3; retry++) {
     try {
       const sep = url.includes('?') ? '&' : '?';
       const noCacheUrl = `${url}${sep}_t=${Date.now()}`;
-      const res = await fetch(noCacheUrl, { cache: 'no-store' });
+      const res = await fetch(noCacheUrl, { cache: 'no-store', signal: AbortSignal.timeout(3000) });
       if (res.ok) {
         console.log(`[自动更新] ✅ GitHub 获取成功 (第${retry + 1}次)`);
         return type === 'text' ? res.text() : res.blob();
@@ -68,9 +93,9 @@ async function fetchResource(url, type) {
     if (retry < 2) await sleep(1000 * (retry + 1));
   }
 
-  // ③ 最终回退：不带缓存破坏的原始请求
+  // ④ 最终回退：不带缓存破坏的原始请求
   try {
-    const res = await fetch(url);
+    const res = await fetch(url, { signal: AbortSignal.timeout(3000) });
     if (res.ok) return type === 'text' ? res.text() : res.blob();
   } catch (e) {}
 
