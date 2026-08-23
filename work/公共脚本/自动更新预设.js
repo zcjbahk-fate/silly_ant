@@ -148,6 +148,16 @@ function createUpdatePresetAction(presetInfo) {
         if (ok) {
           loadPreset(presetInfo.name);
           toastr.success(`更新预设 '${presetInfo.name}' 成功! 请重新选择预设`);
+          
+          // 移除更新按钮并更新本地变量，防止按钮残留
+          const currentOthers = _(getScriptButtons()).filter(btn => !btn.name.startsWith('更新预设') && btn.name !== '更新日志').value();
+          replaceScriptButtons([
+            ...currentOthers,
+            { name: '更新日志', visible: true }
+          ]);
+          if (presetInfo.version) {
+            insertOrAssignVariables({ 当前版本: presetInfo.version }, { type: 'script' });
+          }
         } else {
           toastr.error('更新预设失败, 请刷新重试');
         }

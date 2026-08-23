@@ -175,6 +175,16 @@ function createUpdateCardAction(cardInfo) {
         const ok = await importRawCharacter(cardInfo.name, cardBlob);
         if (ok) {
           toastr.success(`更新角色卡 '${cardInfo.name}' 成功! 请刷新或重新载入`);
+          
+          // 移除更新按钮并更新本地变量，防止按钮残留
+          const currentOthers = _(getScriptButtons()).filter(btn => !btn.name.startsWith('更新角色卡') && btn.name !== '更新日志').value();
+          replaceScriptButtons([
+            ...currentOthers,
+            { name: '更新日志', visible: true }
+          ]);
+          if (cardInfo.version) {
+            insertOrAssignVariables({ 当前版本: cardInfo.version }, { type: 'script' });
+          }
         } else {
           toastr.error('更新角色卡失败, 请刷新重试');
         }
