@@ -1,0 +1,31 @@
+---
+<变量输出格式>
+变量输出格式:
+  rule:
+    - 需严格按照`<变量更新规则>`中的设定进行更新
+    - 必须保证<JSONPatch>中展示`<status_current_variables>`中出现的所有变动字段
+    - 该更新指令遵循 JSON Patch（RFC 6902）标准，格式必须是包含操作对象的有效 JSON 数组，但仅支持以下操作类型:
+      - replace: 替换已有路径对应的数值（字符串、布尔值等）
+      - delta: 按照增量值更新已有数字类型路径对应的数值（所有 number 类型变量必须使用 delta，禁止使用 replace）
+      - insert: 向对象或数组中插入新的项目（向数组末尾追加时使用 `-` 作为索引）
+      - remove: 移除指定路径对应的内容
+    - number 类型的变量更新方式必须为 delta，禁止使用 replace
+    - 请勿更新以 `_` 开头的字段名，此类字段为只读属性
+  format: |-
+    <UpdateVariable>
+    <Analysis>$(IN ENGLISH, no more than 60 words)
+    - ${calculate time passed and location}
+    - ${analyze variables change and deltas}
+    </Analysis>
+    <JSONPatch>
+    [
+      { "op": "replace", "path": "/stat_data/时间", "value": "2025年6月1日 08:30" },
+      { "op": "replace", "path": "/stat_data/地点", "value": "欲都公寓 201室" },
+      { "op": "replace", "path": "/stat_data/正在交互角色", "value": "李淑妮" },
+      { "op": "delta", "path": "/stat_data/房东状态/资金总额", "value": -2000 },
+      { "op": "delta", "path": "/stat_data/房客状态/李淑妮/榨精次数", "value": 1 },
+      { "op": "replace", "path": "/stat_data/房客状态/李淑妮/现在在做", "value": "坐在床头抽烟数钱" }
+    ]
+    </JSONPatch>
+    </UpdateVariable>
+</变量输出格式>

@@ -1,47 +1,38 @@
-const { z } = require('zod');
+import { registerMvuSchema } from "https://testingcf.jsdelivr.net/gh/StageDog/tavern_resource/dist/util/mvu_zod.js";
 
-const schema = z.object({
-  stat_data: z.object({
-    时间: z.string().describe("当前游戏时间，例如：2025年6月1日 08:00"),
-    地点: z.string().describe("当前所在的具体位置"),
-    正在交互角色: z.string().describe("当前正在交互的女性角色，没有则保持为空"),
-    房东状态: z.object({
-      资金总额: z.number().describe("公寓运营资金总额，月底结算必须大于等于0，否则强制破产游戏结束"),
-      地下室收藏品: z.array(z.string()).describe("存放在地下室收藏室里的女性物品、战利品或抵押物")
-    }),
-    房客状态: z.object({
-      韦淑湛: z.object({
-        已上交租金: z.number(),
-        榨精小天才次数: z.number(),
-        与黑人性交次数: z.number(),
-        现在在做: z.string().describe("当前的行为或状态简述")
-      }),
-      李淑妮: z.object({
-        已上交租金: z.number(),
-        榨精小天才次数: z.number(),
-        与黑人性交次数: z.number(),
-        现在在做: z.string().describe("当前的行为或状态简述")
-      }),
-      黄婼琪: z.object({
-        已上交租金: z.number(),
-        榨精小天才次数: z.number(),
-        与黑人性交次数: z.number(),
-        现在在做: z.string().describe("当前的行为或状态简述")
-      }),
-      黄琳惠: z.object({
-        已上交租金: z.number(),
-        榨精小天才次数: z.number(),
-        与黑人性交次数: z.number(),
-        现在在做: z.string().describe("当前的行为或状态简述")
-      }),
-      曾粤梅: z.object({
-        已上交租金: z.number(),
-        榨精小天才次数: z.number(),
-        与黑人性交次数: z.number(),
-        现在在做: z.string().describe("当前的行为或状态简述")
-      })
-    })
+// 1. 女租客状态 Schema
+const TenantSchema = z
+  .object({
+    已上交租金: z.coerce.number().prefault(0),
+    榨精次数: z.coerce.number().prefault(0),
+    与黑人性交次数: z.coerce.number().prefault(0),
+    现在在做: z.string().prefault(""),
   })
+  .transform((data) => {
+    data.已上交租金 = Math.max(0, data.已上交租金);
+    data.榨精次数 = Math.max(0, data.榨精次数);
+    data.与黑人性交次数 = Math.max(0, data.与黑人性交次数);
+    return data;
+  });
+
+// 2. 主 Schema 定义
+export const Schema = z.object({
+  时间: z.string().prefault("2025年6月1日 08:00"),
+  地点: z.string().prefault("欲都公寓 三楼办公室"),
+  正在交互角色: z.string().prefault(""),
+  房东状态: z.object({
+    资金总额: z.coerce.number().prefault(10000),
+    地下室收藏品: z.array(z.string()).prefault([
+      "前租客谭婷婷用来抵债的原味粉色内裤",
+      "韦淑湛当生日礼物送给{{user}}的原味红底细跟高跟鞋",
+    ]),
+  }),
+  房客状态: z
+    .record(z.string().describe("女租客姓名"), TenantSchema)
+    .prefault({}),
 });
 
-registerMvuSchema(schema);
+// 3. 注册到 MVU
+$(() => {
+  registerMvuSchema(Schema);
+});
