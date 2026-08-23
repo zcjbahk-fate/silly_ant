@@ -1,10 +1,10 @@
 // 一键发版脚本 — bundle 打包 → Eagle 归档 → git push
 // 用法:
 //   node scripts/deploy.mjs              # 发版全部
-//   node scripts/deploy.mjs 精神小妹      # 只发版指定角色卡
+//   node scripts/deploy.mjs 精神小妹      # 只发版指定角色卡或预设
 //   node scripts/deploy.mjs --bundle-only # 只打包不推送
 import { execSync } from 'node:child_process';
-import { readFileSync, existsSync } from 'node:fs';
+import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -50,13 +50,16 @@ function parseConfigs(yamlPath) {
     const nameMatch = line.match(/^  ([^\s#][^:]*?):\s*$/);
     if (nameMatch) {
       if (current && current.type) configs.push(current);
-      current = { name: nameMatch[1].trim(), type: null, exportPath: null };
+      current = { name: nameMatch[1].trim(), type: null, exportPath: null, localPath: null };
       continue;
     }
     if (!current) continue;
 
     const typeMatch = line.match(/^\s{4}类型:\s*(.+)$/);
     if (typeMatch) { current.type = typeMatch[1].trim(); continue; }
+
+    const localMatch = line.match(/^\s{4}本地文件路径:\s*(.+)$/);
+    if (localMatch) { current.localPath = localMatch[1].trim(); continue; }
 
     const exportMatch = line.match(/^\s{4}导出文件路径:\s*(.+)$/);
     if (exportMatch) { current.exportPath = exportMatch[1].trim(); }
@@ -66,13 +69,24 @@ function parseConfigs(yamlPath) {
   return configs;
 }
 
-// ─── 版本号提取 ──────────────────────────────────────────
+// ─── 版本号提取与同步 ──────────────────────────────────
 
 function extractVersion(changelogPath) {
   if (!existsSync(changelogPath)) return null;
   const content = readFileSync(changelogPath, 'utf-8');
   const match = content.match(/^##\s*(.*)\s*$/m);
   return match ? match[1].trim() : null;
+}
+
+function syncPresetVersionInYaml(yamlPath, version) {
+  if (!existsSync(yamlPath)) return;
+  let content = readFileSync(yamlPath, 'utf-8');
+  if (/^\s*当前版本:\s*.+$/m.test(content)) {
+    content = content.replace(/^(\s*当前版本:\s*).*$/m, `$1${version}`);
+  } else if (/^(\s*更新日志链接:\s*.+)$/m.test(content)) {
+    content = content.replace(/^(\s*更新日志链接:\s*.+)$/m, `$1\n          当前版本: ${version}`);
+  }
+  writeFileSync(yamlPath, content, 'utf-8');
 }
 
 // ─── Eagle API（带 Token 认证） ──────────────────────────
@@ -83,7 +97,6 @@ async function eagleFetch(path, options = {}) {
   const url = `${EAGLE_API}${path}${sep}token=${token}`;
 
   if (options.body) {
-    // POST with body — Eagle 4.0 部分 API 需要 POST
     return fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -138,35 +151,49 @@ async function createFolder(name, parentId) {
   throw new Error(`创建 Eagle 文件夹失败: ${JSON.stringify(data)}`);
 }
 
-async function getOrCreateSubfolder(folders, archiveFolderName, cardName) {
-  // 1. 找到归档根文件夹
-  let archiveFolder = findFolderRecursive(folders, archiveFolderName);
-  let archiveFolderId;
+async function resolveEagleFolderPath(folders, pathSegments) {
+  let currentFolder = null;
 
-  if (archiveFolder) {
-    archiveFolderId = archiveFolder.id;
-  } else {
-    archiveFolderId = await createFolder(archiveFolderName, null);
-    // 刷新文件夹列表
-    folders = await getFolderList();
-    archiveFolder = findFolderById(folders, archiveFolderId);
+  for (let i = 0; i < pathSegments.length; i++) {
+    const segment = pathSegments[i];
+    if (i === 0) {
+      currentFolder = findFolderRecursive(folders, segment);
+      if (!currentFolder) {
+        const newId = await createFolder(segment, null);
+        folders = await getFolderList();
+        currentFolder = findFolderById(folders, newId);
+      }
+    } else {
+      let child = findChildFolder(currentFolder, segment);
+      if (!child) {
+        const newId = await createFolder(segment, currentFolder.id);
+        folders = await getFolderList();
+        child = findFolderById(folders, newId);
+      }
+      currentFolder = child;
+    }
   }
-
-  // 2. 在归档文件夹下找/创建角色卡子文件夹
-  const childFolder = archiveFolder ? findChildFolder(archiveFolder, cardName) : null;
-  if (childFolder) return childFolder.id;
-
-  return await createFolder(cardName, archiveFolderId);
+  return currentFolder.id;
 }
 
-async function archiveToEagle(filePath, cardName, version) {
+async function archiveToEagle(filePath, cardName, version, cardType = '角色卡') {
   const versionTag = version || 'unknown';
   const displayName = `${cardName}_${versionTag}`;
   const tags = [cardName, versionTag];
+  if (cardType !== '角色卡') tags.push(cardType);
+
+  let pathSegments;
+  if (cardType === '预设') {
+    pathSegments = ['预设', '自用'];
+  } else if (cardType === '世界书') {
+    pathSegments = ['世界书', cardName];
+  } else {
+    pathSegments = [EAGLE_ARCHIVE_FOLDER, cardName];
+  }
 
   // 获取文件夹列表并定位/创建目标文件夹
   const folders = await getFolderList();
-  const targetFolderId = await getOrCreateSubfolder(folders, EAGLE_ARCHIVE_FOLDER, cardName);
+  const targetFolderId = await resolveEagleFolderPath(folders, pathSegments);
 
   // 添加文件到 Eagle（使用本地路径，Windows 需要反斜杠）
   const normalizedPath = filePath.replace(/\//g, '\\');
@@ -182,7 +209,7 @@ async function archiveToEagle(filePath, cardName, version) {
 
   const data = await res.json();
   if (data.status === 'success') {
-    console.log(`    🦅 Eagle: 已归档 → ${EAGLE_ARCHIVE_FOLDER}/${cardName}/${displayName}`);
+    console.log(`    🦅 Eagle: 已归档 → ${pathSegments.join('/')}/${displayName}`);
   } else {
     console.warn(`    ⚠️ Eagle 归档失败:`, JSON.stringify(data));
   }
@@ -222,6 +249,19 @@ async function main() {
   for (const config of configs) {
     console.log(`  📦 打包: ${config.name}`);
     try {
+      let version = null;
+      if (config.exportPath) {
+        const basePath = resolve(ROOT, config.exportPath);
+        const changelogPath = resolve(dirname(basePath), '更新日志.md');
+        version = extractVersion(changelogPath);
+      }
+
+      // 若为预设且有版本号，打包前自动同步 YAML 中的当前版本字段
+      if (config.type === '预设' && version && config.localPath) {
+        const localYamlPath = resolve(ROOT, config.localPath);
+        syncPresetVersionInYaml(localYamlPath, version);
+      }
+
       execSync(`node tavern_sync.mjs bundle ${config.name}`, {
         cwd: ROOT,
         stdio: ['pipe', 'pipe', 'pipe']
@@ -234,12 +274,6 @@ async function main() {
           const candidate = basePath + ext;
           if (existsSync(candidate)) { outputFile = candidate; break; }
         }
-      }
-
-      let version = null;
-      if (outputFile) {
-        const changelogPath = resolve(dirname(outputFile), '更新日志.md');
-        version = extractVersion(changelogPath);
       }
 
       console.log(`    ✅ 打包成功${version ? ` (版本: ${version})` : ''}`);
@@ -261,12 +295,8 @@ async function main() {
     console.log('\n  🦅 Eagle 归档中...');
     for (const card of bundledCards) {
       if (!card.outputFile) continue;
-      if (card.type !== '角色卡') {
-        console.log(`    ⏭️ 跳过预设: ${card.name}`);
-        continue;
-      }
       try {
-        await archiveToEagle(card.outputFile, card.name, card.version);
+        await archiveToEagle(card.outputFile, card.name, card.version, card.type);
       } catch (e) {
         console.warn(`    ⚠️ Eagle 归档出错 (${card.name}):`, e.message);
       }
@@ -314,7 +344,7 @@ async function main() {
 
   console.log('\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
   console.log('  ✅ 发版完成！');
-  console.log('  → 在酒馆中选择角色卡即可看到更新按钮');
+  console.log('  → 在酒馆中选择角色卡/预设即可看到更新按钮');
   console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n');
 }
 

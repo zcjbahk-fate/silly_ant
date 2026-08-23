@@ -78,19 +78,22 @@ const n = (typeof z !== 'undefined') ? z : window.z;
 const r = n ? n.z.object({
   预设名称: n.z.string().default('未填写'),
   预设链接: n.z.string().default('未填写'),
-  更新日志链接: n.z.string().default('未填写')
+  更新日志链接: n.z.string().default('未填写'),
+  当前版本: n.z.string().default('0.0.0')
 }).prefault({}) : null;
 
-function a(t) {
+// ─── 按钮：更新预设 ─────────────────────────────────────
+function createUpdatePresetAction(presetData) {
+  const versionDisplay = presetData.version ? ` (${presetData.version})` : '';
   return {
-    name: `更新预设: ${t.name}`,
+    name: `更新预设: ${presetData.name}${versionDisplay}`,
     function: async () => {
       try {
-        if (getPresetNames().includes(t.name)) return;
-        const ok = await importRawPreset(t.name, t.content);
+        const ok = await importRawPreset(presetData.name, presetData.content);
         if (ok) {
-          loadPreset(t.name);
-          toastr.success(`更新预设 '${t.name}' 成功! 请重新选择预设`);
+          insertOrAssignVariables({ 当前版本: presetData.version }, { type: 'script' });
+          loadPreset(presetData.name);
+          toastr.success(`更新预设 '${presetData.name}' 成功! 请重新选择预设`);
         } else {
           toastr.error('更新预设失败, 请刷新重试');
         }
@@ -102,7 +105,8 @@ function a(t) {
   };
 }
 
-function s(t) {
+// ─── 按钮：更新日志 ─────────────────────────────────────
+function createChangelogAction(presetData) {
   return {
     name: '更新日志',
     function: () => {
@@ -112,7 +116,7 @@ function s(t) {
         }
         return md.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br/>');
       };
-      Promise.resolve(renderMd(t.changelog)).then(html => {
+      Promise.resolve(renderMd(presetData.changelog)).then(html => {
         SillyTavern.callGenericPopup(html, SillyTavern.POPUP_TYPE.TEXT, '', {
           leftAlign: true,
           wider: true,
@@ -134,35 +138,44 @@ $(errorCatched(async () => {
     return;
   }
 
+  // 获取远程更新日志 & 版本号
   let changelogText = '';
-  let versionTag = '';
+  let remoteVersion = '';
   if (vars.更新日志链接 && vars.更新日志链接 !== '未填写') {
     const result = await fetchResource(vars.更新日志链接, 'text');
     if (result) {
       changelogText = result;
-      versionTag = changelogText.match(/^##\s*(.*)\s*$/m)?.[1]?.trim() ?? '';
+      remoteVersion = changelogText.match(/^##\s*(.*)\s*$/m)?.[1]?.trim() ?? '';
     }
   }
 
+  // 获取远程预设 JSON
   const presetContent = await fetchResource(vars.预设链接, 'text');
   if (!presetContent) {
     console.warn('[自动更新] 无法获取远程预设，跳过更新检测');
     return;
   }
 
-  const targetPresetName = `${vars.预设名称}` + (versionTag ? versionTag : '');
   const presetData = {
-    name: targetPresetName,
+    name: vars.预设名称,
+    version: remoteVersion,
     content: presetContent,
     changelog: changelogText || '暂无更新日志'
   };
 
-  const isNotInstalled = !getPresetNames().includes(presetData.name);
+  // 版本比对：读取当前版本
+  const localVersion = vars.当前版本 || '0.0.0';
+  const hasUpdate = hasNewerVersion(localVersion, presetData.version);
+
+  console.log(`[自动更新] 预设: ${presetData.name} | 本地: [${localVersion}] | 远程: [${presetData.version}] | 需要更新: ${hasUpdate}`);
+
   const isUpdateRelatedBtn = (btnName) => btnName.startsWith('更新预设') || btnName === '更新日志';
 
-  if (isNotInstalled) {
-    const actions = [a(presetData)];
-    if (changelogText) actions.push(s(presetData));
+  if (hasUpdate) {
+    const actions = [createUpdatePresetAction(presetData)];
+    if (changelogText) {
+      actions.push(createChangelogAction(presetData));
+    }
 
     actions.forEach(action => {
       eventClearEvent(getButtonEvent(action.name));
@@ -173,7 +186,7 @@ $(errorCatched(async () => {
     const newButtons = actions.map(act => ({ name: act.name, visible: true }));
     replaceScriptButtons(remainingButtons.concat(newButtons));
 
-    toastr.info(`检测到预设【${targetPresetName}】有新版本`, '预设更新提示');
+    toastr.info(`检测到预设【${presetData.name}】有新版本: ${presetData.version || '最新版'}`, '预设更新提示');
   } else {
     const remainingButtons = _(getScriptButtons()).filter(btn => !isUpdateRelatedBtn(btn.name)).value();
     replaceScriptButtons(remainingButtons);
