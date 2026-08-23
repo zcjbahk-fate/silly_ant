@@ -1,4 +1,4 @@
-// 角色卡自动更新脚本 (本地优先 + GitHub 回退，无外部 CDN 依赖)
+// 角色卡自动更新脚本 (多源加速：本地优先 → CDN 加速 → GitHub 回退)
 // ─── 版本比对 ──────────────────────────────────────────
 function hasNewerVersion(localVer, remoteVer) {
   if (!remoteVer) return false;
@@ -27,8 +27,6 @@ function hasNewerVersion(localVer, remoteVer) {
 
 // ─── 多源获取：本地优先 → CDN 加速 → GitHub 回退 ─────────
 function toLocalUrl(url) {
-  // 将 GitHub Raw URL 转换为本地文件服务器 URL
-  // https://raw.githubusercontent.com/.../resource/xxx → http://localhost:8787/xxx
   const idx = url.indexOf('/resource/');
   if (idx === -1) return null;
   const relativePath = url.substring(idx + '/resource/'.length);
@@ -36,7 +34,6 @@ function toLocalUrl(url) {
 }
 
 function toCdnUrl(url) {
-  // 将 GitHub Raw 转换为 CDN 镜像加速地址（支持国内网络无代理直连）
   const match = url.match(/raw\.githubusercontent\.com\/([^/]+)\/([^/]+)\/(?:refs\/heads\/)?([^/]+)\/(.+)/);
   if (!match) return null;
   const [, user, repo, branch, p] = match;
@@ -108,7 +105,8 @@ const n = (typeof z !== 'undefined') ? z : window.z;
 const r = n ? n.z.object({
   角色卡名称: n.z.string().default('未填写'),
   角色卡链接: n.z.string().default('未填写'),
-  更新日志链接: n.z.string().default('未填写')
+  更新日志链接: n.z.string().default('未填写'),
+  当前版本: n.z.string().default('0.0.0')
 }).prefault({}) : null;
 
 // ─── 按钮：更新角色卡 ───────────────────────────────────
@@ -118,7 +116,11 @@ function createUpdateCardAction(cardInfo) {
     name: `更新角色卡: ${cardInfo.name}${versionDisplay}`,
     function: async () => {
       try {
-        const primaryWb = getCharWorldbookNames('current')?.primary;
+        let primaryWb = null;
+        try {
+          primaryWb = getCharWorldbookNames('current')?.primary;
+        } catch {}
+
         if (primaryWb) {
           const choice = await SillyTavern.callGenericPopup(
             '更新角色卡将会覆盖掉现在的世界书, 你需要备份吗?',
@@ -135,14 +137,15 @@ function createUpdateCardAction(cardInfo) {
           if (!choice) return;
           if (choice === 2) {
             const backupName = `${primaryWb} (备份)`;
-            if (await createOrReplaceWorldbook(backupName, await getWorldbook(primaryWb))) {
-              toastr.success(`已将世界书备份为 '${backupName}'`);
-            }
+            try {
+              if (await createOrReplaceWorldbook(backupName, await getWorldbook(primaryWb))) {
+                toastr.success(`已将世界书备份为 '${backupName}'`);
+              }
+            } catch {}
           }
         }
         const ok = await importRawCharacter(cardInfo.name, cardInfo.content);
         if (ok) {
-          replaceCharacter(cardInfo.name, { version: cardInfo.version });
           toastr.success(`更新角色卡 '${cardInfo.name}' 成功! 请刷新或重新载入`);
         } else {
           toastr.error('更新角色卡失败, 请刷新重试');
@@ -213,8 +216,17 @@ $(errorCatched(async () => {
     changelog: changelogText || '暂无更新日志'
   };
 
-  // 版本比对
-  const localVersion = await getCharacter(cardData.name).then(c => c?.version?.trim() || '0.0.0').catch(() => '0.0.0');
+  // 版本比对：优先使用变量中的当前版本，兜底通过 getCharacter 获取
+  let localVersion = vars.当前版本 || '';
+  if (!localVersion || localVersion === '0.0.0') {
+    try {
+      const char = await getCharacter(cardData.name);
+      localVersion = char?.version?.trim() || '0.0.0';
+    } catch {
+      localVersion = '0.0.0';
+    }
+  }
+
   const hasUpdate = hasNewerVersion(localVersion, cardData.version);
 
   console.log(`[自动更新] ${cardData.name} | 本地: [${localVersion}] | 远程: [${cardData.version}] | 需要更新: ${hasUpdate}`);
