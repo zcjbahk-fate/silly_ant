@@ -64,7 +64,7 @@
     let money = _.get(allVars, 'stat_data.房东状态.资金总额', 0);
     $('#val-money').text(money + '￥');
 
-    const tenants = ['楚云舒', '楚云微', '沈曼卿', '沈洛薇', '温知夏', '许嘉霓', '钟可可', '苏清禾', '盛凌烟'];
+    const tenants = ['楚云舒', '楚云微', '沈曼卿', '沈洛薇', '温知夏', '许嘉霓', '钟可可', '苏清禾', '盛凝烟'];
     tenants.forEach(name => {
       let rent = _.get(allVars, `stat_data.房客状态.${name}.已上交租金`, 0);
       $(`#val-${name}-rent`).text(rent + '￥');
@@ -191,12 +191,12 @@
           </div>
         </div>
         <div class="tenant-card">
-          <div class="tenant-name">204室 · 盛凌烟（蓝发冷艳学姐）</div>
+          <div class="tenant-name">204室 · 盛凝烟（蓝发冷艳学姐）</div>
           <div class="tenant-grid">
-            <div class="grid-item">已上交租金: <span id="val-盛凌烟-rent"></span></div>
-            <div class="grid-item">榨精次数: <span id="val-盛凌烟-drain"></span></div>
-            <div class="grid-item">与黑人性交: <span id="val-盛凌烟-bbc"></span></div>
-            <div class="grid-item">现在在做: <span id="val-盛凌烟-doing"></span></div>
+            <div class="grid-item">已上交租金: <span id="val-盛凝烟-rent"></span></div>
+            <div class="grid-item">榨精次数: <span id="val-盛凝烟-drain"></span></div>
+            <div class="grid-item">与黑人性交: <span id="val-盛凝烟-bbc"></span></div>
+            <div class="grid-item">现在在做: <span id="val-盛凝烟-doing"></span></div>
           </div>
         </div>
       </div>
