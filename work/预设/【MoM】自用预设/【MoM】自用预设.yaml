@@ -1142,11 +1142,16 @@
           这样一来, 只要你更新链接所访问到的预设和更新日志, 玩家就能在酒馆中直接更新预设, 不需要去帖子查看更新, 不需要再下载、导入新预设了!
 
           另外, 你可以配合[实时编写角色卡、世界书或预设](https://stagedog.github.io/青空莉/工具经验/实时编写角色卡、世界书或预设/)来做到: 在 VSCode 中对预设进行一些修改, 上传到 github, 玩家在酒馆中自动收到更新.
+        按钮:
+          启用: true
+          按钮列表:
+            - 名称: 更新日志
+              可见: true
         数据:
           预设名称: 【MoM】自用预设
           预设链接: https://raw.githubusercontent.com/zcjbahk-fate/silly_ant/refs/heads/main/resource/预设/【MoM】自用预设/【MoM】自用预设.json
           更新日志链接: https://raw.githubusercontent.com/zcjbahk-fate/silly_ant/refs/heads/main/resource/预设/【MoM】自用预设/更新日志.md
-          当前版本: v1.04
+          当前版本: v1.05
 
       - 名称: 预设快捷标签-世界书版@hy@芝士酱
         id: cd566a5a-3369-416f-82a8-6a2582e8fe31

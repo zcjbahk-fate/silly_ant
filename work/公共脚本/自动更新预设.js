@@ -1,4 +1,4 @@
-// 预设自动更新脚本 (本地优先 + GitHub 回退，无外部 CDN 依赖)
+// 预设自动更新脚本 (多源加速：本地优先 → CDN 加速 → GitHub 回退)
 // ─── 版本比对 ──────────────────────────────────────────
 function hasNewerVersion(localVer, remoteVer) {
   if (!remoteVer) return false;
@@ -109,14 +109,42 @@ const r = n ? n.z.object({
   当前版本: n.z.string().default('0.0.0')
 }).prefault({}) : null;
 
+// ─── 弹窗渲染 Markdown ──────────────────────────────────
+function showChangelogPopup(changelogText) {
+  const renderMd = (md) => {
+    if (typeof marked !== 'undefined' && marked.parse) {
+      try { return marked.parse(md, { breaks: true }); } catch (e) {}
+    }
+    return md.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br/>');
+  };
+  Promise.resolve(renderMd(changelogText || '暂无更新日志')).then(html => {
+    SillyTavern.callGenericPopup(html, SillyTavern.POPUP_TYPE.TEXT, '', {
+      leftAlign: true,
+      wider: true,
+      allowVerticalScrolling: true
+    });
+  });
+}
+
 // ─── 按钮：更新预设 ─────────────────────────────────────
 function createUpdatePresetAction(presetInfo) {
   const versionDisplay = presetInfo.version ? ` (${presetInfo.version})` : '';
+  const btnName = `更新预设: ${presetInfo.name}${versionDisplay}`;
   return {
-    name: `更新预设: ${presetInfo.name}${versionDisplay}`,
+    name: btnName,
     function: async () => {
       try {
-        const ok = await importRawPreset(presetInfo.name, presetInfo.content);
+        let presetContent = presetInfo.content;
+        if (!presetContent) {
+          toastr.info('正在下载最新预设...', '更新中');
+          presetContent = await fetchResource(presetInfo.presetUrl, 'text');
+        }
+        if (!presetContent) {
+          toastr.error('下载预设失败，请检查网络连接');
+          return;
+        }
+
+        const ok = await importRawPreset(presetInfo.name, presetContent);
         if (ok) {
           loadPreset(presetInfo.name);
           toastr.success(`更新预设 '${presetInfo.name}' 成功! 请重新选择预设`);
@@ -131,24 +159,58 @@ function createUpdatePresetAction(presetInfo) {
   };
 }
 
-// ─── 按钮：更新日志 ─────────────────────────────────────
-function createChangelogAction(presetInfo) {
+// ─── 按钮：更新日志（常驻，点击检查更新 + 展示日志） ─────
+function createChangelogAction(vars) {
   return {
     name: '更新日志',
-    function: () => {
-      const renderMd = (md) => {
-        if (typeof marked !== 'undefined' && marked.parse) {
-          try { return marked.parse(md, { breaks: true }); } catch (e) {}
+    function: async () => {
+      toastr.info('正在获取更新日志并检查版本...', '更新检测');
+      let changelogText = '';
+      let remoteVersion = '';
+
+      if (vars.更新日志链接 && vars.更新日志链接 !== '未填写') {
+        const result = await fetchResource(vars.更新日志链接, 'text');
+        if (result) {
+          changelogText = result;
+          remoteVersion = changelogText.match(/^##\s*(.*)\s*$/m)?.[1]?.trim() ?? '';
         }
-        return md.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br/>');
-      };
-      Promise.resolve(renderMd(presetInfo.changelog)).then(html => {
-        SillyTavern.callGenericPopup(html, SillyTavern.POPUP_TYPE.TEXT, '', {
-          leftAlign: true,
-          wider: true,
-          allowVerticalScrolling: true
+      }
+
+      if (!changelogText) {
+        toastr.warning('获取远程更新日志失败，请检查网络连接', '网络提示');
+        return;
+      }
+
+      const localVer = vars.当前版本 || '0.0.0';
+      const hasUpdate = hasNewerVersion(localVer, remoteVersion);
+      showChangelogPopup(changelogText);
+
+      const otherButtons = _(getScriptButtons()).filter(btn => !btn.name.startsWith('更新预设') && btn.name !== '更新日志').value();
+
+      if (hasUpdate) {
+        const updateAction = createUpdatePresetAction({
+          name: vars.预设名称,
+          version: remoteVersion,
+          presetUrl: vars.预设链接,
+          content: null
         });
-      });
+        eventClearEvent(getButtonEvent(updateAction.name));
+        eventOn(getButtonEvent(updateAction.name), updateAction.function);
+
+        replaceScriptButtons([
+          ...otherButtons,
+          { name: updateAction.name, visible: true },
+          { name: '更新日志', visible: true }
+        ]);
+
+        toastr.info(`检测到新版本: ${remoteVersion} (当前: ${localVer})，已显示更新按钮`, '发现新版本');
+      } else {
+        replaceScriptButtons([
+          ...otherButtons,
+          { name: '更新日志', visible: true }
+        ]);
+        toastr.success(`当前已是最新版本 (${localVer})`, '版本状态');
+      }
     }
   };
 }
@@ -164,57 +226,56 @@ $(errorCatched(async () => {
     return;
   }
 
-  // 获取远程更新日志 & 版本号
-  let changelogText = '';
-  let remoteVersion = '';
-  if (vars.更新日志链接 && vars.更新日志链接 !== '未填写') {
-    const result = await fetchResource(vars.更新日志链接, 'text');
-    if (result) {
-      changelogText = result;
-      remoteVersion = changelogText.match(/^##\s*(.*)\s*$/m)?.[1]?.trim() ?? '';
-    }
-  }
+  // 1. 常驻绑定「更新日志」按钮
+  const changelogAction = createChangelogAction(vars);
+  eventClearEvent(getButtonEvent(changelogAction.name));
+  eventOn(getButtonEvent(changelogAction.name), changelogAction.function);
 
-  // 获取远程预设文件
-  const presetContent = await fetchResource(vars.预设链接, 'text');
-  if (!presetContent) {
-    console.warn('[自动更新] 无法获取远程预设，跳过更新检测');
-    return;
-  }
+  // 2. 初始确保「更新日志」按钮存在
+  const otherButtons = _(getScriptButtons()).filter(btn => !btn.name.startsWith('更新预设') && btn.name !== '更新日志').value();
+  replaceScriptButtons([
+    ...otherButtons,
+    { name: '更新日志', visible: true }
+  ]);
 
-  const presetData = {
-    name: vars.预设名称,
-    version: remoteVersion,
-    content: presetContent,
-    changelog: changelogText || '暂无更新日志'
-  };
-
-  // 版本比对
-  const localVersion = vars.当前版本 || '0.0.0';
-  const hasUpdate = hasNewerVersion(localVersion, presetData.version);
-
-  console.log(`[自动更新] ${presetData.name} | 本地: [${localVersion}] | 远程: [${presetData.version}] | 需要更新: ${hasUpdate}`);
-
-  const isUpdateRelatedBtn = (btnName) => btnName.startsWith('更新预设') || btnName === '更新日志';
-
-  if (hasUpdate) {
-    const actions = [createUpdatePresetAction(presetData)];
-    if (changelogText) {
-      actions.push(createChangelogAction(presetData));
+  // 3. 静默后台比对版本（不阻塞载入）
+  try {
+    let changelogText = '';
+    let remoteVersion = '';
+    if (vars.更新日志链接 && vars.更新日志链接 !== '未填写') {
+      const result = await fetchResource(vars.更新日志链接, 'text');
+      if (result) {
+        changelogText = result;
+        remoteVersion = changelogText.match(/^##\s*(.*)\s*$/m)?.[1]?.trim() ?? '';
+      }
     }
 
-    actions.forEach(action => {
-      eventClearEvent(getButtonEvent(action.name));
-      eventOn(getButtonEvent(action.name), action.function);
-    });
+    if (remoteVersion) {
+      const localVer = vars.当前版本 || '0.0.0';
+      const hasUpdate = hasNewerVersion(localVer, remoteVersion);
+      console.log(`[自动更新] ${vars.预设名称} | 本地: [${localVer}] | 远程: [${remoteVersion}] | 需要更新: ${hasUpdate}`);
 
-    const remainingButtons = _(getScriptButtons()).filter(btn => !isUpdateRelatedBtn(btn.name)).value();
-    const newButtons = actions.map(act => ({ name: act.name, visible: true }));
-    replaceScriptButtons(remainingButtons.concat(newButtons));
+      if (hasUpdate) {
+        const updateAction = createUpdatePresetAction({
+          name: vars.预设名称,
+          version: remoteVersion,
+          presetUrl: vars.预设链接,
+          content: null
+        });
+        eventClearEvent(getButtonEvent(updateAction.name));
+        eventOn(getButtonEvent(updateAction.name), updateAction.function);
 
-    toastr.info(`检测到预设【${presetData.name}】有新版本: ${presetData.version || '最新版'}`, '预设更新提示');
-  } else {
-    const remainingButtons = _(getScriptButtons()).filter(btn => !isUpdateRelatedBtn(btn.name)).value();
-    replaceScriptButtons(remainingButtons);
+        const currentOthers = _(getScriptButtons()).filter(btn => !btn.name.startsWith('更新预设') && btn.name !== '更新日志').value();
+        replaceScriptButtons([
+          ...currentOthers,
+          { name: updateAction.name, visible: true },
+          { name: '更新日志', visible: true }
+        ]);
+
+        toastr.info(`检测到预设【${vars.预设名称}】有新版本: ${remoteVersion}`, '预设更新提示');
+      }
+    }
+  } catch (e) {
+    console.warn('[自动更新] 静默检查版本失败:', e);
   }
 }));

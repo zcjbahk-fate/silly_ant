@@ -91,8 +91,8 @@ function syncCardVersionInYaml(yamlPath, version) {
   } else if (/^(\s*更新日志链接:\s*.+)$/m.test(content)) {
     content = content.replace(/^(\s*更新日志链接:\s*.+)$/m, `$1\n          当前版本: ${version}`);
   }
-  // 清理按钮列表中残留的历史硬编码尾缀，如 "更新角色卡: xxx更新内容" -> "更新角色卡: xxx"
-  content = content.replace(/(\s*-\s*名称:\s*["']?更新角色卡:\s*[^"'\r\n]+?)(?:更新内容|v\d+(?:\.\d+)*)?(["']?\s*)$/gm, '$1$2');
+  // 清理按钮列表中残留的历史硬编码更新角色卡按钮，只保留常驻更新日志
+  content = content.replace(/(\s*-\s*名称:\s*["']?更新角色卡:[^"'\r\n]+?["']?\s*\n\s*可见:\s*true\s*)/g, '');
   writeFileSync(yamlPath, content, 'utf-8');
 }
 
@@ -104,8 +104,8 @@ function syncPresetVersionInYaml(yamlPath, version) {
   } else if (/^(\s*更新日志链接:\s*.+)$/m.test(content)) {
     content = content.replace(/^(\s*更新日志链接:\s*.+)$/m, `$1\n          当前版本: ${version}`);
   }
-  // 清理按钮列表中残留的版本号后缀，如 "更新预设: 【MoM】自用预设v1.01" -> "更新预设: 【MoM】自用预设"
-  content = content.replace(/(\s*-\s*名称:\s*["']?更新预设:\s*[^"'\r\n]+?)(?:v\d+(?:\.\d+)*)?(["']?\s*)$/gm, '$1$2');
+  // 清理按钮列表中残留的历史硬编码更新预设按钮，只保留常驻更新日志
+  content = content.replace(/(\s*-\s*名称:\s*["']?更新预设:[^"'\r\n]+?["']?\s*\n\s*可见:\s*true\s*)/g, '');
   writeFileSync(yamlPath, content, 'utf-8');
 }
 

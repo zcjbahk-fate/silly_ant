@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://testingcf.jsdelivr.net/gh/StageDog/tavern_sync/dist/schema/character.zh.json
 头像: 头像
-版本: "v1.00"
+版本: "v1.01"
 作者: 美羽
 备注: 本卡免费发布，支持二创，禁止转载至付费酒馆。
 
@@ -628,12 +628,13 @@
         按钮:
           启用: true
           按钮列表:
-            - 名称: "更新角色卡: 陈蛮村更新内容"
+            - 名称: 更新日志
               可见: true
         数据:
           角色卡名称: 陈蛮村
           角色卡链接: https://raw.githubusercontent.com/zcjbahk-fate/silly_ant/refs/heads/main/resource/角色卡/陈蛮村/陈蛮村.png
           更新日志链接: https://raw.githubusercontent.com/zcjbahk-fate/silly_ant/refs/heads/main/resource/角色卡/陈蛮村/更新日志.md
+          当前版本: v1.01
 
       - 名称: mvu
         id: b0bfd78a-5233-45d3-93d1-cca237bc0ab7
