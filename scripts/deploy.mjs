@@ -4,9 +4,10 @@
 //   node scripts/deploy.mjs 精神小妹      # 只发版指定角色卡或预设
 //   node scripts/deploy.mjs --bundle-only # 只打包不推送
 import { execSync } from 'node:child_process';
-import { readFileSync, writeFileSync, existsSync } from 'node:fs';
+import { readFileSync, writeFileSync, existsSync, copyFileSync, mkdirSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { archiveOldVersion, createHistoryZip } from './zip-utils.mjs';
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
 const ROOT = resolve(__dirname, '..');
@@ -14,7 +15,33 @@ const ROOT = resolve(__dirname, '..');
 const EAGLE_API = 'http://localhost:41595';
 const EAGLE_ARCHIVE_FOLDER = '角色卡归档';
 
-// ─── Eagle Token 获取（从 Eagle API 自动读取） ────────────
+// ─── 公共脚本同步到 dist ────────────────────────────────
+
+function syncPublicScripts() {
+  const scriptMap = [
+    { src: 'work/公共脚本/自动更新角色卡.js', dst: 'dist/酒馆助手/自动更新角色卡/index.js' },
+    { src: 'work/公共脚本/自动更新预设.js', dst: 'dist/酒馆助手/自动更新预设/index.js' },
+  ];
+
+  for (const { src, dst } of scriptMap) {
+    const srcPath = resolve(ROOT, src);
+    const dstPath = resolve(ROOT, dst);
+    if (!existsSync(srcPath)) continue;
+    mkdirSync(dirname(dstPath), { recursive: true });
+    copyFileSync(srcPath, dstPath);
+    console.log(`    🔄 同步: ${src} → ${dst}`);
+  }
+}
+
+// ─── 从 YAML 提取当前版本号（打包前的旧版本） ─────────────
+
+function extractCurrentVersion(yamlPath) {
+  if (!existsSync(yamlPath)) return null;
+  const content = readFileSync(yamlPath, 'utf-8');
+  const match = content.match(/^\s*当前版本:\s*(.+)$/m);
+  return match ? match[1].trim() : null;
+}
+
 
 async function getEagleToken() {
   try {
@@ -208,7 +235,7 @@ async function archiveToEagle(filePath, cardName, version, cardType = '角色卡
   } else if (cardType === '世界书') {
     pathSegments = ['世界书', cardName];
   } else {
-    pathSegments = [EAGLE_ARCHIVE_FOLDER, cardName];
+    pathSegments = [EAGLE_ARCHIVE_FOLDER];
   }
 
   // 获取文件夹列表并定位/创建目标文件夹
@@ -235,6 +262,45 @@ async function archiveToEagle(filePath, cardName, version, cardType = '角色卡
   }
 }
 
+async function archiveHistoryZipToEagle(cardName, version, cardType = '角色卡') {
+  const zipPath = createHistoryZip(cardName, cardType);
+  if (!zipPath) return;
+
+  const displayName = `${cardName}_历史版本`;
+  const tags = [cardName, '历史版本'];
+  if (cardType !== '角色卡') tags.push(cardType);
+
+  let pathSegments;
+  if (cardType === '预设') {
+    pathSegments = ['预设', '旧版'];
+  } else if (cardType === '世界书') {
+    pathSegments = ['世界书', '旧版'];
+  } else {
+    pathSegments = [EAGLE_ARCHIVE_FOLDER, '旧版'];
+  }
+
+  const folders = await getFolderList();
+  const targetFolderId = await resolveEagleFolderPath(folders, pathSegments);
+
+  const normalizedPath = zipPath.replace(/\//g, '\\');
+  const res = await eagleFetch('/api/item/addFromPath', {
+    body: {
+      path: normalizedPath,
+      name: displayName,
+      folderId: targetFolderId,
+      tags,
+      annotation: `${cardName} 历史版本合集 (截至 ${version || 'unknown'})`
+    }
+  });
+
+  const data = await res.json();
+  if (data.status === 'success') {
+    console.log(`    🦅 Eagle: 历史版本已归档 → ${pathSegments.join('/')}/${displayName}.zip`);
+  } else {
+    console.warn(`    ⚠️ Eagle 历史版本归档失败:`, JSON.stringify(data));
+  }
+}
+
 // ─── 主流程 ──────────────────────────────────────────────
 
 async function main() {
@@ -245,6 +311,11 @@ async function main() {
   console.log('\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
   console.log('  🚀 silly_ant 发版工具');
   console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n');
+
+  // 0. 同步公共脚本到 dist（确保 dist 始终使用最新版本）
+  console.log('  🔄 同步公共脚本...');
+  syncPublicScripts();
+  console.log('');
 
   // 1. 读取配置
   const configPath = resolve(ROOT, 'tavern_sync.yaml');
@@ -274,6 +345,23 @@ async function main() {
         const basePath = resolve(ROOT, config.exportPath);
         const changelogPath = resolve(dirname(basePath), '更新日志.md');
         version = extractVersion(changelogPath);
+      }
+
+      // 归档旧版本到历史目录（在同步版本号和打包之前）
+      if (config.exportPath && config.localPath) {
+        const localYamlPath = resolve(ROOT, config.localPath);
+        const oldVersion = extractCurrentVersion(localYamlPath);
+        if (oldVersion && oldVersion !== version) {
+          const basePath = resolve(ROOT, config.exportPath);
+          for (const ext of ['.png', '.json']) {
+            const candidate = basePath + ext;
+            if (existsSync(candidate)) {
+              archiveOldVersion(candidate, config.name, oldVersion, config.type);
+              console.log(`    📂 旧版本 ${oldVersion} 已归档到历史目录`);
+              break;
+            }
+          }
+        }
       }
 
       // 若为角色卡且有版本号，打包前自动同步 YAML 中的版本字段
@@ -325,6 +413,12 @@ async function main() {
         await archiveToEagle(card.outputFile, card.name, card.version, card.type);
       } catch (e) {
         console.warn(`    ⚠️ Eagle 归档出错 (${card.name}):`, e.message);
+      }
+      // 归档历史版本 zip 到「旧版」文件夹
+      try {
+        await archiveHistoryZipToEagle(card.name, card.version, card.type);
+      } catch (e) {
+        console.warn(`    ⚠️ Eagle 历史版本归档出错 (${card.name}):`, e.message);
       }
     }
   } else {

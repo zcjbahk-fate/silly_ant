@@ -1134,7 +1134,7 @@
       "injection_depth": 4,
       "injection_order": 100,
       "role": "system",
-      "content": "{{setvar::update_variable::\n依照`<变量更新规则>`和`<变量输出规则>`进行变量更新\n}}\n{{setvar::变量更新标签::\n<UpdateVariable>\n}}\n{{setvar::变量标签:: \n<StatusPlaceHolderImpl/>\n}}\n",
+      "content": "{{setvar::变量更新标签::\n<UpdateVariable>\n}}\n{{setvar::变量标签:: \n<StatusPlaceHolderImpl/>\n}}\n",
       "system_prompt": false,
       "marker": false,
       "forbid_overrides": false

@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://testingcf.jsdelivr.net/gh/StageDog/tavern_sync/dist/schema/character.zh.json
 头像: 头像
-版本: "v1.02"
+版本: "v1.03"
 作者: ""
 备注: ""
 
@@ -134,6 +134,6 @@
           角色卡名称: 精神小妹
           角色卡链接: https://raw.githubusercontent.com/zcjbahk-fate/silly_ant/refs/heads/main/resource/角色卡/精神小妹/精神小妹.png
           更新日志链接: https://raw.githubusercontent.com/zcjbahk-fate/silly_ant/refs/heads/main/resource/角色卡/精神小妹/更新日志.md
-          当前版本: v1.02
+          当前版本: v1.03
 
     变量: {}
