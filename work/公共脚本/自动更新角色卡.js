@@ -126,6 +126,51 @@ function showChangelogPopup(changelogText) {
   });
 }
 
+// ─── 从卡片 Blob 中提取 embedded character_book ───────────
+async function extractCharacterBookFromBlob(blob) {
+  try {
+    const arrayBuffer = await blob.arrayBuffer();
+    const uint8 = new Uint8Array(arrayBuffer);
+
+    // 1. 如果是 JSON 文件
+    try {
+      const text = new TextDecoder('utf-8').decode(uint8);
+      if (text.trim().startsWith('{')) {
+        const json = JSON.parse(text);
+        return json.data?.character_book || json.character_book || null;
+      }
+    } catch {}
+
+    // 2. 如果是 PNG 文件
+    const dataView = new DataView(uint8.buffer, uint8.byteOffset, uint8.byteLength);
+    let offset = 8;
+    while (offset < uint8.length) {
+      const length = dataView.getUint32(offset);
+      const type = String.fromCharCode(uint8[offset+4], uint8[offset+5], uint8[offset+6], uint8[offset+7]);
+      if (type === 'tEXt') {
+        const chunkData = uint8.subarray(offset + 8, offset + 8 + length);
+        const nullIdx = chunkData.indexOf(0);
+        const keyword = String.fromCharCode(...chunkData.subarray(0, nullIdx));
+        if (keyword === 'chara' || keyword === 'ccv3') {
+          const b64Bytes = chunkData.subarray(nullIdx + 1);
+          let b64Str = '';
+          for (let i = 0; i < b64Bytes.length; i++) b64Str += String.fromCharCode(b64Bytes[i]);
+          const binStr = atob(b64Str);
+          const bytes = new Uint8Array(binStr.length);
+          for (let i = 0; i < binStr.length; i++) bytes[i] = binStr.charCodeAt(i);
+          const decoded = new TextDecoder('utf-8').decode(bytes);
+          const charObj = JSON.parse(decoded);
+          return charObj.data?.character_book || charObj.character_book || null;
+        }
+      }
+      offset += 12 + length;
+    }
+  } catch (e) {
+    console.warn('[自动更新] 解析卡片世界书失败:', e);
+  }
+  return null;
+}
+
 // ─── 按钮：更新角色卡 ───────────────────────────────────
 function createUpdateCardAction(cardInfo) {
   const versionDisplay = cardInfo.version ? ` (${cardInfo.version})` : '';
@@ -148,6 +193,7 @@ function createUpdateCardAction(cardInfo) {
         try {
           primaryWb = getCharWorldbookNames('current')?.primary;
         } catch {}
+        if (!primaryWb) primaryWb = cardInfo.name;
 
         if (primaryWb) {
           const choice = await SillyTavern.callGenericPopup(
@@ -172,9 +218,25 @@ function createUpdateCardAction(cardInfo) {
             } catch {}
           }
         }
+
+        // ① 导入最新角色卡图片/数据
         const ok = await importRawCharacter(cardInfo.name, cardBlob);
-        if (ok) {
-          toastr.success(`更新角色卡 '${cardInfo.name}' 成功! 2 秒后自动刷新...`);
+
+        // ② 强制覆写已有世界书为最新版，彻底解决酒馆导入不覆盖世界书的缺陷
+        let wbUpdated = false;
+        try {
+          const newWb = await extractCharacterBookFromBlob(cardBlob);
+          if (newWb && primaryWb) {
+            await createOrReplaceWorldbook(primaryWb, newWb);
+            wbUpdated = true;
+            console.log(`[自动更新] ✅ 已成功覆盖更新世界书: ${primaryWb}`);
+          }
+        } catch (wbErr) {
+          console.warn('[自动更新] 覆写世界书失败:', wbErr);
+        }
+
+        if (ok || wbUpdated) {
+          toastr.success(`更新角色卡 '${cardInfo.name}' 成功! 世界书已同步更新为最新版。\n提示：请开启【新对话】以加载最新角色卡设定。2 秒后刷新...`);
           
           // 移除更新按钮并更新本地变量，防止按钮残留
           const currentOthers = _(getScriptButtons()).filter(btn => !btn.name.startsWith('更新角色卡') && btn.name !== '更新日志').value();
@@ -186,7 +248,7 @@ function createUpdateCardAction(cardInfo) {
             insertOrAssignVariables({ 当前版本: cardInfo.version }, { type: 'script' });
           }
           // 自动刷新页面以加载最新角色卡
-          setTimeout(() => location.reload(), 2000);
+          setTimeout(() => location.reload(), 2500);
         } else {
           toastr.error('更新角色卡失败, 请刷新重试');
         }
