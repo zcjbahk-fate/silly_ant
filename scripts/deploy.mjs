@@ -223,6 +223,29 @@ async function resolveEagleFolderPath(folders, pathSegments) {
   return currentFolder.id;
 }
 
+// 删除 Eagle 中指定文件夹下匹配前缀的旧文件
+async function removeOldEagleItems(folderId, namePrefix) {
+  try {
+    const res = await eagleFetch('/api/item/list', {
+      body: { folders: [folderId], limit: 200 }
+    });
+    const data = await res.json();
+    if (data.status !== 'success' || !data.data) return;
+
+    const oldItems = data.data.filter(item => item.name.startsWith(namePrefix));
+    for (const item of oldItems) {
+      try {
+        await eagleFetch('/api/item/moveToTrash', { body: { itemIds: [item.id] } });
+      } catch {}
+    }
+    if (oldItems.length > 0) {
+      console.log(`    🗑️ Eagle: 已清理 ${oldItems.length} 个旧版本 (${namePrefix}*)`);
+    }
+  } catch (e) {
+    console.warn(`    ⚠️ Eagle 清理旧版本失败:`, e.message);
+  }
+}
+
 async function archiveToEagle(filePath, cardName, version, cardType = '角色卡') {
   const versionTag = version || 'unknown';
   const displayName = `${cardName}_${versionTag}`;
@@ -241,6 +264,9 @@ async function archiveToEagle(filePath, cardName, version, cardType = '角色卡
   // 获取文件夹列表并定位/创建目标文件夹
   const folders = await getFolderList();
   const targetFolderId = await resolveEagleFolderPath(folders, pathSegments);
+
+  // 清理该文件夹下该卡名的旧版本文件
+  await removeOldEagleItems(targetFolderId, `${cardName}_`);
 
   // 添加文件到 Eagle（使用本地路径，Windows 需要反斜杠）
   const normalizedPath = filePath.replace(/\//g, '\\');
@@ -281,6 +307,9 @@ async function archiveHistoryZipToEagle(cardName, version, cardType = '角色卡
 
   const folders = await getFolderList();
   const targetFolderId = await resolveEagleFolderPath(folders, pathSegments);
+
+  // 清理旧的历史版本 zip
+  await removeOldEagleItems(targetFolderId, `${cardName}_历史版本`);
 
   const normalizedPath = zipPath.replace(/\//g, '\\');
   const res = await eagleFetch('/api/item/addFromPath', {
