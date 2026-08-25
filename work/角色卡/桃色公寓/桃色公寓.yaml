@@ -1,6 +1,6 @@
 # yaml-language-server: =https://testingcf.jsdelivr.net/gh/StageDog/tavern_sync/dist/schema/character.zh.json
 头像: 头像
-版本: "v1.13"
+版本: "v1.14"
 作者: 美羽
 备注: 现代都市 / 涉黑财阀房东 / 男M女S / 前妻母女霸占 / 绝美双胞胎性瘾恶堕 / 全员丝袜 / 媚黑与绿帽 / 欲都公寓多女主反差群像卡
 
@@ -22,6 +22,19 @@
 
 世界书名称: 与角色卡名称相同
 条目:
+  - 名称: "[规则]防全知与渐进式暴露机制"
+    启用: true
+    激活策略:
+      类型: 蓝灯
+    插入位置:
+      类型: 角色定义之前
+      顺序: 14710
+    激活概率: 100
+    递归:
+      不可被其他条目激活: true
+      不可激活其他条目: true
+    文件: 世界书\[规则]防全知与渐进式暴露机制
+
   - 名称: "[initvar]变量初始化勿开"
     启用: false
     激活策略:
@@ -838,7 +851,7 @@
           角色卡名称: 桃色公寓
           角色卡链接: https://raw.githubusercontent.com/zcjbahk-fate/silly_ant/refs/heads/main/resource/角色卡/桃色公寓/桃色公寓.png
           更新日志链接: https://raw.githubusercontent.com/zcjbahk-fate/silly_ant/refs/heads/main/resource/角色卡/桃色公寓/更新日志.md
-          当前版本: v1.13
+          当前版本: v1.14
 
     变量: {}
 
