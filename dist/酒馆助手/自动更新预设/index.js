@@ -153,6 +153,7 @@ function createUpdatePresetAction(presetInfo) {
           const currentOthers = _(getScriptButtons()).filter(btn => !btn.name.startsWith('更新预设') && btn.name !== '预设更新日志' && btn.name !== '更新日志').value();
           replaceScriptButtons([
             ...currentOthers,
+            { name: '更新日志', visible: false },
             { name: '预设更新日志', visible: true }
           ]);
           if (presetInfo.version) {
@@ -212,6 +213,7 @@ function createChangelogAction(vars) {
         replaceScriptButtons([
           ...otherButtons,
           { name: updateAction.name, visible: true },
+          { name: '更新日志', visible: false },
           { name: '预设更新日志', visible: true }
         ]);
 
@@ -219,6 +221,7 @@ function createChangelogAction(vars) {
       } else {
         replaceScriptButtons([
           ...otherButtons,
+          { name: '更新日志', visible: false },
           { name: '预设更新日志', visible: true }
         ]);
         toastr.success(`当前已是最新版本 (${localVer})`, '版本状态');
@@ -243,10 +246,11 @@ $(errorCatched(async () => {
   eventClearEvent(getButtonEvent(changelogAction.name));
   eventOn(getButtonEvent(changelogAction.name), changelogAction.function);
 
-  // 2. 初始确保「预设更新日志」按钮存在
+  // 2. 初始确保「预设更新日志」按钮存在，并隐藏旧版「更新日志」
   const otherButtons = _(getScriptButtons()).filter(btn => !btn.name.startsWith('更新预设') && btn.name !== '预设更新日志' && btn.name !== '更新日志').value();
   replaceScriptButtons([
     ...otherButtons,
+    { name: '更新日志', visible: false },
     { name: '预设更新日志', visible: true }
   ]);
 
@@ -281,6 +285,7 @@ $(errorCatched(async () => {
         replaceScriptButtons([
           ...currentOthers,
           { name: updateAction.name, visible: true },
+          { name: '更新日志', visible: false },
           { name: '预设更新日志', visible: true }
         ]);
 
