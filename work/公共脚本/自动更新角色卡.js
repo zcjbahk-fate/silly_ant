@@ -174,7 +174,7 @@ function createUpdateCardAction(cardInfo) {
         }
         const ok = await importRawCharacter(cardInfo.name, cardBlob);
         if (ok) {
-          toastr.success(`更新角色卡 '${cardInfo.name}' 成功! 请刷新或重新载入`);
+          toastr.success(`更新角色卡 '${cardInfo.name}' 成功! 2 秒后自动刷新...`);
           
           // 移除更新按钮并更新本地变量，防止按钮残留
           const currentOthers = _(getScriptButtons()).filter(btn => !btn.name.startsWith('更新角色卡') && btn.name !== '更新日志').value();
@@ -185,6 +185,8 @@ function createUpdateCardAction(cardInfo) {
           if (cardInfo.version) {
             insertOrAssignVariables({ 当前版本: cardInfo.version }, { type: 'script' });
           }
+          // 自动刷新页面以加载最新角色卡
+          setTimeout(() => location.reload(), 2000);
         } else {
           toastr.error('更新角色卡失败, 请刷新重试');
         }

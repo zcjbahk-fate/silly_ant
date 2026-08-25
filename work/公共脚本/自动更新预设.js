@@ -147,10 +147,10 @@ function createUpdatePresetAction(presetInfo) {
         const ok = await importRawPreset(presetInfo.name, presetContent);
         if (ok) {
           loadPreset(presetInfo.name);
-          toastr.success(`更新预设 '${presetInfo.name}' 成功! 请重新选择预设`);
+          toastr.success(`更新预设 '${presetInfo.name}' 成功! 2 秒后自动刷新...`);
           
           // 移除更新按钮并更新本地变量，防止按钮残留
-          const currentOthers = _(getScriptButtons()).filter(btn => !btn.name.startsWith('更新预设') && btn.name !== '预设更新日志').value();
+          const currentOthers = _(getScriptButtons()).filter(btn => !btn.name.startsWith('更新预设') && btn.name !== '预设更新日志' && btn.name !== '更新日志').value();
           replaceScriptButtons([
             ...currentOthers,
             { name: '预设更新日志', visible: true }
@@ -158,6 +158,8 @@ function createUpdatePresetAction(presetInfo) {
           if (presetInfo.version) {
             insertOrAssignVariables({ 当前版本: presetInfo.version }, { type: 'script' });
           }
+          // 自动刷新页面以加载最新预设
+          setTimeout(() => location.reload(), 2000);
         } else {
           toastr.error('更新预设失败, 请刷新重试');
         }
@@ -195,7 +197,7 @@ function createChangelogAction(vars) {
       const hasUpdate = hasNewerVersion(localVer, remoteVersion);
       showChangelogPopup(changelogText);
 
-      const otherButtons = _(getScriptButtons()).filter(btn => !btn.name.startsWith('更新预设') && btn.name !== '预设更新日志').value();
+      const otherButtons = _(getScriptButtons()).filter(btn => !btn.name.startsWith('更新预设') && btn.name !== '预设更新日志' && btn.name !== '更新日志').value();
 
       if (hasUpdate) {
         const updateAction = createUpdatePresetAction({
@@ -242,7 +244,7 @@ $(errorCatched(async () => {
   eventOn(getButtonEvent(changelogAction.name), changelogAction.function);
 
   // 2. 初始确保「预设更新日志」按钮存在
-  const otherButtons = _(getScriptButtons()).filter(btn => !btn.name.startsWith('更新预设') && btn.name !== '预设更新日志').value();
+  const otherButtons = _(getScriptButtons()).filter(btn => !btn.name.startsWith('更新预设') && btn.name !== '预设更新日志' && btn.name !== '更新日志').value();
   replaceScriptButtons([
     ...otherButtons,
     { name: '预设更新日志', visible: true }
@@ -275,7 +277,7 @@ $(errorCatched(async () => {
         eventClearEvent(getButtonEvent(updateAction.name));
         eventOn(getButtonEvent(updateAction.name), updateAction.function);
 
-        const currentOthers = _(getScriptButtons()).filter(btn => !btn.name.startsWith('更新预设') && btn.name !== '预设更新日志').value();
+        const currentOthers = _(getScriptButtons()).filter(btn => !btn.name.startsWith('更新预设') && btn.name !== '预设更新日志' && btn.name !== '更新日志').value();
         replaceScriptButtons([
           ...currentOthers,
           { name: updateAction.name, visible: true },

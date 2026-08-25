@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://testingcf.jsdelivr.net/gh/StageDog/tavern_sync/dist/schema/character.zh.json
 头像: 头像
-版本: "v1.03"
+版本: "v1.04"
 作者: ""
 备注: ""
 
@@ -502,7 +502,7 @@
           角色卡名称: 美人团外卖
           角色卡链接: https://raw.githubusercontent.com/zcjbahk-fate/silly_ant/refs/heads/main/resource/角色卡/美人团外卖/美人团外卖.png
           更新日志链接: https://raw.githubusercontent.com/zcjbahk-fate/silly_ant/refs/heads/main/resource/角色卡/美人团外卖/更新日志.md
-          当前版本: v1.03
+          当前版本: v1.04
 
       - 名称: 角色卡自带脚本
         id: e396da49-125b-4f01-8176-9726ddb11318
