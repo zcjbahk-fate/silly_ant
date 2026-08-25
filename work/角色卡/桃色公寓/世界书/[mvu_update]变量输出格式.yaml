@@ -1,21 +1,19 @@
 ---
-<变量输出格式>
 变量输出格式:
   rule:
-    - 需严格按照`<变量更新规则>`中的设定进行更新
-    - 必须保证<JSONPatch>中展示`<status_current_variables>`中出现的所有变动字段
-    - 该更新指令遵循 JSON Patch（RFC 6902）标准，格式必须是包含操作对象的有效 JSON 数组，但仅支持以下操作类型:
-      - replace: 替换已有路径对应的数值（字符串、布尔值等）
-      - delta: 按照增量值更新已有数字类型路径对应的数值（所有 number 类型变量必须使用 delta，禁止使用 replace）
-      - insert: 向对象或数组中插入新的项目（向数组末尾追加时使用 `-` 作为索引）
-      - remove: 移除指定路径对应的内容
-    - number 类型的变量更新方式必须为 delta，禁止使用 replace
-    - 请勿更新以 `_` 开头的字段名，此类字段为只读属性
+    - you must output the update analysis and the actual update commands at once in the end of the next reply
+    - the update commands works like the **JSON Patch (RFC 6902)** standard, must be a valid JSON array containing operation objects, but supports the following operations instead:
+      - replace: replace the value of existing paths (string, boolean, etc.)
+      - delta: update the value of existing number paths by a delta value (all number type variables MUST use delta, replace is strictly forbidden)
+      - insert: insert new items into an object or array (using `-` as array index intends appending to the end)
+      - remove: remove the specified path
+    - number type variables MUST use delta, DO NOT use replace
+    - don't update field names starts with `_` as they are readonly
   format: |-
     <UpdateVariable>
     <Analysis>$(IN ENGLISH, no more than 60 words)
-    - ${calculate time passed and location}
-    - ${analyze variables change and deltas}
+    - ${calculate time passed and location: ...}
+    - ${analyze variables change and deltas: ...}
     </Analysis>
     <JSONPatch>
     [
@@ -28,4 +26,3 @@
     ]
     </JSONPatch>
     </UpdateVariable>
-</变量输出格式>
