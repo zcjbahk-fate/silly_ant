@@ -1,6 +1,6 @@
 ---
 变量输出格式强调:
-  rule: The following must be inserted to the end of reply, and cannot be omitted under any circumstances.
+  rule: You must always append the complete <UpdateVariable>...</UpdateVariable> block and <StatusPlaceHolderImpl/> at the very end of every reply (strictly placed after all story text, options, and theatre snippets), and it CANNOT be omitted under any circumstances.
   format: |-
     <UpdateVariable>
     <Analysis>
@@ -13,3 +13,5 @@
     ]
     </JSONPatch>
     </UpdateVariable>
+
+    <StatusPlaceHolderImpl/>

@@ -1,4 +1,10 @@
 ---
+{{setvar::变量更新标签::
+<UpdateVariable>
+}}
+{{setvar::变量标签::
+<StatusPlaceHolderImpl/>
+}}
 变量输出格式:
   rule:
     - you must output the update analysis and the actual update commands at once in the end of the next reply
