@@ -331,6 +331,12 @@ $(errorCatched(async () => {
         ]);
 
         toastr.info(`检测到角色卡【${vars.角色卡名称}】有新版本: ${remoteVersion}`, '角色卡更新提示');
+      } else {
+        const currentOthers = _(getScriptButtons()).filter(btn => !btn.name.startsWith('更新角色卡') && btn.name !== '更新日志').value();
+        replaceScriptButtons([
+          ...currentOthers,
+          { name: '更新日志', visible: true }
+        ]);
       }
     }
   } catch (e) {

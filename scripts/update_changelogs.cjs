@@ -1,8 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 const dirs = ['resource/角色卡', 'resource/预设'];
-const changelogEntry = `- 修复：预设「更新日志」按钮与角色卡同名残留，新旧按钮名均被清理
-- 优化：更新成功后自动刷新页面，无需手动切换`;
+const changelogEntry = `- 修复：解决预设脚本干扰导致角色卡「更新日志」按钮无法常驻的问题
+- 优化：角色卡更新成功后自动刷新页面以加载最新数据`;
 
 for (const dir of dirs) {
   if (!fs.existsSync(dir)) continue;
