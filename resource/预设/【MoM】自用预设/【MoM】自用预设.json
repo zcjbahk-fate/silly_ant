@@ -1129,7 +1129,7 @@
     {
       "identifier": "78",
       "name": "⚙️🔵变量更新",
-      "enabled": false,
+      "enabled": true,
       "injection_position": 0,
       "injection_depth": 4,
       "injection_order": 100,
@@ -1815,7 +1815,7 @@
         },
         {
           "identifier": "78",
-          "enabled": false
+          "enabled": true
         },
         {
           "identifier": "79",
@@ -2271,7 +2271,7 @@
             "预设名称": "【MoM】自用预设",
             "预设链接": "https://raw.githubusercontent.com/zcjbahk-fate/silly_ant/refs/heads/main/resource/预设/【MoM】自用预设/【MoM】自用预设.json",
             "更新日志链接": "https://raw.githubusercontent.com/zcjbahk-fate/silly_ant/refs/heads/main/resource/预设/【MoM】自用预设/更新日志.md",
-            "当前版本": "v1.10"
+            "当前版本": "v1.11"
           },
           "export_with": {
             "data": true,
