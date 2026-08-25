@@ -223,26 +223,24 @@ async function resolveEagleFolderPath(folders, pathSegments) {
   return currentFolder.id;
 }
 
-// 删除 Eagle 中指定文件夹下匹配前缀的旧文件
-async function removeOldEagleItems(folderId, namePrefix) {
+async function getFolderItems(folderId) {
   try {
-    const res = await eagleFetch('/api/item/list', {
-      body: { folders: [folderId], limit: 200 }
-    });
+    const res = await eagleFetch(`/api/item/list?folders=${folderId}&limit=200`);
     const data = await res.json();
-    if (data.status !== 'success' || !data.data) return;
+    return data?.data || [];
+  } catch {
+    return [];
+  }
+}
 
-    const oldItems = data.data.filter(item => item.name.startsWith(namePrefix));
-    for (const item of oldItems) {
-      try {
-        await eagleFetch('/api/item/moveToTrash', { body: { itemIds: [item.id] } });
-      } catch {}
-    }
-    if (oldItems.length > 0) {
-      console.log(`    🗑️ Eagle: 已清理 ${oldItems.length} 个旧版本 (${namePrefix}*)`);
-    }
+async function moveItemsToTrash(itemIds) {
+  if (!itemIds || itemIds.length === 0) return;
+  try {
+    await eagleFetch('/api/item/moveToTrash', {
+      body: { itemIds }
+    });
   } catch (e) {
-    console.warn(`    ⚠️ Eagle 清理旧版本失败:`, e.message);
+    console.warn(`    ⚠️ Eagle 清理旧条目失败:`, e.message);
   }
 }
 
@@ -265,8 +263,19 @@ async function archiveToEagle(filePath, cardName, version, cardType = '角色卡
   const folders = await getFolderList();
   const targetFolderId = await resolveEagleFolderPath(folders, pathSegments);
 
-  // 清理该文件夹下该卡名的旧版本文件
-  await removeOldEagleItems(targetFolderId, `${cardName}_`);
+  // 清理目标文件夹中该卡/预设/世界书的历史旧版本条目（以及同名条目）
+  const existingItems = await getFolderItems(targetFolderId);
+  const oldItemIds = existingItems
+    .filter(item => {
+      if (item.isDeleted) return false;
+      return item.name === cardName || item.name.startsWith(`${cardName}_`);
+    })
+    .map(item => item.id);
+
+  if (oldItemIds.length > 0) {
+    await moveItemsToTrash(oldItemIds);
+    console.log(`    🗑️ Eagle: 已清理「${pathSegments.join('/')}」中的 ${oldItemIds.length} 个旧版本条目`);
+  }
 
   // 添加文件到 Eagle（使用本地路径，Windows 需要反斜杠）
   const normalizedPath = filePath.replace(/\//g, '\\');
@@ -308,8 +317,19 @@ async function archiveHistoryZipToEagle(cardName, version, cardType = '角色卡
   const folders = await getFolderList();
   const targetFolderId = await resolveEagleFolderPath(folders, pathSegments);
 
-  // 清理旧的历史版本 zip
-  await removeOldEagleItems(targetFolderId, `${cardName}_历史版本`);
+  // 清理「旧版」文件夹中该卡已有的历史版本 zip
+  const existingItems = await getFolderItems(targetFolderId);
+  const oldZipIds = existingItems
+    .filter(item => {
+      if (item.isDeleted) return false;
+      return item.name === displayName || item.name.startsWith(`${cardName}_历史版本`);
+    })
+    .map(item => item.id);
+
+  if (oldZipIds.length > 0) {
+    await moveItemsToTrash(oldZipIds);
+    console.log(`    🗑️ Eagle: 已清理「${pathSegments.join('/')}」中的旧历史版本压缩包`);
+  }
 
   const normalizedPath = zipPath.replace(/\//g, '\\');
   const res = await eagleFetch('/api/item/addFromPath', {
