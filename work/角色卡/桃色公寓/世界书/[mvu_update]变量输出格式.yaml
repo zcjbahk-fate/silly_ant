@@ -24,7 +24,7 @@
     <JSONPatch>
     [
       { "op": "replace", "path": "/时间", "value": "2025年6月1日 08:30" },
-      { "op": "replace", "path": "/地点", "value": "欲都公寓 201室" },
+      { "op": "replace", "path": "/地点", "value": "桃色公寓 201室" },
       { "op": "replace", "path": "/正在交互角色", "value": "许嘉霓" },
       { "op": "delta", "path": "/房东状态/资金总额", "value": -400 },
       { "op": "delta", "path": "/房客状态/许嘉霓/榨精次数", "value": 1 },

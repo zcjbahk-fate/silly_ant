@@ -110,7 +110,7 @@
 </head>
 <body>
   <div class="mvu-root" id="render-root">
-    <div class="mvu-header" id="header-a">📷欲都公寓监控中……</div>
+    <div class="mvu-header" id="header-a">📷桃色公寓监控中……</div>
     <div class="mvu-content" id="content-a" style="display: none;">
       <div class="mvu-row"><strong>时间:</strong> <span id="val-time"></span></div>
       <div class="mvu-row"><strong>地点:</strong> <span id="val-loc"></span></div>
@@ -173,7 +173,7 @@
           </div>
         </div>
         <div class="tenant-card">
-          <div class="tenant-name">202室 · 钟可可（肉弹精神小妹）</div>
+          <div class="tenant-name">202室 · 钟可可（女主播·精神小妹）</div>
           <div class="tenant-grid">
             <div class="grid-item">已上交租金: <span id="val-钟可可-rent"></span></div>
             <div class="grid-item">榨精次数: <span id="val-钟可可-drain"></span></div>
@@ -182,7 +182,7 @@
           </div>
         </div>
         <div class="tenant-card">
-          <div class="tenant-name">203室 · 苏清禾（古典舞校花甜妹）</div>
+          <div class="tenant-name">203室 · 苏清禾（芭蕾舞校花）</div>
           <div class="tenant-grid">
             <div class="grid-item">已上交租金: <span id="val-苏清禾-rent"></span></div>
             <div class="grid-item">榨精次数: <span id="val-苏清禾-drain"></span></div>
@@ -191,7 +191,7 @@
           </div>
         </div>
         <div class="tenant-card">
-          <div class="tenant-name">204室 · 盛凝烟（蓝发冷艳学姐）</div>
+          <div class="tenant-name">401室 · 盛凝烟（冷艳空姐少妇）</div>
           <div class="tenant-grid">
             <div class="grid-item">已上交租金: <span id="val-盛凝烟-rent"></span></div>
             <div class="grid-item">榨精次数: <span id="val-盛凝烟-drain"></span></div>
