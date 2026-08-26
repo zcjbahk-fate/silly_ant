@@ -729,7 +729,7 @@
         id: 961f366d-e403-45c2-8155-3d14ec86de53
         启用: true
         类型: 脚本
-        内容: "import"https://testingcf.jsdelivr.net/gh/MagicalAstrogy/MagVarUpdate/artifact/bundle.js";"
+        内容: import'https://testingcf.jsdelivr.net/gh/MagicalAstrogy/MagVarUpdate/artifact/bundle.js';
         导出时携带:
           数据: true
           按钮: true
