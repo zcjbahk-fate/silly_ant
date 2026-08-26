@@ -2,106 +2,520 @@
 <!doctype html>
 <html>
 <head>
+<meta charset="utf-8">
 <style>
-  .mvu-root {
+  :root {
+    --bg-main: #0f0c14;
+    --bg-card: #181422;
+    --bg-sub: #211c2e;
+    --border: #3b2d52;
+    --border-highlight: #ff3377;
+    --text-main: #f0e6f5;
+    --text-muted: #9d8fb2;
+    --accent-pink: #ff3377;
+    --accent-purple: #c56cf0;
+    --accent-gold: #f6e58d;
+    --accent-blue: #48dbfb;
+    --accent-red: #ff5252;
+    --accent-green: #2ed573;
+    --shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  }
+
+  .mvu-container {
     width: 100%;
-    background-color: #fff0f5;
-    color: #4b0082;
-    font-family: sans-serif;
-    font-size: 13px;
+    margin: 8px 0;
+    padding: 0;
+    background: var(--bg-main);
+    color: var(--text-main);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+    font-size: 12.5px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  /* 顶部全局监控主控条 */
+  .mvu-terminal-header {
+    background: linear-gradient(135deg, #1f152b 0%, #130e1c 100%);
+    padding: 9px 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+    border-bottom: 1px solid var(--border);
+  }
+  .mvu-terminal-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    font-size: 13.5px;
+    letter-spacing: 0.5px;
+    color: var(--accent-pink);
+  }
+  .mvu-terminal-badge {
+    font-size: 11px;
+    background: rgba(255, 51, 119, 0.18);
+    border: 1px solid rgba(255, 51, 119, 0.4);
+    padding: 2px 7px;
+    border-radius: 4px;
+    color: #ff75a0;
+  }
+  .mvu-toggle-icon {
+    font-size: 12px;
+    color: var(--text-muted);
+    transition: transform 0.25s ease;
+  }
+  .mvu-toggle-icon.expanded {
+    transform: rotate(180deg);
+  }
+
+  /* 仪表盘核心数值条 */
+  .mvu-dashboard {
+    background: var(--bg-card);
+    padding: 8px 12px;
+    display: grid;
+    grid-template-columns: 1.4fr 1.2fr 1.2fr 1.2fr;
+    gap: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  @media (max-width: 600px) {
+    .mvu-dashboard { grid-template-columns: 1fr 1fr; }
+  }
+  .dash-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .dash-label {
+    font-size: 10.5px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+  }
+  .dash-value {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-main);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .fund-safe { color: var(--accent-green) !important; }
+  .fund-warn { color: var(--accent-gold) !important; }
+  .fund-danger { color: var(--accent-red) !important; font-weight: 700; }
+
+  /* 导航 Tab */
+  .mvu-nav-tabs {
+    display: flex;
+    background: #14101d;
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+  }
+  .nav-tab {
+    flex: 1;
+    min-width: 68px;
+    padding: 7px 4px;
+    text-align: center;
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    user-select: none;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+  .nav-tab:hover {
+    color: var(--text-main);
+    background: rgba(255, 255, 255, 0.03);
+  }
+  .nav-tab.active {
+    color: var(--accent-pink);
+    border-bottom-color: var(--accent-pink);
+    background: rgba(255, 51, 119, 0.08);
+  }
+
+  /* 主面板内容区 */
+  .mvu-tab-panel {
+    display: none;
+    padding: 10px;
     box-sizing: border-box;
   }
-  .mvu-header {
-    background-color: #e6c8d8;
-    color: #4b0082;
-    padding: 8px 12px;
-    font-weight: bold;
-    cursor: pointer;
-    border-bottom: 1px solid #4b0082;
-    user-select: none;
+  .mvu-tab-panel.active {
+    display: block;
   }
-  .mvu-content {
-    padding: 8px;
-  }
-  .mvu-row {
-    margin-bottom: 6px;
-    word-wrap: break-word;
-    word-break: break-all;
-  }
+
+  /* 租客卡片 */
   .tenant-card {
-    border: 1px solid #cb99b5;
-    background-color: #fffafc;
-    margin-top: 10px;
-    padding: 8px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    margin-bottom: 10px;
+    padding: 9px 11px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
   }
-  .tenant-name {
-    font-weight: bold;
-    border-bottom: 1px dashed #cb99b5;
-    margin-bottom: 6px;
-    padding-bottom: 4px;
+  .tenant-card:hover {
+    border-color: #5d447f;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
   }
-  .tenant-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+  .tenant-card.active-interacting {
+    border-color: var(--border-highlight);
+    background: linear-gradient(180deg, rgba(255, 51, 119, 0.08) 0%, var(--bg-card) 100%);
+  }
+
+  /* 卡片头部 */
+  .tenant-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 6px;
+    margin-bottom: 7px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+  .tenant-meta {
+    display: flex;
+    align-items: center;
     gap: 6px;
   }
-  .grid-item {
-    word-wrap: break-word;
-    word-break: break-all;
+  .room-tag {
+    font-size: 10.5px;
+    font-weight: 700;
+    padding: 1px 5px;
+    border-radius: 3px;
+    background: var(--bg-sub);
+    color: var(--accent-purple);
+    border: 1px solid var(--border);
+  }
+  .tenant-name-text {
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--text-main);
+  }
+  .tenant-badge {
+    font-size: 10.5px;
+    padding: 1px 6px;
+    border-radius: 3px;
+  }
+  .badge-virgin { background: rgba(72, 219, 251, 0.15); color: #70a1ff; border: 1px solid rgba(72, 219, 251, 0.3); }
+  .badge-wife { background: rgba(255, 71, 87, 0.15); color: #ff6b81; border: 1px solid rgba(255, 71, 87, 0.3); }
+  .badge-hightech { background: rgba(197, 108, 240, 0.15); color: #d980fa; border: 1px solid rgba(197, 108, 240, 0.3); }
+  .badge-queen { background: rgba(255, 168, 1, 0.15); color: #eccc68; border: 1px solid rgba(255, 168, 1, 0.3); }
+
+  /* 数据网格 */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 6px;
+    margin-bottom: 7px;
+    background: var(--bg-sub);
+    padding: 6px 8px;
+    border-radius: 4px;
+  }
+  .stat-box {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+  .stat-k { font-size: 10px; color: var(--text-muted); }
+  .stat-v { font-size: 11.5px; font-weight: 600; color: #e4d8f0; }
+
+  /* 进度条量化项（态度 & 媚黑暴露） */
+  .meter-container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 7px;
+    padding: 0 2px;
+  }
+  .meter-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .meter-label {
+    width: 65px;
+    font-size: 10.5px;
+    color: var(--text-muted);
+    flex-shrink: 0;
+  }
+  .meter-track {
+    flex: 1;
+    height: 6px;
+    background: #110d17;
+    border-radius: 3px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  .meter-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.4s ease;
+  }
+  .meter-fill-attitude { background: linear-gradient(90deg, #ff4757 0%, #ffa502 50%, #c56cf0 80%, #ff3377 100%); }
+  .meter-fill-exposure { background: linear-gradient(90deg, #57606f 0%, #8854d0 50%, #ff3377 85%, #ff0000 100%); }
+  .meter-val-text {
+    width: 48px;
+    font-size: 11px;
+    font-weight: 700;
+    text-align: right;
+    color: var(--text-main);
+    flex-shrink: 0;
+  }
+
+  /* 动态行为气泡 */
+  .doing-bubble {
+    background: rgba(14, 11, 20, 0.7);
+    border-left: 2px solid var(--accent-pink);
+    padding: 5px 8px;
+    border-radius: 0 4px 4px 0;
+    font-size: 11px;
+    line-height: 1.45;
+    color: #d1c4e0;
+    margin-top: 4px;
+  }
+  .doing-bubble strong {
+    color: #ff9ff3;
+    font-weight: 600;
+  }
+
+  /* B1 收藏室陈列架 */
+  .collection-shelf {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 8px;
+  }
+  .collection-item {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 8px 10px;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .collection-icon {
+    font-size: 16px;
+    padding-top: 1px;
+  }
+  .collection-text {
+    font-size: 11px;
+    color: #dcd0ea;
+    line-height: 1.4;
+  }
+  .empty-collection {
+    text-align: center;
+    color: var(--text-muted);
+    padding: 24px;
+    font-style: italic;
   }
 </style>
-<script type="module">
-  window.mvuState = window.mvuState || { a: false, b: false };
 
-  function populateCharacterData() {
+<script type="module">
+  window.mvuApartmentState = window.mvuApartmentState || {
+    isExpanded: true,
+    activeTab: "all"
+  };
+
+  const TENANTS = [
+    { name: "楚云舒", room: "102室", tag: "清冷姐姐 · 浅烟灰丝", badge: "处女·性瘾", badgeClass: "badge-virgin", floor: "1f" },
+    { name: "楚云微", room: "102室", tag: "甜软妹妹 · JK中筒袜", badge: "处女·娇软", badgeClass: "badge-virgin", floor: "1f" },
+    { name: "沈曼卿", room: "101室", tag: "豪门前妻 · 15D油光黑丝", badge: "行宫主母", badgeClass: "badge-wife", floor: "1f" },
+    { name: "沈洛薇", room: "101室", tag: "名义女儿 · 纯白蕾丝袜", badge: "小恶魔", badgeClass: "badge-wife", floor: "1f" },
+    { name: "许嘉霓", room: "201室", tag: "初恋酒吧女 · 吊带渔网袜", badge: "黑桃女王", badgeClass: "badge-queen", floor: "2f" },
+    { name: "钟可可", room: "202室", tag: "擦边女主播 · 肉弹黑丝", badge: "精神小妹", badgeClass: "badge-queen", floor: "2f" },
+    { name: "苏清禾", room: "203室", tag: "芭蕾校花 · 过膝长筒靴", badge: "神坛白月光", badgeClass: "badge-hightech", floor: "2f" },
+    { name: "温知夏", room: "301室", tag: "知性学者 · 超薄透肉肉丝", badge: "两年偷情", badgeClass: "badge-hightech", floor: "34f" },
+    { name: "盛凝烟", room: "401室", tag: "冷艳空姐 · 制服黑丝膝枕", badge: "已婚厌夫", badgeClass: "badge-wife", floor: "34f" }
+  ];
+
+  function getAttitudeText(score) {
+    if (score <= 2) return "极度蔑视";
+    if (score <= 4) return "轻蔑索取";
+    if (score <= 6) return "客套伪装";
+    if (score <= 8) return "温柔掌控";
+    return "深度依恋";
+  }
+
+  function getExposureText(val) {
+    if (val <= 0) return "完美隐蔽";
+    if (val <= 30) return "微露痕迹";
+    if (val <= 70) return "抓包把柄";
+    return "彻底公开";
+  }
+
+  function updateDashboard(allVars) {
+    const time = _.get(allVars, "stat_data.时间", "2025年6月1日 08:00");
+    const loc = _.get(allVars, "stat_data.地点", "桃色公寓 四楼办公室");
+    const char = _.get(allVars, "stat_data.正在交互角色", "") || "暂无";
+    const money = Number(_.get(allVars, "stat_data.房东状态.资金总额", 20000));
+
+    $("#val-time").text(time);
+    $("#val-loc").text(loc);
+    $("#val-char").text(char);
+
+    const $money = $("#val-money");
+    $money.text(money.toLocaleString() + " ￥");
+    $money.removeClass("fund-safe fund-warn fund-danger");
+    if (money >= 15000) $money.addClass("fund-safe");
+    else if (money >= 5000) $money.addClass("fund-warn");
+    else $money.addClass("fund-danger");
+
+    return { activeChar: char };
+  }
+
+  function renderTenantCards(allVars, filterFloor = "all", activeChar = "") {
+    const container = $("#tenants-container");
+    container.empty();
+
+    const filtered = filterFloor === "all" ? TENANTS : TENANTS.filter(t => t.floor === filterFloor);
+
+    filtered.forEach(t => {
+      const tenantData = _.get(allVars, `stat_data.房客状态.${t.name}`, {});
+      const rent = tenantData.已上交租金 || 0;
+      const drain = tenantData.榨精次数 || 0;
+      const bbc = tenantData.与黑人性交次数 || 0;
+      const attitude = Math.min(10, Math.max(1, tenantData.对user态度等级 !== undefined ? tenantData.对user态度等级 : 5));
+      const exposure = Math.min(100, Math.max(0, tenantData.媚黑暴露程度 !== undefined ? tenantData.媚黑暴露程度 : 0));
+      const doing = tenantData.现在在做 || "在房间中休憩……";
+
+      const isInteracting = activeChar === t.name;
+
+      const cardHtml = `
+        <div class="tenant-card ${isInteracting ? "active-interacting" : ""}">
+          <div class="tenant-header">
+            <div class="tenant-meta">
+              <span class="room-tag">${t.room}</span>
+              <span class="tenant-name-text">${t.name}</span>
+              <span style="font-size:10.5px; color:var(--text-muted); margin-left:3px;">${t.tag}</span>
+            </div>
+            <span class="tenant-badge ${t.badgeClass}">${t.badge}</span>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat-box">
+              <span class="stat-k">已交租金</span>
+              <span class="stat-v">${rent} ￥</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-k">榨精次数</span>
+              <span class="stat-v" style="color:#ff9ff3;">${drain} 次</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-k">黑人交媾</span>
+              <span class="stat-v" style="color:#f3a683;">${bbc} 次</span>
+            </div>
+          </div>
+
+          <div class="meter-container">
+            <div class="meter-row">
+              <span class="meter-label">态度等级</span>
+              <div class="meter-track">
+                <div class="meter-fill meter-fill-attitude" style="width: ${attitude * 10}%;"></div>
+              </div>
+              <span class="meter-val-text">${attitude}/10 <span style="font-size:9.5px; color:var(--text-muted);">(${getAttitudeText(attitude)})</span></span>
+            </div>
+            <div class="meter-row">
+              <span class="meter-label">媚黑暴露</span>
+              <div class="meter-track">
+                <div class="meter-fill meter-fill-exposure" style="width: ${exposure}%;"></div>
+              </div>
+              <span class="meter-val-text">${exposure}% <span style="font-size:9.5px; color:var(--text-muted);">(${getExposureText(exposure)})</span></span>
+            </div>
+          </div>
+
+          <div class="doing-bubble">
+            <strong>📍 监控动态:</strong> ${doing}
+          </div>
+        </div>
+      `;
+      container.append(cardHtml);
+    });
+  }
+
+  function renderCollections(allVars) {
+    const list = _.get(allVars, "stat_data.房东状态.地下室收藏品", []);
+    const container = $("#val-collections");
+    container.empty();
+
+    if (!Array.isArray(list) || list.length === 0) {
+      container.html(`<div class="empty-collection">🔒 地下室恋物收藏室暂无藏品，等待调教收缴中……</div>`);
+      return;
+    }
+
+    const shelf = $(`<div class="collection-shelf"></div>`);
+    list.forEach((item, idx) => {
+      let icon = "👠";
+      if (item.includes("内裤") || item.includes("贴身")) icon = "👙";
+      else if (item.includes("丝袜") || item.includes("肉丝") || item.includes("黑丝")) icon = "🧦";
+      else if (item.includes("借条") || item.includes("协议")) icon = "📜";
+
+      shelf.append(`
+        <div class="collection-item">
+          <div class="collection-icon">${icon}</div>
+          <div class="collection-text"><strong>#${idx + 1}</strong> ${item}</div>
+        </div>
+      `);
+    });
+    container.append(shelf);
+  }
+
+  function refreshAll() {
     const allVars = getAllVariables();
     if (!allVars) return;
 
-    $('#val-time').text(_.get(allVars, 'stat_data.时间', ''));
-    $('#val-loc').text(_.get(allVars, 'stat_data.地点', ''));
-    $('#val-char').text(_.get(allVars, 'stat_data.正在交互角色', ''));
-    
-    let money = _.get(allVars, 'stat_data.房东状态.资金总额', 0);
-    $('#val-money').text(money + '￥');
+    const { activeChar } = updateDashboard(allVars);
+    renderTenantCards(allVars, window.mvuApartmentState.activeTab, activeChar);
+    renderCollections(allVars);
+  }
 
-    const tenants = ['楚云舒', '楚云微', '沈曼卿', '沈洛薇', '温知夏', '许嘉霓', '钟可可', '苏清禾', '盛凝烟'];
-    tenants.forEach(name => {
-      let rent = _.get(allVars, `stat_data.房客状态.${name}.已上交租金`, 0);
-      $(`#val-${name}-rent`).text(rent + '￥');
-      $(`#val-${name}-drain`).text(_.get(allVars, `stat_data.房客状态.${name}.榨精次数`, 0));
-      $(`#val-${name}-bbc`).text(_.get(allVars, `stat_data.房客状态.${name}.与黑人性交次数`, 0));
-      $(`#val-${name}-doing`).text(_.get(allVars, `stat_data.房客状态.${name}.现在在做`, ''));
+  function setupEvents() {
+    $("#terminal-toggle").off("click").on("click", function() {
+      window.mvuApartmentState.isExpanded = !window.mvuApartmentState.isExpanded;
+      $("#mvu-body").toggle(window.mvuApartmentState.isExpanded);
+      $("#toggle-icon").toggleClass("expanded", window.mvuApartmentState.isExpanded);
     });
 
-    const collections = _.get(allVars, 'stat_data.房东状态.地下室收藏品', []);
-    if (Array.isArray(collections) && collections.length > 0) {
-      const listHtml = collections.map((item, index) => `<div class="mvu-row">${index + 1}. ${item}</div>`).join('');
-      $('#val-collections').html(listHtml);
+    $(".nav-tab").off("click").on("click", function() {
+      const tab = $(this).data("tab");
+      window.mvuApartmentState.activeTab = tab;
+
+      $(".nav-tab").removeClass("active");
+      $(this).addClass("active");
+
+      if (tab === "collection") {
+        $("#panel-tenants").hide();
+        $("#panel-collection").show();
+      } else {
+        $("#panel-collection").hide();
+        $("#panel-tenants").show();
+        const allVars = getAllVariables();
+        const activeChar = _.get(allVars, "stat_data.正在交互角色", "");
+        renderTenantCards(allVars, tab, activeChar);
+      }
+    });
+
+    // 恢复状态
+    $("#mvu-body").toggle(window.mvuApartmentState.isExpanded);
+    $("#toggle-icon").toggleClass("expanded", window.mvuApartmentState.isExpanded);
+    $(`.nav-tab[data-tab="${window.mvuApartmentState.activeTab}"]`).addClass("active");
+    if (window.mvuApartmentState.activeTab === "collection") {
+      $("#panel-tenants").hide();
+      $("#panel-collection").show();
     } else {
-      $('#val-collections').text('暂无收藏');
+      $("#panel-collection").hide();
+      $("#panel-tenants").show();
     }
   }
 
-  function bindEvents() {
-    $('#header-a').off('click').on('click', function() {
-      window.mvuState.a = !window.mvuState.a;
-      $('#content-a').toggle(window.mvuState.a);
-    });
-    $('#header-b').off('click').on('click', function() {
-      window.mvuState.b = !window.mvuState.b;
-      $('#content-b').toggle(window.mvuState.b);
-    });
-
-    $('#content-a').toggle(window.mvuState.a);
-    $('#content-b').toggle(window.mvuState.b);
-  }
-
   async function init() {
-    await waitGlobalInitialized('Mvu');
-    bindEvents();
-    populateCharacterData();
+    await waitGlobalInitialized("Mvu");
+    setupEvents();
+    refreshAll();
     eventOn(Mvu.events.VARIABLE_UPDATE_ENDED, () => {
-      populateCharacterData();
+      refreshAll();
     });
   }
 
@@ -109,103 +523,55 @@
 </script>
 </head>
 <body>
-  <div class="mvu-root" id="render-root">
-    <div class="mvu-header" id="header-a">📷桃色公寓监控中……</div>
-    <div class="mvu-content" id="content-a" style="display: none;">
-      <div class="mvu-row"><strong>时间:</strong> <span id="val-time"></span></div>
-      <div class="mvu-row"><strong>地点:</strong> <span id="val-loc"></span></div>
-      <div class="mvu-row"><strong>正在交互角色:</strong> <span id="val-char"></span></div>
-      <div class="mvu-row"><strong>资金总额:</strong> <span id="val-money"></span></div>
-
-      <div id="tenants-container">
-        <div class="tenant-card" style="border-color: #708090; background-color: #f8f9fa;">
-          <div class="tenant-name" style="color: #4a5568; border-bottom-color: #708090;">102室 · 楚云舒（19岁处女姐姐·性瘾初白）</div>
-          <div class="tenant-grid">
-            <div class="grid-item">已上交租金: <span id="val-楚云舒-rent"></span></div>
-            <div class="grid-item">榨精次数: <span id="val-楚云舒-drain"></span></div>
-            <div class="grid-item">与黑人性交: <span id="val-楚云舒-bbc"></span></div>
-            <div class="grid-item">现在在做: <span id="val-楚云舒-doing"></span></div>
-          </div>
-        </div>
-        <div class="tenant-card" style="border-color: #ffb6c1; background-color: #fff9fa;">
-          <div class="tenant-name" style="color: #d63384; border-bottom-color: #ffb6c1;">102室 · 楚云微（19岁处女妹妹·娇软纯情）</div>
-          <div class="tenant-grid">
-            <div class="grid-item">已上交租金: <span id="val-楚云微-rent"></span></div>
-            <div class="grid-item">榨精次数: <span id="val-楚云微-drain"></span></div>
-            <div class="grid-item">与黑人性交: <span id="val-楚云微-bbc"></span></div>
-            <div class="grid-item">现在在做: <span id="val-楚云微-doing"></span></div>
-          </div>
-        </div>
-        <div class="tenant-card" style="border-color: #800020; background-color: #fff5f7;">
-          <div class="tenant-name" style="color: #800020; border-bottom-color: #800020;">101室 · 沈曼卿（豪门前妻）</div>
-          <div class="tenant-grid">
-            <div class="grid-item">已上交租金: <span id="val-沈曼卿-rent"></span></div>
-            <div class="grid-item">榨精次数: <span id="val-沈曼卿-drain"></span></div>
-            <div class="grid-item">与黑人性交: <span id="val-沈曼卿-bbc"></span></div>
-            <div class="grid-item">现在在做: <span id="val-沈曼卿-doing"></span></div>
-          </div>
-        </div>
-        <div class="tenant-card" style="border-color: #800020; background-color: #fff5f7;">
-          <div class="tenant-name" style="color: #800020; border-bottom-color: #800020;">101室 · 沈洛薇（18岁女儿·血缘成谜）</div>
-          <div class="tenant-grid">
-            <div class="grid-item">已上交租金: <span id="val-沈洛薇-rent"></span></div>
-            <div class="grid-item">榨精次数: <span id="val-沈洛薇-drain"></span></div>
-            <div class="grid-item">与黑人性交: <span id="val-沈洛薇-bbc"></span></div>
-            <div class="grid-item">现在在做: <span id="val-沈洛薇-doing"></span></div>
-          </div>
-        </div>
-        <div class="tenant-card">
-          <div class="tenant-name">301室 · 温知夏（知性老租客）</div>
-          <div class="tenant-grid">
-            <div class="grid-item">已上交租金: <span id="val-温知夏-rent"></span></div>
-            <div class="grid-item">榨精次数: <span id="val-温知夏-drain"></span></div>
-            <div class="grid-item">与黑人性交: <span id="val-温知夏-bbc"></span></div>
-            <div class="grid-item">现在在做: <span id="val-温知夏-doing"></span></div>
-          </div>
-        </div>
-        <div class="tenant-card">
-          <div class="tenant-name">201室 · 许嘉霓（初恋酒吧女）</div>
-          <div class="tenant-grid">
-            <div class="grid-item">已上交租金: <span id="val-许嘉霓-rent"></span></div>
-            <div class="grid-item">榨精次数: <span id="val-许嘉霓-drain"></span></div>
-            <div class="grid-item">与黑人性交: <span id="val-许嘉霓-bbc"></span></div>
-            <div class="grid-item">现在在做: <span id="val-许嘉霓-doing"></span></div>
-          </div>
-        </div>
-        <div class="tenant-card">
-          <div class="tenant-name">202室 · 钟可可（女主播·精神小妹）</div>
-          <div class="tenant-grid">
-            <div class="grid-item">已上交租金: <span id="val-钟可可-rent"></span></div>
-            <div class="grid-item">榨精次数: <span id="val-钟可可-drain"></span></div>
-            <div class="grid-item">与黑人性交: <span id="val-钟可可-bbc"></span></div>
-            <div class="grid-item">现在在做: <span id="val-钟可可-doing"></span></div>
-          </div>
-        </div>
-        <div class="tenant-card">
-          <div class="tenant-name">203室 · 苏清禾（芭蕾舞校花）</div>
-          <div class="tenant-grid">
-            <div class="grid-item">已上交租金: <span id="val-苏清禾-rent"></span></div>
-            <div class="grid-item">榨精次数: <span id="val-苏清禾-drain"></span></div>
-            <div class="grid-item">与黑人性交: <span id="val-苏清禾-bbc"></span></div>
-            <div class="grid-item">现在在做: <span id="val-苏清禾-doing"></span></div>
-          </div>
-        </div>
-        <div class="tenant-card">
-          <div class="tenant-name">401室 · 盛凝烟（冷艳空姐少妇）</div>
-          <div class="tenant-grid">
-            <div class="grid-item">已上交租金: <span id="val-盛凝烟-rent"></span></div>
-            <div class="grid-item">榨精次数: <span id="val-盛凝烟-drain"></span></div>
-            <div class="grid-item">与黑人性交: <span id="val-盛凝烟-bbc"></span></div>
-            <div class="grid-item">现在在做: <span id="val-盛凝烟-doing"></span></div>
-          </div>
-        </div>
+  <div class="mvu-container">
+    <!-- 顶部终端标题栏 -->
+    <div class="mvu-terminal-header" id="terminal-toggle">
+      <div class="mvu-terminal-title">
+        <span>📸 桃色公寓 · 绝密监控中枢</span>
+        <span class="mvu-terminal-badge">LIVE TERMINAL</span>
       </div>
+      <div class="mvu-toggle-icon" id="toggle-icon">▼</div>
     </div>
 
+    <div id="mvu-body">
+      <!-- 仪表盘核心数值 -->
+      <div class="mvu-dashboard">
+        <div class="dash-item">
+          <span class="dash-label">📅 日历时间</span>
+          <span class="dash-value" id="val-time">--</span>
+        </div>
+        <div class="dash-item">
+          <span class="dash-label">📍 当前位置</span>
+          <span class="dash-value" id="val-loc">--</span>
+        </div>
+        <div class="dash-item">
+          <span class="dash-label">👥 正在交互</span>
+          <span class="dash-value" id="val-char" style="color:var(--accent-pink);">--</span>
+        </div>
+        <div class="dash-item">
+          <span class="dash-label">💰 房东流动资金</span>
+          <span class="dash-value" id="val-money">--</span>
+        </div>
+      </div>
 
-    <div class="mvu-header" id="header-b">👠{{user}}的恋物收藏</div>
-    <div class="mvu-content" id="content-b" style="display: none;">
-      <div id="val-collections"></div>
+      <!-- 楼层/功能 Tab 导航 -->
+      <div class="mvu-nav-tabs">
+        <div class="nav-tab active" data-tab="all">🏢 全员总览</div>
+        <div class="nav-tab" data-tab="1f">🌺 1F花园套房</div>
+        <div class="nav-tab" data-tab="2f">✨ 2F奢华套房</div>
+        <div class="nav-tab" data-tab="34f">🍷 3F/4F高空静谧</div>
+        <div class="nav-tab" data-tab="collection">👠 B1恋物收藏</div>
+      </div>
+
+      <!-- 租客卡片主列表 -->
+      <div class="mvu-tab-panel active" id="panel-tenants">
+        <div id="tenants-container"></div>
+      </div>
+
+      <!-- B1 恋物收藏室面板 -->
+      <div class="mvu-tab-panel" id="panel-collection">
+        <div id="val-collections"></div>
+      </div>
     </div>
   </div>
 </body>
