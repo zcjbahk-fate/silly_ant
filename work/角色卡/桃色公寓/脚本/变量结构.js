@@ -8,6 +8,7 @@ const TenantSchema = z
     与黑人性交次数: z.coerce.number().prefault(0),
     对user态度等级: z.coerce.number().prefault(5),
     媚黑暴露程度: z.coerce.number().prefault(0),
+    处女状态: z.coerce.boolean().prefault(false),
     现在在做: z.string().prefault(""),
   })
   .prefault({})
@@ -17,6 +18,7 @@ const TenantSchema = z
     data.与黑人性交次数 = Math.max(0, data.与黑人性交次数 || 0);
     data.对user态度等级 = Math.min(10, Math.max(1, data.对user态度等级 || 5));
     data.媚黑暴露程度 = Math.min(100, Math.max(0, data.媚黑暴露程度 || 0));
+    data.处女状态 = Boolean(data.处女状态);
     return data;
   });
 

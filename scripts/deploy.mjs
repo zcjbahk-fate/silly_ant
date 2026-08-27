@@ -35,11 +35,18 @@ function syncPublicScripts() {
 
 // ─── 从 YAML 提取当前版本号（打包前的旧版本） ─────────────
 
+function normalizeVersion(v) {
+  if (!v) return '';
+  return v.trim().replace(/^[vV]/, '');
+}
+
 function extractCurrentVersion(yamlPath) {
   if (!existsSync(yamlPath)) return null;
   const content = readFileSync(yamlPath, 'utf-8');
-  const match = content.match(/^\s*当前版本:\s*(.+)$/m);
-  return match ? match[1].trim() : null;
+  const vMatch = content.match(/^\s*版本:\s*["']?([^"'\r\n]+)["']?/m);
+  if (vMatch) return vMatch[1].trim();
+  const cvMatch = content.match(/^\s*当前版本:\s*["']?([^"'\r\n]+)["']?/m);
+  return cvMatch ? cvMatch[1].trim() : null;
 }
 
 
@@ -394,6 +401,20 @@ async function main() {
         const basePath = resolve(ROOT, config.exportPath);
         const changelogPath = resolve(dirname(basePath), '更新日志.md');
         version = extractVersion(changelogPath);
+      }
+
+      // 校验更新日志与版本变更
+      if (config.type === '角色卡' || config.type === '预设') {
+        const localYamlPath = config.localPath ? resolve(ROOT, config.localPath) : null;
+        const currentYamlVer = extractCurrentVersion(localYamlPath);
+        if (!version) {
+          console.error(`    ❌ 发版终止：【${config.name}】更新日志中未找到有效版本小节（如 ## v1.01）`);
+          process.exit(1);
+        }
+        if (currentYamlVer && normalizeVersion(currentYamlVer) === normalizeVersion(version)) {
+          console.error(`    ❌ 发版终止：【${config.name}】版本号未变更！当前 YAML 为 [${currentYamlVer}]，更新日志最新为 [${version}]。请在更新日志顶端新增递增的新版本并记录修改要点！`);
+          process.exit(1);
+        }
       }
 
       // 归档旧版本到历史目录（在同步版本号和打包之前）

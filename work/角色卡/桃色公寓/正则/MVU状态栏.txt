@@ -383,6 +383,20 @@
 
       const isInteracting = activeChar === t.name;
 
+      let badge = t.badge;
+      let badgeClass = t.badgeClass;
+      if (t.name === "楚云舒") {
+        if (tenantData.处女状态 === false) {
+          badge = "已开苞 · 恶堕女S";
+          badgeClass = "badge-wife";
+        }
+      } else if (t.name === "楚云微") {
+        if (tenantData.处女状态 === false) {
+          badge = "已开苞 · 小恶魔";
+          badgeClass = "badge-wife";
+        }
+      }
+
       const cardHtml = `
         <div class="tenant-card ${isInteracting ? "active-interacting" : ""}">
           <div class="tenant-header">
@@ -391,7 +405,7 @@
               <span class="tenant-name-text">${t.name}</span>
               <span style="font-size:10.5px; color:var(--text-muted); margin-left:3px;">${t.tag}</span>
             </div>
-            <span class="tenant-badge ${t.badgeClass}">${t.badge}</span>
+            <span class="tenant-badge ${badgeClass}">${badge}</span>
           </div>
 
           <div class="stats-grid">

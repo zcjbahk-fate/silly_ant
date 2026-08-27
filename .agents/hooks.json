@@ -1,0 +1,27 @@
+{
+  "deploy-precheck": {
+    "enabled": true,
+    "PreToolUse": [
+      {
+        "matcher": "run_command",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ../scripts/hooks/pre-deploy-check.mjs",
+            "timeout": 15
+          }
+        ]
+      }
+    ]
+  },
+  "deploy-stop-guard": {
+    "enabled": true,
+    "Stop": [
+      {
+        "type": "command",
+        "command": "node ../scripts/hooks/stop-deploy-guard.mjs",
+        "timeout": 15
+      }
+    ]
+  }
+}
