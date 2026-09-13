@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://testingcf.jsdelivr.net/gh/StageDog/tavern_sync/dist/schema/character.zh.json
 头像: 头像
-版本: "v1.17"
+版本: "v1.18"
 作者: 美羽
 备注: 现代都市 / 35岁家道中落富二代房东 / 男M女S / 前妻母女霸占 / 绝美双胞胎性瘾恶堕 / 全员丝袜与制服 / 媚黑与绿帽 / 桃色公寓多女主反差群像卡
 
@@ -511,241 +511,11 @@
       不可激活其他条目: true
     文件: 世界书\[规则]防全知与渐进式暴露机制
 
-  - 名称: "[initvar]变量初始化勿开"
-    启用: false
-    激活策略:
-      类型: 蓝灯
-    插入位置:
-      类型: 角色定义之前
-      顺序: 910
-    激活概率: 100
-    递归:
-      不可被其他条目激活: true
-      不可激活其他条目: true
-    文件: 世界书\[initvar]变量初始化勿开
-
-  - 名称: "[mvu_update]变量输出格式"
-    启用: true
-    激活策略:
-      类型: 蓝灯
-    插入位置:
-      类型: 指定深度
-      角色: 系统
-      深度: 0
-      顺序: 201
-    激活概率: 100
-    递归:
-      不可被其他条目激活: true
-      不可激活其他条目: true
-    文件: 世界书\[mvu_update]变量输出格式
-
-  - 名称: "[机制]变量列表"
-    启用: true
-    激活策略:
-      类型: 蓝灯
-    插入位置:
-      类型: 指定深度
-      角色: 系统
-      深度: 0
-      顺序: 203
-    激活概率: 100
-    递归:
-      不可被其他条目激活: true
-      不可激活其他条目: true
-    文件: 世界书\[机制]变量列表
-
-  - 名称: "[mvu_update]变量更新规则"
-    启用: true
-    激活策略:
-      类型: 蓝灯
-    插入位置:
-      类型: 指定深度
-      角色: 系统
-      深度: 0
-      顺序: 205
-    激活概率: 100
-    递归:
-      不可被其他条目激活: true
-      不可激活其他条目: true
-    文件: 世界书\[mvu_update]变量更新规则
-
-  - 名称: "[机制]时间跳跃结算"
-    启用: true
-    激活策略:
-      类型: 绿灯
-      关键字:
-        - 跳过该月
-        - 推进时间
-        - 跳过这个月
-      扫描深度: 2
-    插入位置:
-      类型: 指定深度
-      角色: 系统
-      深度: 0
-      顺序: 210
-    激活概率: 100
-    递归:
-      不可被其他条目激活: false
-      不可激活其他条目: false
-    文件: 世界书\[机制]时间跳跃结算
-
-  - 名称: "[mvu_update]变量输出格式强调"
-    启用: true
-    激活策略:
-      类型: 蓝灯
-    插入位置:
-      类型: 指定深度
-      角色: 系统
-      深度: 0
-      顺序: 1000
-    激活概率: 100
-    递归:
-      不可被其他条目激活: true
-      不可激活其他条目: true
-    文件: 世界书\[mvu_update]变量输出格式强调
-
-  - 名称: "[机制]楚云舒_阶段状态"
-    启用: true
-    激活策略:
-      类型: 绿灯
-      关键字:
-        - 楚云舒
-        - 云舒
-        - 姐姐
-        - "102"
-        - 102室
-        - 烟灰丝袜
-        - 灰丝
-        - 处女
-        - 画画
-        - 画板
-      扫描深度: 5
-    插入位置:
-      类型: 角色定义之后
-      顺序: 351
-    激活概率: 100
-    递归:
-      不可被其他条目激活: false
-      不可激活其他条目: false
-    文件: 世界书\[机制]楚云舒_阶段状态
-
 扩展字段:
-  正则:
-    - 正则名称: 仅格式思维链
-      id: d668c8a6-fa6a-444d-a5d6-8f68b73a3c36
-      启用: true
-      查找表达式: /<Analysis>[\s\S]+?<\/Analysis>/gm
-      内容: ""
-      来源:
-        用户输入: false
-        AI输出: true
-        思维链: false
-      作用于:
-        仅格式显示: false
-        仅格式提示词: true
-
-    - 正则名称: 只发送最新2楼的变量更新
-      id: 5bb4b588-23ca-4564-8df5-882104eff764
-      启用: true
-      查找表达式: /<UpdateVariable>[\s\S]*?<\/UpdateVariable>/gm
-      内容: ""
-      来源:
-        用户输入: false
-        AI输出: true
-        思维链: false
-      作用于:
-        仅格式显示: false
-        仅格式提示词: true
-      最小深度: 4
-
-    - 正则名称: "[美化]变量完成"
-      id: 6fb572ae-a9ea-436d-9779-ad100f1ff7f5
-      启用: true
-      查找表达式: /<UpdateVariable(?:variable)?>\s*(.*)\s*<\/UpdateVariable(?:variable)?>/gsi
-      文件: 正则\[美化]变量完成
-      来源:
-        用户输入: false
-        AI输出: true
-        思维链: false
-      作用于:
-        仅格式显示: true
-        仅格式提示词: false
-
-    - 正则名称: "[美化]变量更新中"
-      id: bf1b7441-5cf1-426d-bd6c-911332be9923
-      启用: true
-      查找表达式: /<UpdateVariable(?:variable)?>(?!.*<\/UpdateVariable(?:variable)?>)\s*(.*)\s*$/gsi
-      文件: 正则\[美化]变量更新中
-      来源:
-        用户输入: false
-        AI输出: true
-        思维链: false
-      作用于:
-        仅格式显示: true
-        仅格式提示词: false
-
-    - 正则名称: 隐藏状态栏标记
-      id: qz-card-status-hide-1786544006184-6ml1x3
-      启用: true
-      查找表达式: /<StatusPlaceHolderImpl\/>/g
-      内容: ""
-      来源:
-        用户输入: false
-        AI输出: true
-        思维链: false
-      作用于:
-        仅格式显示: false
-        仅格式提示词: true
-
-    - 正则名称: MVU状态栏
-      id: qz-card-status-1786544006184-6u6rnr
-      启用: true
-      查找表达式: /<StatusPlaceHolderImpl\/>/g
-      文件: 正则\MVU状态栏
-      来源:
-        用户输入: false
-        AI输出: true
-        思维链: false
-      作用于:
-        仅格式显示: true
-        仅格式提示词: false
+  正则: []
 
   酒馆助手:
     脚本库:
-      - 名称: MVU
-        id: 961f366d-e403-45c2-8155-3d14ec86de53
-        启用: true
-        类型: 脚本
-        内容: import'https://testingcf.jsdelivr.net/gh/MagicalAstrogy/MagVarUpdate/artifact/bundle.js';
-        导出时携带:
-          数据: true
-          按钮: true
-        按钮:
-          启用: true
-          按钮列表:
-            - 名称: 重新处理变量
-              可见: false
-            - 名称: 重新读取初始变量
-              可见: false
-            - 名称: 快照楼层
-              可见: false
-            - 名称: 重演楼层
-              可见: false
-            - 名称: 重试额外模型解析
-              可见: false
-            - 名称: 清除旧楼层变量
-              可见: false
-
-      - 名称: 变量结构
-        id: qz-mvu-schema-1786544006127-vkiw79
-        启用: true
-        类型: 脚本
-        导出时携带:
-          数据: true
-          按钮: true
-        文件: 脚本\变量结构
-        介绍: 自动生成的 MVU 变量结构脚本。
-
       - 名称: 自动更新
         id: b0386104-2318-4afa-ad51-c10b6077d3a9
         启用: true
@@ -763,7 +533,7 @@
           角色卡名称: 桃色公寓
           角色卡链接: https://raw.githubusercontent.com/zcjbahk-fate/silly_ant/refs/heads/main/resource/角色卡/桃色公寓/桃色公寓.png
           更新日志链接: https://raw.githubusercontent.com/zcjbahk-fate/silly_ant/refs/heads/main/resource/角色卡/桃色公寓/更新日志.md
-          当前版本: v1.17
+          当前版本: v1.18
 
     变量: {}
 
