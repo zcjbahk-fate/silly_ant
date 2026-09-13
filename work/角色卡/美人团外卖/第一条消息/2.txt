@@ -103,11 +103,4 @@ json规范格式：
 }
 [手机界面结束]
 
-<UpdateVariable>
-<Analysis>
-……
-</Analysis>
-……
-</UpdateVariable>
-
-<StatusPlaceHolderImpl/>
+【前端占位符】

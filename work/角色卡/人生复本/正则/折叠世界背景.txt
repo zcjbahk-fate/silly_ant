@@ -1,0 +1,4 @@
+<details>
+<summary>当前世界设定</summary>
+$1
+</details>

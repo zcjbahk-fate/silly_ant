@@ -323,7 +323,7 @@ strong { color: #222; background: rgba(255, 195, 0, 0.15); padding: 0 4px; borde
             <li><strong>备注系统 (最高权重)：</strong> 下单时的备注优先级最高，特殊玩法（色色/剧情）请直接写在备注里。</li>
             <li><strong>加载失败排查：</strong> 
                 1.是否安装酒馆助手(必装) 
-                2.是否含<code>&lt;StatusPlaceHolderImpl/&gt;</code> 
+                2.是否含<code>【前端占位符】</code> 
                 3.脚本/正则是否开启。</li>
             <li><strong>防截断技巧：</strong> 若输出截断，点击“继续”，手动删除多余内容保留结构即可。推荐使用 <strong>YAML模式</strong> 生成。</li>
             <li><strong>性能优化：</strong> 前端仅300K。若微卡，请在正则设置中限制渲染楼层（如3层）。</li>

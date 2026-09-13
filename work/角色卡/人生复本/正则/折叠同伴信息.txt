@@ -1,0 +1,4 @@
+<details>
+<summary>同伴信息</summary>
+$1
+</details>
