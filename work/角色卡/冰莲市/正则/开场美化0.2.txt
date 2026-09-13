@@ -1,0 +1,369 @@
+```html
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Special+Elite&display=swap');
+
+    :root {
+      --bg-deep: #07070a;
+      --card-bg: #0f0f14;
+      --card-border: #251c20;
+      --blood: #ff2400;
+      --blood-dim: rgba(139, 32, 53, 0.25);
+      --parchment: #c4a67a;
+      --parchment-dim: rgba(196, 166, 122, 0.12);
+      --text-main: #ccc6bc;
+      --text-fade: #5e5850;
+      --text-cold: #908880;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg-deep);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .wrapper {
+      padding: 8px 6px 14px;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    /* ===== 文件头 ===== */
+    .file-header {
+      text-align: center;
+      padding: 8px 6px 6px;
+      margin-bottom: 6px;
+      position: relative;
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .file-header::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 25%;
+      right: 25%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--blood-dim), transparent);
+    }
+
+    .file-stamp {
+      position: absolute;
+      top: 4px;
+      right: 8px;
+      font-family: 'Special Elite', monospace;
+      font-size: 8px;
+      color: rgba(160, 40, 55, 0.6);
+      border: 1px solid rgba(160, 40, 55, 0.5);
+      padding: 0px 4px;
+      transform: rotate(5deg);
+      letter-spacing: 1px;
+    }
+
+    .file-title {
+      font-family: 'Special Elite', 'Courier New', monospace;
+      font-size: 15px;
+      letter-spacing: 3px;
+      color: var(--parchment);
+      text-transform: uppercase;
+      text-shadow: 0 0 6px rgba(196, 166, 122, 0.15);
+    }
+
+    .file-sub {
+      font-size: 10px;
+      color: var(--text-fade);
+      letter-spacing: 0.5px;
+      margin-top: 1px;
+    }
+
+    /* ===== 说明区 ===== */
+    .notice {
+      padding: 5px 8px;
+      margin-bottom: 8px;
+      font-size: 11px;
+      color: var(--text-cold);
+      line-height: 1.6;
+      border-left: 2px solid var(--blood-dim);
+      background: rgba(139, 32, 53, 0.04);
+      border-radius: 0 3px 3px 0;
+    }
+
+    .notice em {
+      color: var(--blood);
+      font-style: normal;
+    }
+
+    .notice .dim {
+      color: var(--text-fade);
+      font-size: 11px;
+    }
+
+    /* ===== 卡片网格 ===== */
+    .card-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    /* ===== 单张卡片 ===== */
+    .case-card {
+      display: flex;
+      gap: 7px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 3px;
+      padding: 6px;
+      position: relative;
+      transition: border-color 0.2s;
+    }
+
+    .case-card:hover {
+      border-color: #342428;
+    }
+
+    .card-avatar {
+      width: 54px;
+      height: 68px;
+      border-radius: 2px;
+      overflow: hidden;
+      flex-shrink: 0;
+      background: #0a0a0e;
+      border: 1px solid #2a1e22;
+    }
+
+    .card-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: saturate(0.5) brightness(0.8) contrast(1.1);
+    }
+
+    .card-avatar .no-img {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-fade);
+      font-size: 24px;
+      opacity: 0.3;
+    }
+
+    .card-body {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .card-top {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+    }
+
+    .card-name {
+      font-size: 13px;
+      font-weight: bold;
+      color: #d8cec4;
+      letter-spacing: 1px;
+      flex-shrink: 0;
+    }
+
+    .card-look {
+      font-size: 10px;
+      color: var(--text-fade);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .card-grudge {
+      font-size: 11px;
+      color: var(--text-cold);
+      line-height: 1.45;
+    }
+
+    .card-area {
+      font-size: 9px;
+      color: var(--text-fade);
+      text-align: right;
+      letter-spacing: 0.3px;
+      margin-top: 1px;
+    }
+
+    /* ===== 特殊标记 ===== */
+    .card-tag {
+      display: inline-block;
+      font-size: 8px;
+      color: rgba(160, 40, 55, 0.8);
+      border: 1px solid rgba(160, 40, 55, 0.3);
+      padding: 0 3px;
+      border-radius: 2px;
+      margin-left: 4px;
+      vertical-align: middle;
+      letter-spacing: 0.3px;
+    }
+
+    /* ===== 底部提示 ===== */
+    .footer-note {
+      margin-top: 8px;
+      text-align: center;
+      font-size: 10px;
+      color: var(--text-fade);
+      line-height: 1.6;
+      padding: 0 10px;
+    }
+  </style>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <script>
+    const CHARACTERS = [
+      {
+        name: '周文静',
+        look: '圆脸，马尾辫，皮肤偏黄',
+        grudge: '实习期同期。夜班空闲玩手机被她举报给带教老师，扣了实习分。',
+        area: '滨江区 · 济民医院'
+      },
+      {
+        name: '顾盼',
+        look: '长发过肩，下巴尖，眼神淡',
+        grudge: '同班五年。分组从不选你，路上碰见目光滑过去。',
+        area: '鹤鸣区 · 滨莲大学'
+      },
+      {
+        name: '陈若芸',
+        look: '四十出头，黑色西装，盘发',
+        grudge: '毕业论文导师。初稿打回三次，答辩前一天才签字放行。',
+        area: '鹤鸣区 · 滨莲大学'
+      },
+      {
+        name: '方意',
+        look: '短发，干练，全程没抬头',
+        grudge: '某三甲HR。"这个岗位需要硕士以上"，简历没收。',
+        area: '莲心区 · 三甲医院'
+      },
+      {
+        name: '苏蔓',
+        look: '个子小，圆眼睛，碎花裙',
+        grudge: '前女友。考研成绩出来那天提的分手，两周后发了和别人的合照。',
+        area: '鹤鸣区 · 莲江医科大附院'
+      },
+      {
+        name: '何姗',
+        look: '巨乳长卷发，妆容精致',
+        grudge: '销售组组长。试用期满叫进会议室，翻着文件夹说"你不太适合销售方向"，没多一句。当天下午清工位。',
+        area: '莲心区 · 写字楼商务区'
+      },
+      {
+        name: '林梓',
+        look: '浅棕染发，嚼口香糖，指甲长',
+        grudge: '私人诊所前台。去了三次都是"医生今天不在"。',
+        area: '青梧区 · 私立诊所'
+      },
+      {
+        name: '赵小曼',
+        look: '披肩卷发，睡衣套开衫，素颜',
+        grudge: '合租隔壁。半夜外放音乐，敲门后反嘲讽了一通。',
+        area: '滨江区 · 老城出租房'
+      },
+      {
+        name: '钟念',
+        look: '黑色长发及腰，肤白貌美胸臀丰满',
+        grudge: '同层邻居。走廊碰到笑着打招呼，声音轻。频繁交往不同男性，隔着墙壁能听到她房间的声音。',
+        area: '滨江区 · 老城出租房',
+      },
+  {
+    name: '许瑶',
+    look: '十五岁，明艳，偷偷收紧的校服',
+    grudge: '学生邻居，情窦初开，故意展示性吸引力擦边并借此自慰。你看见过但没点破',
+    area: '滨江区 · 老城区'
+  }
+    ];
+
+    let avatarConfig = null;
+
+    async function fetchAvatars() {
+      try {
+        const res = await fetch('https://cdn.jsdelivr.net/gh/ll11292631-droid/i-am-daddy@main/%E6%BB%A8%E8%8E%B2.json?t=' + Date.now(), { cache: 'no-store' });
+        if (res.ok) avatarConfig = await res.json();
+      } catch (e) { console.warn('头像拉取失败', e); }
+    }
+
+    function getAvatar(name) {
+      if (!avatarConfig || !avatarConfig["精确匹配"]) return '';
+      const entry = avatarConfig["精确匹配"][name];
+      if (!entry) return '';
+      return Array.isArray(entry) ? (entry[0] || '') : entry;
+    }
+
+    function render() {
+      const grid = $('#card-grid');
+      grid.empty();
+
+      CHARACTERS.forEach(ch => {
+        const src = getAvatar(ch.name);
+        const imgHTML = src
+          ? `<img src="${src}" alt="${ch.name}" loading="lazy">`
+          : `<div class="no-img">☠</div>`;
+
+        const tagHTML = ch.tag
+          ? `<span class="card-tag">${ch.tag}</span>`
+          : '';
+
+        grid.append(`
+          <div class="case-card">
+            <div class="card-avatar">${imgHTML}</div>
+            <div class="card-body">
+              <div class="card-top">
+                <span class="card-name">${ch.name}</span>${tagHTML}
+                <span class="card-look">${ch.look}</span>
+              </div>
+              <div class="card-grudge">${ch.grudge}</div>
+              <div class="card-area">${ch.area}</div>
+            </div>
+          </div>
+        `);
+      });
+    }
+
+    $(async function() {
+      await fetchAvatars();
+      render();
+    });
+  </script>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="file-header">
+      <div class="file-stamp">CLASSIFIED</div>
+      <div class="file-title">Case Files</div>
+      <div class="file-sub">既往关联人员 · 长安殡仪馆存档</div>
+    </div>
+
+    <div class="notice">
+      以下人员与你存在既往关联。推荐选<em>一到两位</em>作为引诱主角奸尸的入坑作——其余角色不选也会在后续剧情中自然出场。<br>
+      <span class="dim">选中的姓名手动填入对话框发送。你发出的指令仅作为剧情规划，不会在故事中被暗示为"定制内容"。也可以不选预设角色，自行描述你想要的对象。</span>
+    </div>
+
+    <div class="card-grid" id="card-grid"></div>
+
+    <div class="footer-note">
+      运尸车会在夜班期间将她们送达。<br>
+      剧情中的主角不会知道今晚送来的是谁。
+    </div>
+  </div>
+</body>
+</html>
+```
